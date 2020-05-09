@@ -1,0 +1,50 @@
+import { apiBaseUrl } from "../config";
+
+// Action - Login User
+const SET_TOKEN = "abd/authentication/SET_AUTH_TOKEN";
+
+// Action Creator - Login User
+export const setToken = (authToken) => {
+  return {
+    type: SET_TOKEN,
+    authToken
+  };
+};
+
+// Thunk - Login user
+export const loginSkater = (/*email, phoneNumber,*/ username, password) = async (dispatch)=> {
+  try {
+    const res = await fetch(`${apiBaseUrl}/token`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password })
+    });
+
+    if (!res.ok) {
+      throw res;
+    }
+
+    const { authToken } = await res.json();
+
+    localStorage.setItem(TOKEN_KEY, authToken);
+
+    dispatch(setToken(token));
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// Reducer 
+export default function reducer(state = {}, action) {
+  switch(action.type) {
+    case SET_TOKEN: {
+      return {
+        ...state,
+        authToken: action.authToken
+      };
+    };
+    default: return state;
+  }
+};
