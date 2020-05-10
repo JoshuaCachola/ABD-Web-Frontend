@@ -1,9 +1,17 @@
 import React from 'react';
+import {
+  BrowserRouter as Router
+} from "react-router-dom";
 
-function App() {
+// Components
+import LoginPanel from "./components/LoginPanel";
+
+const App = () => {
   return (
-    <h1>Hello world!</h1>
+    <Router>
+      <LoginForm />
+    </Router>
   );
-}
+};
 
 export default App;

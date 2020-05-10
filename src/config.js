@@ -1,0 +1,1 @@
+export const apiBaseUrl = process.env.ABD_BASE_URL;
