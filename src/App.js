@@ -9,7 +9,7 @@ import LoginPanel from "./components/LoginPanel";
 const App = () => {
   return (
     <Router>
-      <LoginForm />
+      <LoginPanel />
     </Router>
   );
 };

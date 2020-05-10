@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { loginSkater } from "../store/authentication";
+import { login } from "../store/authentication";
 
 const LoginPanel = (props) => {
-  const [ username, setUsername ] = useState("crookiemonster");
-  const [ password, setPassword ] = useState("password");
+  const [username, setUsername] = useState("crookiemonster");
+  const [password, setPassword] = useState("verygoodpassword");
 
   const handleSetUsername = (e) => setUsername(e.tartget.value);
   const handleSetPassword = (e) => setPassword(e.tartget.value);
   const handleLogin = (e) => {
     e.preventDefault();
-    this.props.loginSkater(username, password);
+    props.login(username, password);
   }
 
-  if (props.token) {
-    return <Redirect to="/skatespots" />;
-  }
+  // if (props.token) {
+  //   return <Redirect to="/skatespots" />;
+  // }
 
   return (
     <form onSubmit={handleLogin}>
@@ -23,13 +23,13 @@ const LoginPanel = (props) => {
         type="text"
         value={username}
         onChange={handleSetUsername}
-        placeholder={Username}
+        placeholder="Username"
       />
       <input
         type="password"
         value={password}
         onChange={handleSetPassword}
-        placeholder={Password}
+        placeholder="Password"
       />
       <button>Log In</button>
     </form>
@@ -44,7 +44,7 @@ const mapStateToProps = state => {
 
 const mapDispathToProps = dispatch => {
   return {
-    loginSkater: (username, password) => dispatch(loginSkater(username, password))
+    login: (username, password) => dispatch(login(username, password))
   };
 };
 
@@ -54,4 +54,3 @@ export default connect(
 )(
   LoginPanel
 );
-
