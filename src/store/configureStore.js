@@ -7,11 +7,13 @@ import {
 
 import thunk from "redux-thunk";
 import authentication from "./authentication";
+import skateSpots from "./skateSpots";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const reducer = combineReducers({
-  authentication
+  authentication,
+  skateSpots
 });
 
 const configureStore = initialState => {

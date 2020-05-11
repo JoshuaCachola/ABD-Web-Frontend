@@ -26,11 +26,11 @@ export const login = (username, password) => async dispatch => {
       throw res;
     }
 
-    const { authToken } = await res.json();
+    const { token } = await res.json();
 
-    localStorage.setItem("TOKEN_KEY", authToken);
+    localStorage.setItem("TOKEN_KEY", token);
 
-    dispatch(setToken(authToken));
+    dispatch(setToken(token));
   } catch (err) {
     console.error(err);
   }

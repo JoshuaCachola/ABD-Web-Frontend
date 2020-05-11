@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { setSkateSpots } from "../store/skateSpots";
+// import { connect } from "react-redux";
+// import { setSkateSpots } from "../store/skateSpots";
 
 const SkateSpots = (props) => {
-  useEffect(() => {
-    props.getSkateSpots();
-  }, [props.skateSpots, props.skateSpots.length]);
+  // useEffect(() => {
+  //   props.getSkateSpots();
+  // }, [props.skateSpots, props.skateSpots.length]);
 
   return (
     <div>
@@ -14,17 +14,18 @@ const SkateSpots = (props) => {
   );
 };
 
-const mapStateToProps = state => {
-  skateSpots: state.setSkateSpots.skateSpots
-};
+export default SkateSpots;
+// const mapStateToProps = state => {
+//   skateSpots: state.setSkateSpots.skateSpots
+// };
 
-const mapDispatchToProps = dispatch => {
-  getSkateSpots: () => dispatch(setSkateSpots());
-};
+// const mapDispatchToProps = dispatch => {
+//   getSkateSpots: () => dispatch(setSkateSpots());
+// };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(
-  SkateSpots
-);
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(
+//   SkateSpots
+// );

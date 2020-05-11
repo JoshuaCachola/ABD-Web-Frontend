@@ -31,7 +31,7 @@ export const setSkateSpots = () => async (dispatch, getState) => {
   }
 };
 
-export const reducer = (state = {}, action) => {
+export default function reducer(state = {}, action) {
   switch (action.type) {
     case "SET_SPOTS":
       return {
