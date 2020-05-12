@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import { login } from "../store/authentication";
 
 const LoginPanel = (props) => {
+  const history = useHistory();
   const [username, setUsername] = useState("crookiemonster");
   const [password, setPassword] = useState("verygoodpassword");
 
@@ -17,7 +18,7 @@ const LoginPanel = (props) => {
   const handleLogin = (e) => {
     e.preventDefault();
     props.login(username, password);
-    return <Redirect to="/skatespots" />
+    return <Redirect exact to="/skatespots" />
   }
 
   // if (props.token) {

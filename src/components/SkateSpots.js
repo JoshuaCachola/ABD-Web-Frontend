@@ -4,17 +4,18 @@ import { connect } from "react-redux";
 import { setSkateSpots } from "../store/skateSpots";
 
 const SkateSpots = (props) => {
-  const history = useHistory();
+  const history = useHistory()
+  
   useEffect(() => {
     if (!props.skateSpots.length) {
       props.getSkateSpots();
     }
     console.log(props);
-  }, [props.skateSpots, props]);
+  }, [props.skateSpots, props, props.skateSpots.length]);
 
   const addNewSpot = () => {
     history.push("/skatespots/create-spot");
-    // <Redirect to="/skatespots/create-spot" />;
+    // return <Redirect to="/skatespots/create-spot" />;
   };
   
   return (

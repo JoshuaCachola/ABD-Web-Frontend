@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import { apiBaseUrl } from "../config";
 
 const CreateSkateSpot = (props) => {
+  const history = useHistory();
   const [name, setSpotName] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCityName] = useState("");
@@ -14,11 +14,12 @@ const CreateSkateSpot = (props) => {
   const handleCityName = e => setCityName(e.target.value);
   const handleStateName = e => setStateName(e.target.value);
   const handleAddress = e => setAddress(e.target.value);
-  // const handleImgPath = (e) => setAddress(e.target.value);
+  const handleImgPath = (e) => setImgPath(e.target.value);
 
   const createSpot = async(e) => {
     e.preventDefault();
     try {
+      debugger
       const res = await fetch(`${apiBaseUrl}/skatespots`, {
         method: "POST",
         headers: {
@@ -30,13 +31,13 @@ const CreateSkateSpot = (props) => {
           city,
           state,
           address,
-          imgs: imgPath
+          imgs: [imgPath]
         }),
       });
 
       if (!res.ok) throw res;
       
-      return <Redirect to="/skatespots" />
+      history.push("/skatespots")
     } catch (err) {
       console.error(err);
     }
@@ -77,7 +78,7 @@ const CreateSkateSpot = (props) => {
       <input
         type="text"
         name={imgPath}
-        onChange={setImgPath}
+        onChange={handleImgPath}
       />
       <button type="submit">Share Spot</button>
     </form>
