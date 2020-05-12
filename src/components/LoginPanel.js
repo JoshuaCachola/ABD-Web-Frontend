@@ -1,22 +1,28 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { login } from "../store/authentication";
 
 const LoginPanel = (props) => {
   const [username, setUsername] = useState("crookiemonster");
   const [password, setPassword] = useState("verygoodpassword");
 
+  if (!props.needLogin) {
+    // console.log(props.authToken);
+    console.log(props.needLogin);
+    return <Redirect to="/skatespots" />
+  }
   const handleSetUsername = (e) => setUsername(e.tartget.value);
   const handleSetPassword = (e) => setPassword(e.tartget.value);
   const handleLogin = (e) => {
     e.preventDefault();
     props.login(username, password);
+    return <Redirect to="/skatespots" />
   }
 
   // if (props.token) {
   //   return <Redirect to="/skatespots" />;
   // }
-
   return (
     <form onSubmit={handleLogin}>
       <input
@@ -37,8 +43,9 @@ const LoginPanel = (props) => {
 };
 
 const mapStateToProps = state => {
+  console.log(state);
   return {
-    token: state.authentication.token
+    authToken: state.authentication.authToken
   };
 };
 

@@ -1,21 +1,28 @@
 import { apiBaseUrl } from "../config";
 
-const SET_SPOTS = "abc/skateSpots/SET_SPOTS";
+const SET_SPOTS = "abd/skateSpots/SET_SPOTS";
+// const ADD_SKATE_SPOT = "abd/skateSpots/ADD_SKATE_SPOT";
 
-export const setSpots = spots => {
+export const setSpots = skateSpots => {
   return {
     type: SET_SPOTS,
-    spots
+    skateSpots
   };
 };
 
+// export const addSkateSpot = skateSpot => {
+//   return {
+//     type: ADD_SKATE_SPOT,
+//     skateSpot,
+//   };
+// };
+
 export const setSkateSpots = () => async (dispatch, getState) => {
   try {
-    const { authToken } = getState();
-    const res = await fetch(`${apiBaseUrl}`, {
+    const res = await fetch(`${apiBaseUrl}/skatespots`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`
+        Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
       }
     });
 
@@ -31,13 +38,41 @@ export const setSkateSpots = () => async (dispatch, getState) => {
   }
 };
 
-export default function reducer(state = {}, action) {
+// export const addSpot = (name, city, state, address) => async (dispatch) => {
+//   try {
+//     const res = await fetch(`${apiBaseUrl}/skatespots`, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+//       },
+//       body: JSON.stringify({
+//         name,
+//         city,
+//         state,
+//         address,
+//       }),
+//     });
+
+//     if (!res.ok) {
+//       throw res;
+//     }
+
+//     dispatch(setSpots());
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };
+
+export default function reducer(state = {skateSpots: []}, action) {
   switch (action.type) {
-    case "SET_SPOTS":
+    case SET_SPOTS: {
       return {
         ...state,
-        skateSpots: action.spots
-      }
-    default: return state;
+        skateSpots: action.skateSpots,
+      };
+    }
+    default:
+      return state;
   }
 };

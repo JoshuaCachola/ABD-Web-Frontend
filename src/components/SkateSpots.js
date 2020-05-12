@@ -1,31 +1,59 @@
 import React, { useEffect } from "react";
-// import { connect } from "react-redux";
-// import { setSkateSpots } from "../store/skateSpots";
+import { Redirect, useHistory } from "react-router-dom";
+import { connect } from "react-redux";
+import { setSkateSpots } from "../store/skateSpots";
 
 const SkateSpots = (props) => {
-  // useEffect(() => {
-  //   props.getSkateSpots();
-  // }, [props.skateSpots, props.skateSpots.length]);
+  const history = useHistory();
+  useEffect(() => {
+    if (!props.skateSpots.length) {
+      props.getSkateSpots();
+    }
+    console.log(props);
+  }, [props.skateSpots, props]);
 
+  const addNewSpot = () => {
+    history.push("/skatespots/create-spot");
+    // <Redirect to="/skatespots/create-spot" />;
+  };
+  
   return (
     <div>
-      <h1>SkateSpotsList</h1>
+      <h1>Skate Spots List</h1>
+      <button
+      onClick={addNewSpot}>
+        Add spot
+      </button>
+      <div>
+        {props.skateSpots.map((skateSpot, i) => (
+        <div key={i}>
+          <div>{skateSpot.name}</div>
+          <div>{skateSpot.city}</div>
+          <div>{skateSpot.state}</div>
+          <img src={skateSpot.imgs[0]} alt="skate-img"/>
+        </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default SkateSpots;
-// const mapStateToProps = state => {
-//   skateSpots: state.setSkateSpots.skateSpots
-// };
+// export default SkateSpots;
+const mapStateToProps = state => {
+  return {
+    skateSpots: state.skateSpotFeed.skateSpots,
+  };
+};
 
-// const mapDispatchToProps = dispatch => {
-//   getSkateSpots: () => dispatch(setSkateSpots());
-// };
+const mapDispatchToProps = dispatch => {
+  return {
+    getSkateSpots: () => dispatch(setSkateSpots())
+  };
+};
 
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(
-//   SkateSpots
-// );
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  SkateSpots
+);
