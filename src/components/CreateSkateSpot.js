@@ -2,6 +2,31 @@ import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import { apiBaseUrl } from "../config";
 
+// const uploadFile = async (file, signedRequest, url) => {
+//   try {
+//     const res = await fetch(signedRequest, {
+//       method: "PUT",
+//     });
+//   } catch (err) {
+//     console.error(err);
+//     alert("Could not upload the file.");
+//   }
+// };
+
+// const getSignedRequest = async file => {
+//   try {
+//     let res = await fetch(`${apiBaseUrl}/sign-s3?file-name=${file.name}&file-type=${file.type}`);
+
+//     if (!res.ok) throw res;
+
+//     res = await res.json();
+//     uploadFile(file, res.signedRequest, res.url);
+//   } catch (err) {
+//     console.error(err);
+//     alert("Could not get a signed URL");
+//   }
+// };
+
 const CreateSkateSpot = (props) => {
   const history = useHistory();
   const [name, setSpotName] = useState("");
@@ -14,13 +39,49 @@ const CreateSkateSpot = (props) => {
   const handleCityName = e => setCityName(e.target.value);
   const handleStateName = e => setStateName(e.target.value);
   const handleAddress = e => setAddress(e.target.value);
-  const handleImgPath = (e) => setImgPath(e.target.value);
+  const handleImgFileInput = async e => {
+    setImgPath(e.target.files[0]);
+    // const file = e.target.files[0];
+    // console.log(file);
 
-  const createSpot = async(e) => {
+    // if (file === null) return alert("No file selected.");
+
+    // getSignedRequest(file);
+    // try {
+    //   const res = await fetch(`${apiBaseUrl}/upload`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "multipart/form-data"
+    //     },
+    //     body: JSON.stringify({
+
+    //     })
+    //   });
+
+    //   if (!res.ok) throw res;
+
+
+    // } catch (err) {
+    //   console.error(err);
+    // }
+  }
+
+  const createSpot = async e => {
     e.preventDefault();
-    try {
-      debugger
-      const res = await fetch(`${apiBaseUrl}/skatespots`, {
+    try { 
+
+      const body = new FormData();
+      body.append("image", imgPath);
+      let res = await fetch(`${apiBaseUrl}/skatespots/upload`, {
+        method: "POST",
+        body
+      });
+
+      if (!res.ok) throw res;
+
+      const { imageUrl } = await res.json();
+
+      res = await fetch(`${apiBaseUrl}/skatespots`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -31,7 +92,7 @@ const CreateSkateSpot = (props) => {
           city,
           state,
           address,
-          imgs: [imgPath]
+          imgs: [imageUrl]
         }),
       });
 
@@ -76,9 +137,9 @@ const CreateSkateSpot = (props) => {
       {/* Change to a drag and drop */}
       <label>Image of Spot</label>
       <input
-        type="text"
+        type="file"
         name={imgPath}
-        onChange={handleImgPath}
+        onChange={handleImgFileInput}
       />
       <button type="submit">Share Spot</button>
     </form>

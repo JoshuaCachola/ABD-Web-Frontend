@@ -10,13 +10,20 @@ import { connect } from "react-redux";
 import LoginPanel from "./components/LoginPanel";
 import SkateSpots from "./components/SkateSpots";
 import { PrivateRoute } from "./routesUtils";
-import CreateSkateSpot from './components/CreateSkateSpot';
+import CreateSkateSpot from "./components/CreateSkateSpot";
+import SkateSpotPost from "./components/skate-spot/SkateSpotPost";
 
 const App = (props) => {
   const [ needLogin, _ ] = useState(!localStorage.getItem("TOKEN_KEY"));
   return (
     <Router>
       <Switch>
+        <PrivateRoute
+          exact
+          path="/skatespots/post"
+          component={SkateSpotPost}
+          needLogin={needLogin}
+        />
         <PrivateRoute
           exact
           path="/skatespots"
