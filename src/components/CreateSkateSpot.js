@@ -14,13 +14,26 @@ const CreateSkateSpot = (props) => {
   const handleCityName = e => setCityName(e.target.value);
   const handleStateName = e => setStateName(e.target.value);
   const handleAddress = e => setAddress(e.target.value);
-  const handleImgPath = (e) => setImgPath(e.target.value);
+  const handleImgFileInput = e => {
+    setImgPath(e.target.files[0]);
+  }
 
-  const createSpot = async(e) => {
+  const createSpot = async e => {
     e.preventDefault();
     try {
-      debugger
-      const res = await fetch(`${apiBaseUrl}/skatespots`, {
+
+      const body = new FormData();
+      body.append("image", imgPath);
+      let res = await fetch(`${apiBaseUrl}/skatespots/upload`, {
+        method: "POST",
+        body
+      });
+
+      if (!res.ok) throw res;
+
+      const { imageUrl } = await res.json();
+
+      res = await fetch(`${apiBaseUrl}/skatespots`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -31,12 +44,12 @@ const CreateSkateSpot = (props) => {
           city,
           state,
           address,
-          imgs: [imgPath]
+          imgs: [imageUrl]
         }),
       });
 
       if (!res.ok) throw res;
-      
+
       history.push("/skatespots")
     } catch (err) {
       console.error(err);
@@ -44,44 +57,46 @@ const CreateSkateSpot = (props) => {
   }
 
   return (
-    <form onSubmit={createSpot}>
-      <label>Skate Spot Name</label>
-      <input
-        type="text"
-        name={name}
-        onChange={handleSpotName}
-        placeholder="Name of spot"
-      />
-      <label>City</label>
-      <input
-        type="text"
-        name={city}
-        onChange={handleCityName}
-        placeholder="City"
-      />
-      <label>State</label>
-      <input
-        type="text"
-        name={state}
-        onChange={handleStateName}
-        placeholder="State"
-      />
-      <label>Address</label>
-      <input
-        type="text"
-        name={address}
-        onChange={handleAddress}
-        placeholder="Address of spot"
-      />
-      {/* Change to a drag and drop */}
-      <label>Image of Spot</label>
-      <input
-        type="text"
-        name={imgPath}
-        onChange={handleImgPath}
-      />
-      <button type="submit">Share Spot</button>
-    </form>
+    <div className="skate-spots__create-form">
+      <form onSubmit={createSpot}>
+        <label>Skate Spot Name</label>
+        <input
+          type="text"
+          name={name}
+          onChange={handleSpotName}
+          placeholder="Name of spot"
+        />
+        <label>City</label>
+        <input
+          type="text"
+          name={city}
+          onChange={handleCityName}
+          placeholder="City"
+        />
+        <label>State</label>
+        <input
+          type="text"
+          name={state}
+          onChange={handleStateName}
+          placeholder="State"
+        />
+        <label>Address</label>
+        <input
+          type="text"
+          name={address}
+          onChange={handleAddress}
+          placeholder="Address of spot"
+        />
+        {/* Change to a drag and drop */}
+        <label>Image of Spot</label>
+        <input
+          type="file"
+          name={imgPath}
+          onChange={handleImgFileInput}
+        />
+        <button type="submit">Share Spot</button>
+      </form>
+    </div>
   );
 };
 

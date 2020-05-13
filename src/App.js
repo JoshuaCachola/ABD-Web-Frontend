@@ -1,30 +1,40 @@
 import React, { useState } from 'react';
 import {
-  BrowserRouter as Router,
+  Router,
   Route,
   Switch
 } from "react-router-dom";
-import { connect } from "react-redux";
 
 // Components
-import LoginPanel from "./components/LoginPanel";
+// import LoginPanel from "./components/homepage/LoginPanel";
+import Homepage from "./components/homepage/Homepage";
 import SkateSpots from "./components/SkateSpots";
 import { PrivateRoute } from "./routesUtils";
-import CreateSkateSpot from './components/CreateSkateSpot';
+import CreateSkateSpot from "./components/CreateSkateSpot";
+import SkateSpotPost from "./components/skate-spot/SkateSpotPost";
+import createBrowserHistory from './components/utils/history';
 
-const App = (props) => {
-  const [ needLogin, _ ] = useState(!localStorage.getItem("TOKEN_KEY"));
+const App = () => {
+  const [needLogin, _] = useState(!localStorage.getItem("TOKEN_KEY"));
+  const history = createBrowserHistory();
+  // console.log(needLogin);
   return (
-    <Router>
+    <Router history={history}>
       <Switch>
         <PrivateRoute
-          exact
+          // exact
+          path="/skatespots/post"
+          component={SkateSpotPost}
+          needLogin={needLogin}
+        />
+        <PrivateRoute
+          // exact
           path="/skatespots"
           component={SkateSpots}
           needLogin={needLogin}
         />
         <PrivateRoute
-          exact
+          // exact
           path="/skatespots/create-spot"
           component={CreateSkateSpot}
           needLogin={needLogin}
@@ -32,21 +42,11 @@ const App = (props) => {
         <Route
           exact
           path="/"
-          render={() => <LoginPanel needLogin={needLogin} />}
+          render={() => <Homepage needLogin={needLogin} />}
         />
       </Switch>
     </Router>
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    authToken: state.authentication.authToken
-  };
-};
-
-export default connect(
-  mapStateToProps,
-)(
-  App
-);
+export default App;

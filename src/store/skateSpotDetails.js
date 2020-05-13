@@ -9,9 +9,20 @@ export const setSpotDetails = details => {
   };
 };
 
-export const getSpotDetails = () => async dispatch =>{
+export const getSpotDetails = (id) => async dispatch => {
   try {
+    const res = await fetch(`${apiBaseUrl}/skatespots/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
+      }
+    });
 
+    if (!res.ok) throw res;
+
+    const { skateSpot } = await res.json();
+    console.log(skateSpot);
+    dispatch(setSpotDetails(skateSpot));
   } catch (err) {
     console.error(err);
   }
