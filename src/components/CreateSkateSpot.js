@@ -44,6 +44,9 @@ const CreateSkateSpot = (props) => {
       body.append("image", imgPath);
       let res = await fetch(`${apiBaseUrl}/skatespots/upload`, {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
+        },
         body
       });
 

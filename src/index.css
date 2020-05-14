@@ -399,7 +399,7 @@ textarea {
   background-color: rgba(var(--b3f,250,250,250),1);
   background-size: cover;
   height: 100%;
-  position: fixed;
+  /* position: fixed; */
   width: 100%;
   font-family: 'Raleway', sans-serif;
 }
@@ -425,4 +425,10 @@ textarea {
 
 .skate-spots__state {
   font-size: 14px;
+}
+
+.skate-spot__img-avatar {
+  max-width: 200px;
+  max-height: 200px;
+  border: 10px solid #c8c8c8;
 }

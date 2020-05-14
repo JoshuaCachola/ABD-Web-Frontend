@@ -20,7 +20,8 @@ export const getSpotPosts = (id) => async dispatch =>{
 
     if (!res.ok) throw res;
 
-    const { posts } = await res.json();
+    const posts = await res.json();
+    console.log(posts);
     dispatch(setSpotPosts(posts))
   } catch (err) {
     console.error(err);

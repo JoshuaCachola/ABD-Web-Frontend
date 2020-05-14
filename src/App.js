@@ -40,15 +40,15 @@ const App = () => {
         />
         <PrivateRoute
           exact
-          path="/skatespots/:id"
-          component={SkateSpot}
+          path="/skatespots/create-spot"
+          component={CreateSkateSpot}
           // needLogin={needLogin}
         />
         <PrivateRoute
           exact
-          path="/skatespots/create-spot"
-          component={CreateSkateSpot}
-          needLogin={needLogin}
+          path="/skatespots/:id"
+          component={SkateSpot}
+          // needLogin={needLogin}
         />
         <Route render={() => <h1>404: Page not found</h1>} />
       </Switch>

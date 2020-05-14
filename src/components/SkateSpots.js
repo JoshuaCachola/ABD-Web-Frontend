@@ -44,10 +44,10 @@ const SkateSpots = (props) => {
         {/* <h1>Skate Spots List</h1> */}
         <Box display="flex" alignItems="center" justifyContent="center">
           <Card className={classes.root}>
-            {props.skateSpots.map((skateSpot, i) => (
+            {props.skateSpots.map((skateSpot) => (
               <CardContent key={skateSpot.id}>
                 <Link to={{
-                  pathname: `/skatespots/${i}`,
+                  pathname: `/skatespots/${skateSpot.id}`,
                   state: {
                     skateSpot
                   }

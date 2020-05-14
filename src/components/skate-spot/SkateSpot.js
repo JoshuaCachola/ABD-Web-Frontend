@@ -1,61 +1,78 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { getSpotPosts } from "../../store/skateSpotPosts";
-import { Box } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+// import { connect } from "react-redux";
+// import { getSpotPosts } from "../../store/skateSpotPosts";
+import { Box, makeStyles, Avatar } from "@material-ui/core";
+import { AddAPhoto } from "@material-ui/icons";
 
 import Navbar from "../utils/Navbar";
+import SkateSpotFeed from "./SkateSpotFeed";
+
+const useStyles = makeStyles((theme) => ({
+  large: {
+    width: theme.spacing(20),
+    height: theme.spacing(20),
+  },
+}));
 
 const SkateSpot = (props) => {
+  // const [skateSpot, setSkateSpot] = useState({});
   const { skateSpot } = props.location.state;
   const id = props.match.url.split("/")[2];
-  console.log(props.posts);
-  useEffect(() => {
-    if (!props.posts.length) {
-      props.getSpotPosts(id);
-    }
-  }, [props, props.posts, props.posts.length]);
+  // console.log(skateSpot);
+  // useEffect(() => {
+  //   if (!props.posts) {
+  //     props.getSpotPosts(id);
+  //   }
+  //   console.log(props.posts);
+  //   // setSkateSpot(props.location.state);
+  // }, [props, props.posts, id, props.posts.length]);
+
+  const classes = useStyles();
 
   return (
     <>
       <nav>
         <Navbar />
       </nav>
-      <Box display="flex">
-        <div className="skate-spot__img">
-          <img src={skateSpot.imgs[0]} alt="skate-spot-pic" />
-        </div>
+      <Box display="flex" className="skate-spots">
+        <Avatar
+          src={skateSpot.imgs[0]}
+          alt="skate-spot-pic"
+          className={classes.large}
+        />
         <div>
-          <div className="skate-spot__name">{skateSpot.name}</div>
-          <div className="skate-spot__city">{skateSpot.city}</div>
-          <div className="skate-spot__state">{skateSpot.state}</div>
+          <div className="skate-spots__name">{skateSpot.name}</div>
+          <div className="skate-spots__city">{skateSpot.city}</div>
+          <div className="skate-spots__state">{skateSpot.state}</div>
         </div>
       </Box>
+      <Box>{/* Followers */}</Box>
       <Box>
-        {/* Followers */}
+        <SkateSpotFeed id={id}/>
       </Box>
-      <Box>
-
+      <Box display="flex" justifyContent="flex-end">
+        <AddAPhoto />
       </Box>
     </>
   );
 };
 
-// export default SkateSpot;
-const mapStateToProps = state => {
-  return {
-    posts: state.skateSpotPosts.posts
-  };
-};
+export default SkateSpot;
+// const mapStateToProps = state => {
+//   return {
+//     posts: state.skateSpotPosts.posts
+//   };
+// };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    getSpotPosts: id => dispatch(getSpotPosts(id))
-  };
-};
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     getSpotPosts: id => dispatch(getSpotPosts(id))
+//   };
+// };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(
-  SkateSpot
-);
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps,
+// )(
+//   SkateSpot
+// );
