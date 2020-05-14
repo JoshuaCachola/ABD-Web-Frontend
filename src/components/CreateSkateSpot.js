@@ -1,6 +1,25 @@
 import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
+import { 
+  TextField, 
+  Box, 
+  Card, 
+  CardContent, 
+  makeStyles 
+} from "@material-ui/core";
 import { apiBaseUrl } from "../config";
+
+import Navbar from "./utils/Navbar";
+
+const useStyles = makeStyles({
+  root: {
+    minWidth: 925,
+  },
+  img: {
+    maxWidth: 100,
+    maxHeight: 100,
+  },
+});
 
 const CreateSkateSpot = (props) => {
   const history = useHistory();
@@ -21,7 +40,6 @@ const CreateSkateSpot = (props) => {
   const createSpot = async e => {
     e.preventDefault();
     try {
-
       const body = new FormData();
       body.append("image", imgPath);
       let res = await fetch(`${apiBaseUrl}/skatespots/upload`, {
@@ -56,46 +74,78 @@ const CreateSkateSpot = (props) => {
     }
   }
 
+  const classes = useStyles();
   return (
     <div className="skate-spots__create-form">
-      <form onSubmit={createSpot}>
-        <label>Skate Spot Name</label>
-        <input
-          type="text"
-          name={name}
-          onChange={handleSpotName}
-          placeholder="Name of spot"
-        />
-        <label>City</label>
-        <input
-          type="text"
-          name={city}
-          onChange={handleCityName}
-          placeholder="City"
-        />
-        <label>State</label>
-        <input
-          type="text"
-          name={state}
-          onChange={handleStateName}
-          placeholder="State"
-        />
-        <label>Address</label>
-        <input
-          type="text"
-          name={address}
-          onChange={handleAddress}
-          placeholder="Address of spot"
-        />
-        {/* Change to a drag and drop */}
-        <label>Image of Spot</label>
-        <input
-          type="file"
-          name={imgPath}
-          onChange={handleImgFileInput}
-        />
-        <button type="submit">Share Spot</button>
-      </form>
+      <nav>
+        <Navbar />
+      </nav>
+      <Box display="flex" justifyContent="center">
+        <Card className={classes.root}>
+          {/* <CardContent>
+            <label>Image of Spot</label>
+            <input type="file" name={imgPath} onChange={handleImgFileInput} />
+          </CardContent> */}
+          <CardContent>
+            <form onSubmit={createSpot}>
+              <Box display="flex" flexDirection="column">
+                <Box display="flex" justifyContent="center" alignItems="center">
+                  <label>Name</label>
+                  <TextField
+                    margin="dense"
+                    variant="outlined"
+                    type="text"
+                    name={name}
+                    onChange={handleSpotName}
+                  />
+                </Box>
+                <Box display="flex" justifyContent="center" alignItems="center">
+                  <label>City</label>
+                  <TextField
+                    margin="dense"
+                    variant="outlined"
+                    type="text"
+                    name={city}
+                    onChange={handleCityName}
+                  />
+                </Box>
+                <Box display="flex" justifyContent="center" alignItems="center">
+                  <label>State</label>
+                  <TextField
+                    margin="dense"
+                    variant="outlined"
+                    type="text"
+                    name={state}
+                    onChange={handleStateName}
+                  />
+                </Box>
+                <Box display="flex" justifyContent="center" alignItems="center">
+                  <label>Address</label>
+                  <TextField
+                    margin="dense"
+                    variant="outlined"
+                    type="text"
+                    name={address}
+                    onChange={handleAddress}
+                  />
+                </Box>
+                {/* Change to a drag and drop */}
+                <Box display="flex" justifyContent="center" alignItems="center">
+                  <label>Image of Spot</label>
+                  <input
+                    type="file"
+                    name={imgPath}
+                    onChange={handleImgFileInput}
+                  />
+                </Box>
+              </Box>
+              <Box display="flex" justifyContent="flex-end">
+                <button type="submit">Share Spot</button>
+              </Box>
+            </form>
+          </CardContent>
+        </Card>
+      </Box>
     </div>
   );
 };

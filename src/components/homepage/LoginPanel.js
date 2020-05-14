@@ -2,24 +2,31 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
 import { login } from "../../store/authentication";
+import { TextField, Button, makeStyles, Box } from "@material-ui/core";
 // import logo from "../../images/abd-logo.png";
 
+const useStyles = makeStyles({
+  
+});
+
 const LoginPanel = (props) => {
-  const history = useHistory();
+  // const history = useHistory();
+  const classes = useStyles();
   const [username, setUsername] = useState("crookiemonster");
   const [password, setPassword] = useState("verygoodpassword");
 
-  // if (!!props.needLogin) {
-  //   // return <Redirect push to="/skatespots" />
-  //   history.push("/skatespots");
+  // if (!props.needLogin) {
+  //   return <Redirect push to="/skatespots" />
+  //   // history.push("/skatespots");
   // }
 
-  const handleSetUsername = (e) => setUsername(e.tartget.value);
-  const handleSetPassword = (e) => setPassword(e.tartget.value);
+  const handleSetUsername = (e) => setUsername(e.target.value);
+  const handleSetPassword = (e) => setPassword(e.target.value);
   const handleLogin = (e) => {
+    console.log("in handle login");
     e.preventDefault();
     props.login(username, password);
-    history.push("/skatespots");
+    // history.push("/skatespots");
     // return <Redirect push to="/skatespots" />
   };
 
@@ -27,27 +34,29 @@ const LoginPanel = (props) => {
   //   return <Redirect to="/skatespots" />;
   // }
   return (
-    <div className="homepage__login-form">
-      <div className="homepage__logo">
-        <h1>already been done</h1>
-        {/* <img src={logo} alt="abd-logo" /> */}
-      </div>
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          value={username}
-          onChange={handleSetUsername}
-          placeholder="Username"
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={handleSetPassword}
-          placeholder="Password"
-        />
-        <button>Log In</button>
+    <Box display="flex" justifyContent="flex-end" alignItems="center">
+      <form>
+        <Box>
+          <TextField
+            type="text"
+            value={username}
+            onChange={handleSetUsername}
+            label="Username"
+          />
+        </Box>
+        <Box>
+          <TextField
+            type="password"
+            value={password}
+            onChange={handleSetPassword}
+            label="Password"
+          />
+        </Box>
+        <Box>
+          <Button onClick={handleLogin}>Log In</Button>
+        </Box>
       </form>
-    </div>
+    </Box>
   );
 };
 

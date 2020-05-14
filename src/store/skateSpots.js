@@ -31,7 +31,7 @@ export const setSkateSpots = () => async (dispatch, getState) => {
     }
 
     const { skateSpots } = await res.json();
-
+    // console.log(skateSpots);
     dispatch(setSpots(skateSpots));
   } catch (err) {
     console.error(err);
