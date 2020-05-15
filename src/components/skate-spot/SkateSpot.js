@@ -40,22 +40,21 @@ const SkateSpot = (props) => {
       <nav>
         <Navbar />
       </nav>
-      <Box display="flex" className="skate-spots">
+      <Box display="flex" className="skate-spots" justifyContent="space-around">
         <Avatar
           src={skateSpot.imgs[0]}
           alt="skate-spot-pic"
           className={classes.large}
         />
-        <div>
+        <Box flexBasis="35%">
           <div className="skate-spots__name">{skateSpot.name}</div>
           <div className="skate-spots__city">{skateSpot.city}</div>
           <div className="skate-spots__state">{skateSpot.state}</div>
-        </div>
+        </Box>
       </Box>
-      <Box>{/* Followers */}</Box>
-      <Box>
-        <SkateSpotFeed id={id}/>
-      </Box>
+      {/* <Box display="flex"> */}
+      <SkateSpotFeed id={id} />
+      {/* </Box> */}
       <Box display="flex" justifyContent="flex-end" className="skate-spot__add-a-photo">
         <AddAPhoto onClick={() => handleAddPost()} />
       </Box>

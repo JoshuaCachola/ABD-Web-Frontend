@@ -5,12 +5,12 @@ import { connect } from "react-redux";
 import { getSpotPosts, isShowPost } from "../../store/skateSpotPosts";
 import { Route } from "react-router-dom";
 import { Box, Card } from "@material-ui/core";
-import VideoPlayer from "react-video-js-player";
+import ReactPlayer from "react-player";
 // import { apiBaseUrl } from "../../config";
 
-const SkateSpotFeed = ({isShowingPost, showPost, id, posts, getSpotPosts}) => {
+const SkateSpotFeed = ({ isShowingPost, showPost, id, posts, getSpotPosts }) => {
   // const id = props.match.url.split("/")[2];
-  const [ postIndex, setPostIndex ] = useState(null);
+  const [postIndex, setPostIndex] = useState(null);
 
   // console.log(props);
   const video = createRef();
@@ -19,32 +19,48 @@ const SkateSpotFeed = ({isShowingPost, showPost, id, posts, getSpotPosts}) => {
       getSpotPosts(id);
     }
   }, [posts.length, id]);
-  
+
   const handleSkatePost = (e) => {
     // const postIndex = e.currentTarget.id;
     console.log(e.target.tagName);
-    if (e.target.tagName === "IMG") {
+    if (e.target.tagName === "IMG" || e.target.tagName === "VIDEO") {
       setPostIndex(e.currentTarget.id);
       // debugger
       showPost(isShowingPost);
     }
   };
 
-  // console.log(posts);
+  // const thumbHandler = (thumb) => <img src={thumb} alt="skate-pic" />;
+  console.log(posts);
   return (
     <>
-      <Box className="skate-spot__feed" display="flex">
-        {posts && posts.map(({post}, i) => {
+      <Box className="skate-spot__feed-container" display="flex" justifyContent="space-evenly" flexWrap="wrap">
+        {posts && posts.map(({ post }, i) => {
           return (
-            <Box key={post.id} id={i} onClick={handleSkatePost}>
-              <VideoThumbnail ref={video} videoUrl={post[0]} height={293} width={293} />
+            <Box className="skate-spot__feed-div" key={i} id={i} onClick={handleSkatePost}>
+              {
+                post[0].endsWith("mp4")
+                  ?
+                  // <div className="skate-spot__feed-div">
+                  <ReactPlayer
+                    url={post[0]}
+                    light={false}
+                    height="100%"
+                    width="293px"
+                  />
+                  // </div>
+                  :
+                  // <div className="skate-spot__feed-div">
+                  <img className="skate-spot__feed-image" src={post[0]} alt="skate-pic" />
+                // </div>
+              }
             </Box>
           );
         })}
       </Box>
       <Box>
         {isShowingPost === true &&
-          <SkateSpotPost 
+          <SkateSpotPost
             id={posts[postIndex].id}
             post={posts[postIndex].post}
             caption={posts[postIndex].caption}
@@ -71,7 +87,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(
-  mapStateToProps, 
+  mapStateToProps,
   mapDispatchToProps
 )(
   SkateSpotFeed

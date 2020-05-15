@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom"; 
+import { useHistory } from "react-router-dom";
 import { Box, Card, CardContent, makeStyles } from "@material-ui/core";
 
 import Navbar from "../utils/Navbar";
 import { apiBaseUrl } from "../../config";
 
-const CreateSkatePost = ({match: { url }}) => {
+const CreateSkatePost = ({ match: { url } }) => {
   const skateSpotId = url.split("/")[2];
   const history = useHistory();
   const [caption, setCaption] = useState("");
@@ -19,19 +19,32 @@ const CreateSkatePost = ({match: { url }}) => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
+      const { type } = file;
       const body = new FormData();
-      body.append("image", file);
-      let res = await fetch(`${apiBaseUrl}/skatespots/upload`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
-        },
-        body
-      });
+      let res;
+      if (type === "video/mp4") {
+        body.append("video", file);
+        res = await fetch(`${apiBaseUrl}/skatespots/upload-video`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
+          },
+          body
+        });
+      } else if (type.split("/")[0] === "image") {
+        body.append("image", file);
+        res = await fetch(`${apiBaseUrl}/skatespots/upload-image`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
+          },
+          body
+        });
+      }
 
       if (!res.ok) throw res;
 
-      const { imageUrl } = await res.json();
+      const { postUrl } = await res.json();
 
       res = await fetch(`${apiBaseUrl}/skatespots/${skateSpotId}/posts`, {
         method: "POST",
@@ -40,7 +53,7 @@ const CreateSkatePost = ({match: { url }}) => {
           Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
         },
         body: JSON.stringify({
-          post: [imageUrl],
+          post: [postUrl],
           caption
         })
       });

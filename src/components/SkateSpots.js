@@ -19,7 +19,7 @@ const useStyles = makeStyles({
   }
 });
 
-const SkateSpots = ({skateSpots, getSkateSpots}) => {
+const SkateSpots = ({ skateSpots, getSkateSpots }) => {
   const history = useHistory()
 
   useEffect(() => {
@@ -52,20 +52,20 @@ const SkateSpots = ({skateSpots, getSkateSpots}) => {
                   }
                 }}>
                   <Box display="flex" justifyContent="space-between">
-                    <Box>
+                    <Box flexBasis="30%">
                       <img
                         className={classes.img}
                         src={skateSpot.imgs[0]}
                         alt="skate-img"
                       />
                     </Box>
-                    <Box alignItems="center">
+                    <Box alignItems="center" flexBasis="30%">
                       <div className="skate-spots__name">{skateSpot.name}</div>
                       <div className="skate-spots__city">{skateSpot.city}</div>
                       <div className="skate-spots__state">{skateSpot.state}</div>
                     </Box>
                     <Box>
-                      <Button>Follow</Button>
+                      <Button flexBasis="30%">Follow</Button>
                     </Box>
                   </Box>
                 </Link>

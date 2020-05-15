@@ -14,16 +14,22 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <div className="navbar__logo">
+        <Box className="navbar__logo" flexBasis="30%">
           <h1>already been done</h1>
-        </div>
-        <TextField
-          label="Search"
-          defaultValue="San Francisco"
-          variant="outlined"
-          size="small"
-        />
-        <HomeIcon />
+        </Box>
+        <Box flexBasis="30%" justifyContent="center">
+          <TextField
+            // flexBasis="30%"
+            label="Search"
+            defaultValue="San Francisco"
+            variant="outlined"
+            size="small"
+            className="navbar__search"
+          />
+        </Box>
+        <Box flexBasis="12%" >
+          <HomeIcon />
+        </Box>
       </Box>
     </nav>
   );

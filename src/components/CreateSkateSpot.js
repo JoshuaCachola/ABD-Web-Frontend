@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { 
-  TextField, 
-  Box, 
-  Card, 
-  CardContent, 
-  makeStyles 
+import {
+  TextField,
+  Box,
+  Card,
+  CardContent,
+  makeStyles
 } from "@material-ui/core";
 import { apiBaseUrl } from "../config";
 
@@ -42,7 +42,7 @@ const CreateSkateSpot = () => {
     try {
       const body = new FormData();
       body.append("image", imgPath);
-      let res = await fetch(`${apiBaseUrl}/skatespots/upload`, {
+      let res = await fetch(`${apiBaseUrl}/skatespots/upload-picture`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
@@ -52,7 +52,7 @@ const CreateSkateSpot = () => {
 
       if (!res.ok) throw res;
 
-      const { imageUrl } = await res.json();
+      const { postUrl } = await res.json();
 
       res = await fetch(`${apiBaseUrl}/skatespots`, {
         method: "POST",
@@ -65,7 +65,7 @@ const CreateSkateSpot = () => {
           city,
           state,
           address,
-          imgs: [imageUrl]
+          imgs: [postUrl]
         }),
       });
 

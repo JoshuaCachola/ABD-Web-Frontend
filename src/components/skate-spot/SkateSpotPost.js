@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import VideoPlayer from "react-video-js-player";
-import { Box } from "@material-ui/core";
+import { Box, Card } from "@material-ui/core";
 import { connect } from "react-redux";
 
 import { isShowPost } from "../../store/skateSpotPosts";
 
-const SkateSpotPost = ({showPost, isShowingPost, id, post, caption}) => {
+const SkateSpotPost = ({ showPost, isShowingPost, id, post, caption }) => {
   console.log(id, post, caption);
   const handleShowPost = (e) => {
     // console.log(e.target.tagName);
@@ -27,7 +27,9 @@ const SkateSpotPost = ({showPost, isShowingPost, id, post, caption}) => {
           />
         </Box>
         <Box>
-          <h1>{caption}</h1>
+          <Card className="skate-spot__comment-container">
+            <h1>{caption}</h1>
+          </Card>
         </Box>
       </Box>
     </Box>
