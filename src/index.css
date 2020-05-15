@@ -432,3 +432,32 @@ textarea {
   max-height: 200px;
   border: 10px solid #c8c8c8;
 }
+
+.skate-spot {
+  /* position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);  */
+  /* background-color: rgba(0, 0,0 , 0.5);
+  background-size: cover;
+  height: 100%;
+  width: 100%; */
+}
+
+.skate-spot__post {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  background-color: rgba(0, 0,0 , 0.5);
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.skate-spot__add-a-photo {
+  position: fixed;
+  top: 90%;
+  left: 95%;
+  /* transform: translate(-50%, -50%);  */
+}

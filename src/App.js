@@ -12,8 +12,10 @@ import {
 import Homepage from "./components/homepage/Homepage";
 import SkateSpots from "./components/SkateSpots";
 import SkateSpot from "./components/skate-spot/SkateSpot";
+import SkateSpotPost from "./components/skate-spot/SkateSpotPost";
 import { PrivateRoute } from "./routesUtils";
 import CreateSkateSpot from "./components/CreateSkateSpot";
+import CreateSkatePost from "./components/skate-spot/CreateSkatePost";
 // import SkateSpotPost from "./components/skate-spot/SkateSpotPost";
 import createBrowserHistory from './components/utils/history';
 
@@ -49,6 +51,16 @@ const App = () => {
           path="/skatespots/:id"
           component={SkateSpot}
           // needLogin={needLogin}
+        />
+        <PrivateRoute
+          exact
+          path="/skatespots/:id/post"
+          component={CreateSkatePost}
+        />
+        <PrivateRoute
+          exact
+          path="/skatespots/:id/posts/:id"
+          component={SkateSpotPost}
         />
         <Route render={() => <h1>404: Page not found</h1>} />
       </Switch>

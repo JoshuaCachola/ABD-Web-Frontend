@@ -19,15 +19,14 @@ const useStyles = makeStyles({
   }
 });
 
-const SkateSpots = (props) => {
+const SkateSpots = ({skateSpots, getSkateSpots}) => {
   const history = useHistory()
 
   useEffect(() => {
-    if (!props.skateSpots.length) {
-      props.getSkateSpots();
+    if (!skateSpots.length) {
+      getSkateSpots();
     }
-    console.log(props);
-  }, []);
+  }, [skateSpots, skateSpots.length, getSkateSpots]);
 
   const addNewSpot = () => {
     history.push("/skatespots/create-spot");
@@ -44,7 +43,7 @@ const SkateSpots = (props) => {
         {/* <h1>Skate Spots List</h1> */}
         <Box display="flex" alignItems="center" justifyContent="center">
           <Card className={classes.root}>
-            {props.skateSpots.map((skateSpot) => (
+            {skateSpots.map((skateSpot) => (
               <CardContent key={skateSpot.id}>
                 <Link to={{
                   pathname: `/skatespots/${skateSpot.id}`,

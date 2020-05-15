@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { 
   TextField, 
   Box, 
@@ -21,7 +21,7 @@ const useStyles = makeStyles({
   },
 });
 
-const CreateSkateSpot = (props) => {
+const CreateSkateSpot = () => {
   const history = useHistory();
   const [name, setSpotName] = useState("");
   const [address, setAddress] = useState("");

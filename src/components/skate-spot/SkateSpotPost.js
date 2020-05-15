@@ -1,63 +1,56 @@
 import React, { useState } from "react";
 import VideoPlayer from "react-video-js-player";
+import { Box } from "@material-ui/core";
+import { connect } from "react-redux";
 
-const SkateSpotPost = (props) => {
-  // const [ player, setPlayer ] = useState({});
+import { isShowPost } from "../../store/skateSpotPosts";
 
-  // thread props from the SkateSpotFeed
-  // replace with props.src and props.poster
-  const [src, setSrc] = useState(
-    "https://abd-bucket-dev.s3-us-west-1.amazonaws.com/dpgapbank.MP4"
-  );
-  const [poster, setPoster] = useState("");
-
-  // const onPlayerReady = (player) => {
-  //     console.log("Player is ready: ", player);
-  //     setPlayer(player);
-  // }
-
-  // const onVideoPlay = (duration) => {
-  //     console.log("Video played at: ", duration);
-  // }
-
-  // const onVideoPause = (duration) => {
-  //     console.log("Video paused at: ", duration);
-  // }
-
-  // const onVideoTimeUpdate = (duration) => {
-  //     console.log("Time updated: ", duration);
-  // }
-
-  // const onVideoSeeking = (duration) => {
-  //     console.log("Video seeking: ", duration);
-  // }
-
-  // const onVideoSeeked = (from, to) => {
-  //     console.log(`Video seeked from ${from} to ${to}`);
-  // }
-
-  // const onVideoEnd = () => {
-  //     console.log("Video ended");
-  // }
+const SkateSpotPost = ({showPost, isShowingPost, id, post, caption}) => {
+  console.log(id, post, caption);
+  const handleShowPost = (e) => {
+    // console.log(e.target.tagName);
+    if (e.target.tagName === "DIV") {
+      showPost(isShowingPost);
+    }
+  };
 
   return (
-    <div>
-      <VideoPlayer
-        controls={true}
-        src={src}
-        poster={poster}
-        width="720"
-        height="420"
-      // onReady={() => onPlayerReady()}
-      // onPlay={() => onVideoPlay()}
-      // onPause={() => onVideoPause()}
-      // onTimeUpdate={() => onVideoTimeUpdate()}
-      // onSeeking={() => onVideoSeeking()}
-      // onSeeked={() => onVideoSeeked()}
-      // onEnd={() => onVideoEnd()}
-      />
-    </div>
+    <Box onClick={handleShowPost} className="skate-spot">
+      <Box className="skate-spot__post" display="flex" justifyContent="center" alignItems="center">
+        <Box>
+          <VideoPlayer
+            controls={true}
+            src={post[0]}
+            width="414"
+            height="514"
+            type="video/mp4"
+          />
+        </Box>
+        <Box>
+          <h1>{caption}</h1>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 
-export default SkateSpotPost;
+const mapStateToProps = state => {
+  return {
+    isShowingPost: state.skateSpotPosts.isShowingPost
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    showPost: toggle => dispatch(isShowPost(toggle))
+  };
+};
+
+// export default SkateSpotPost;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  SkateSpotPost
+);

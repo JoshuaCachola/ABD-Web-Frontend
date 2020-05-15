@@ -2,51 +2,55 @@ import React, { useState, useEffect, createRef } from "react";
 import VideoThumbnail from "react-video-thumbnail";
 import SkateSpotPost from "./SkateSpotPost";
 import { connect } from "react-redux";
-import { getSpotPosts } from "../../store/skateSpotPosts";
-// import { Link, Switch } from "react-router-dom";
+import { getSpotPosts, isShowPost } from "../../store/skateSpotPosts";
+import { Route } from "react-router-dom";
 import { Box, Card } from "@material-ui/core";
-import { apiBaseUrl } from "../../config";
+import VideoPlayer from "react-video-js-player";
+// import { apiBaseUrl } from "../../config";
 
-const SkateSpotFeed = (props) => {
+const SkateSpotFeed = ({isShowingPost, showPost, id, posts, getSpotPosts}) => {
   // const id = props.match.url.split("/")[2];
-  // const [ posts, setPosts ] = useState([]);
+  const [ postIndex, setPostIndex ] = useState(null);
+
   // console.log(props);
   const video = createRef();
   useEffect(() => {
-    if (!props.posts.length) {
-      props.getSpotPosts(props.id);
+    if (!posts.length) {
+      getSpotPosts(id);
     }
-    // (async () => {
-    //   try {
-    //     const res = await fetch(`${apiBaseUrl}/skatespots/${props.id}/posts`, {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
-    //       },
-    //     });
+  }, [posts.length, id]);
+  
+  const handleSkatePost = (e) => {
+    // const postIndex = e.currentTarget.id;
+    console.log(e.target.tagName);
+    if (e.target.tagName === "IMG") {
+      setPostIndex(e.currentTarget.id);
+      // debugger
+      showPost(isShowingPost);
+    }
+  };
 
-    //     if (!res.ok) throw res;
-    //     console.log(res);
-    //     const posts  = await res.json();
-    //     console.log(posts);
-    //     setPosts(posts);
-    //   } catch (err) {
-    //     console.error(err);
-    //   }
-    // })();
-  }, [props, props.posts, props.posts.length, props.id]);
-  console.log(props.posts);
+  // console.log(posts);
   return (
     <>
-    {/* // <Box className="skate-spot__feed" display="flex"> */}
-      {props.posts && props.posts.map(({post}, i) => {
-        return (
-          <div key={i} id={post.id}>
-            <VideoThumbnail ref={video} videoUrl={post[0]} height={300} width={300} />
-          </div>
-        );
-      })}
-    {/* // </Box> */}
+      <Box className="skate-spot__feed" display="flex">
+        {posts && posts.map(({post}, i) => {
+          return (
+            <Box key={post.id} id={i} onClick={handleSkatePost}>
+              <VideoThumbnail ref={video} videoUrl={post[0]} height={293} width={293} />
+            </Box>
+          );
+        })}
+      </Box>
+      <Box>
+        {isShowingPost === true &&
+          <SkateSpotPost 
+            id={posts[postIndex].id}
+            post={posts[postIndex].post}
+            caption={posts[postIndex].caption}
+          />
+        }
+      </Box>
     </>
   );
 };
@@ -55,12 +59,14 @@ const SkateSpotFeed = (props) => {
 const mapStateToProps = (state) => {
   return {
     posts: state.skateSpotPosts.posts,
+    isShowingPost: state.skateSpotPosts.isShowingPost
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getSpotPosts: (id) => dispatch(getSpotPosts(id)),
+    showPost: (toggle) => dispatch(isShowPost(toggle))
   };
 };
 
