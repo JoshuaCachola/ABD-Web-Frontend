@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { Box, Card, CardContent, makeStyles } from "@material-ui/core";
 
 import Navbar from "../utils/Navbar";
-import { apiBaseUrl } from "../../config";
+import api from "../../utils";
 
 const CreateSkatePost = ({ match: { url } }) => {
   const skateSpotId = url.split("/")[2];
@@ -24,7 +24,7 @@ const CreateSkatePost = ({ match: { url } }) => {
       let res;
       if (type === "video/mp4") {
         body.append("video", file);
-        res = await fetch(`${apiBaseUrl}/skatespots/upload-video`, {
+        res = await fetch(`${api.url}/skatespots/upload-video`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
@@ -33,7 +33,7 @@ const CreateSkatePost = ({ match: { url } }) => {
         });
       } else if (type.split("/")[0] === "image") {
         body.append("image", file);
-        res = await fetch(`${apiBaseUrl}/skatespots/upload-image`, {
+        res = await fetch(`${api.url}/skatespots/upload-image`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
@@ -46,7 +46,7 @@ const CreateSkatePost = ({ match: { url } }) => {
 
       const { postUrl } = await res.json();
 
-      res = await fetch(`${apiBaseUrl}/skatespots/${skateSpotId}/posts`, {
+      res = await fetch(`${api.url}/skatespots/${skateSpotId}/posts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

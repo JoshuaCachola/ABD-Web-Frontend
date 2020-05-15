@@ -1,4 +1,4 @@
-import { apiBaseUrl } from "../config";
+import api from "../utils";
 
 const SET_SPOT_POSTS = "abd/skateSpotPosts/SET_SPOT_DETAILS";
 const TOGGLE_POST = "abd/skateSpotPosts/TOGGLE_POST";
@@ -27,7 +27,7 @@ export const showPost = (isShowPost) => {
 
 export const getSpotPosts = (id) => async dispatch =>{
   try {
-    const res = await fetch(`${apiBaseUrl}/skatespots/${id}/posts`, {
+    const res = await fetch(`${api.url}/skatespots/${id}/posts`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`

@@ -7,7 +7,7 @@ import {
   CardContent,
   makeStyles
 } from "@material-ui/core";
-import { apiBaseUrl } from "../config";
+import api from "../utils";
 
 import Navbar from "./utils/Navbar";
 
@@ -42,7 +42,7 @@ const CreateSkateSpot = () => {
     try {
       const body = new FormData();
       body.append("image", imgPath);
-      let res = await fetch(`${apiBaseUrl}/skatespots/upload-picture`, {
+      let res = await fetch(`${api.url}/skatespots/upload-picture`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
@@ -54,7 +54,7 @@ const CreateSkateSpot = () => {
 
       const { postUrl } = await res.json();
 
-      res = await fetch(`${apiBaseUrl}/skatespots`, {
+      res = await fetch(`${api.url}/skatespots`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

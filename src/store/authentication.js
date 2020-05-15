@@ -1,4 +1,4 @@
-import { apiBaseUrl } from "../config";
+import api from "../utils";
 
 // Action - Login User
 const SET_TOKEN = "abd/authentication/SET_TOKEN";
@@ -14,7 +14,7 @@ export const setToken = (authToken) => {
 // Thunk - Login user
 export const login = (username, password) => async dispatch => {
   try {
-    const res = await fetch(`${apiBaseUrl}/skaters/session`, {
+    const res = await fetch(`${api.url}/skaters/session`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -1,1 +1,8 @@
-export const apiBaseUrl = process.env.ABD_BASE_URL || "http://localhost:8008/api/v1";
+const api = {
+  url:
+    process.env.NODE_DEV === "development"
+      ? process.env.DEV_API
+      : process.env.PROD_API,
+};
+
+export default api;

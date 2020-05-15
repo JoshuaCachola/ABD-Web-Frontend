@@ -1,4 +1,4 @@
-import { apiBaseUrl } from "../config";
+import api from "../utils";
 
 const SET_SPOTS = "abd/skateSpots/SET_SPOTS";
 // const ADD_SKATE_SPOT = "abd/skateSpots/ADD_SKATE_SPOT";
@@ -19,7 +19,7 @@ export const setSpots = skateSpots => {
 
 export const setSkateSpots = () => async (dispatch, getState) => {
   try {
-    const res = await fetch(`${apiBaseUrl}/skatespots`, {
+    const res = await fetch(`${api.url}/skatespots`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
