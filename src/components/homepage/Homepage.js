@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import LoginPanel from "./LoginPanel";
 import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
+import { Box } from "@material-ui/core";
 
 const Homepage = (props) => {
   const history = useHistory();
@@ -25,7 +26,9 @@ const Homepage = (props) => {
         {/* <img src={logo} alt="abd-logo" /> */}
       </div>
       {/* <div className="homepage__login"> */}
+      {/* <Box display="flex" alignItems="center" justifyContent="center"> */}
         <LoginPanel />
+      {/* </Box> */}
       {/* </div> */}
     </div>
   );

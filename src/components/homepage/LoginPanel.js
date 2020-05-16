@@ -2,11 +2,18 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
 import { login } from "../../store/authentication";
-import { TextField, Button, makeStyles, Box } from "@material-ui/core";
+import { TextField, Button, makeStyles, Box, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
+import { SportsRugbySharp } from "@material-ui/icons";
 // import logo from "../../images/abd-logo.png";
 
 const useStyles = makeStyles({
-  
+  input: {
+    color: "white"
+  },
+  login: {
+    paddingRight: 20,
+    paddingTop: 40,
+  }
 });
 
 const LoginPanel = (props) => {
@@ -33,28 +40,58 @@ const LoginPanel = (props) => {
   // if (props.token) {
   //   return <Redirect to="/skatespots" />;
   // }
+
   return (
-    <Box display="flex" justifyContent="flex-end" alignItems="center">
+    <Box 
+      display="flex" 
+      justifyContent="flex-end" 
+      alignContent="center" 
+      className={classes.login}
+    >
       <form>
-        <Box>
-          <TextField
-            type="text"
-            value={username}
-            onChange={handleSetUsername}
-            label="Username"
-          />
-        </Box>
-        <Box>
-          <TextField
-            type="password"
-            value={password}
-            onChange={handleSetPassword}
-            label="Password"
-          />
-        </Box>
-        <Box>
-          <Button onClick={handleLogin}>Log In</Button>
-        </Box>
+        <Card
+          style={{
+            backgroundColor: "rgba(0, 0, 0, .25)",
+            fontFamily: "Rock salt",
+          }}
+        >
+          <CardHeader style={{ color: "white" }} title="already been done" />
+          <CardContent>
+            <Box>
+              <TextField
+                type="text"
+                value={username}
+                onChange={handleSetUsername}
+                label="Username"
+                InputProps={{
+                  className: classes.input,
+                }}
+                InputLabelProps={{
+                  className: classes.input,
+                }}
+              />
+            </Box>
+            <Box>
+              <TextField
+                type="password"
+                value={password}
+                onChange={handleSetPassword}
+                label="Password"
+                InputProps={{
+                  className: classes.input,
+                }}
+                InputLabelProps={{
+                  className: classes.input,
+                }}
+              />
+            </Box>
+            <Box>
+              <Button style={{ color: "white" }} onClick={handleLogin}>
+                Log In
+              </Button>
+            </Box>
+          </CardContent>
+        </Card>
       </form>
     </Box>
   );

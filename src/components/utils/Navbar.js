@@ -1,34 +1,37 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Homepage from "../homepage/Homepage";
-import { TextField, Box, SvgIcon } from "@material-ui/core";
+// import Homepage from "../homepage/Homepage";
+import { TextField, Box } from "@material-ui/core";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import GroupIcon from '@material-ui/icons/Group';
+import HomeIcon from '@material-ui/icons/Home';
 
-function HomeIcon(props) {
-  return (
-    <SvgIcon {...props}>
-      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-    </SvgIcon>
-  );
-}
 const Navbar = () => {
   return (
     <nav className="navbar">
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Box className="navbar__logo" flexBasis="30%">
+      <Box display="flex" justifyContent="space-around" alignItems="center">
+        <Box className="navbar__logo" flexBasis="33%">
           <h1>already been done</h1>
         </Box>
-        <Box flexBasis="30%" justifyContent="center">
+        <Box flexBasis="33%">
           <TextField
             // flexBasis="30%"
-            label="Search"
-            defaultValue="San Francisco"
+            defaultValue="Search"
             variant="outlined"
             size="small"
             className="navbar__search"
           />
         </Box>
-        <Box flexBasis="12%" >
-          <HomeIcon />
+        <Box display="flex">
+          <div className="navbar__icons">
+            <HomeIcon />
+          </div>
+          <div className="navbar__icons">
+            <GroupIcon />
+          </div>
+          <div className="navbar__icons">
+            <AccountCircleIcon />
+          </div>
         </Box>
       </Box>
     </nav>

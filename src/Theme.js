@@ -2,18 +2,19 @@ import React from "react";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core";
 
 const theme = createMuiTheme({
-  fontFamily: "Verdana",
-  primaryColor: "red",
-  secondaryColor: "green",
+  fontFamily: "Rock Salt, cursive",
+  primaryColor: "#326C73",
+  secondaryColor: "#FFFFFF",
   typography: {
-    fontFamily: "Verdana"
-  }
+    fontFamily: "Raleway, sans-serif",
+  },
 });
 
 const Theme = props => {
+  console.log(props);
   return (
     <ThemeProvider theme={theme}>
-      {props.childern}
+     {props.children}
     </ThemeProvider>
   );
 };

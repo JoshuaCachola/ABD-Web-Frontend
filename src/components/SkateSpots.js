@@ -16,7 +16,8 @@ const useStyles = makeStyles({
   img: {
     maxWidth: 100,
     maxHeight: 100,
-  }
+  },
+  
 });
 
 const SkateSpots = ({ skateSpots, getSkateSpots }) => {
@@ -40,41 +41,48 @@ const SkateSpots = ({ skateSpots, getSkateSpots }) => {
         <Navbar />
       </header>
       <div className="skate-spots">
-        {/* <h1>Skate Spots List</h1> */}
-        <Box display="flex" alignItems="center" justifyContent="center">
-          <Card className={classes.root}>
-            {skateSpots.map((skateSpot) => (
-              <CardContent key={skateSpot.id}>
-                <Link to={{
-                  pathname: `/skatespots/${skateSpot.id}`,
-                  state: {
-                    skateSpot
-                  }
-                }}>
-                  <Box display="flex" justifyContent="space-between">
-                    <Box flexBasis="30%">
-                      <img
-                        className={classes.img}
-                        src={skateSpot.imgs[0]}
-                        alt="skate-img"
-                      />
+        <Box display="flex" flexDirection="column" className="skate-spots__container">
+          <Box display="flex" className={"skate-spots__header"}>
+            <h1>Suggested Skate Spots</h1>
+          </Box>
+          <Box display="flex" alignItems="center" justifyContent="center" className="skate-spots__listings">
+            <Card className={classes.root}>
+              {skateSpots.map((skateSpot) => (
+                <CardContent key={skateSpot.id}>
+                  <Link 
+                    to={{
+                      pathname: `/skatespots/${skateSpot.id}`,
+                      state: {
+                        skateSpot
+                      },
+                    }}
+                    style={{ textDecoration: "none"}}
+                  >
+                    <Box display="flex" justifyContent="space-between">
+                      <Box flexBasis="30%">
+                        <img
+                          className={classes.img}
+                          src={skateSpot.imgs[0]}
+                          alt="skate-img"
+                        />
+                      </Box>
+                      <Box alignItems="center" flexBasis="30%">
+                        <div className="skate-spots__name">{skateSpot.name}</div>
+                        <div className="skate-spots__city">{skateSpot.city}</div>
+                        <div className="skate-spots__state">{skateSpot.state}</div>
+                      </Box>
+                      <Box>
+                        <Button flexBasis="30%">Follow</Button>
+                      </Box>
                     </Box>
-                    <Box alignItems="center" flexBasis="30%">
-                      <div className="skate-spots__name">{skateSpot.name}</div>
-                      <div className="skate-spots__city">{skateSpot.city}</div>
-                      <div className="skate-spots__state">{skateSpot.state}</div>
-                    </Box>
-                    <Box>
-                      <Button flexBasis="30%">Follow</Button>
-                    </Box>
-                  </Box>
-                </Link>
-              </CardContent>
-            ))}
-          </Card>
-        </Box>
-        <Box display="flex" justifyContent="flex-end">
-          <Button onClick={addNewSpot}>Add spot</Button>
+                  </Link>
+                </CardContent>
+              ))}
+            </Card>
+          </Box>
+          <Box display="flex" justifyContent="flex-end">
+            <Button onClick={addNewSpot}>Add spot</Button>
+          </Box>
         </Box>
       </div>
     </>
