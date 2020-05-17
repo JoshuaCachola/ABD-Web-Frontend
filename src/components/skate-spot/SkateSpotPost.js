@@ -11,7 +11,6 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import { connect } from "react-redux";
-import { useHistory } from "react-router";
 
 import { isShowPost } from "../../store/skateSpotPosts";
 import api from "../../utils";
@@ -35,7 +34,6 @@ const useStyles = makeStyles({
 
 const SkateSpotPost = (
   { showPost, isShowingPost, id, post, caption, skater, skateSpotId }) => {
-  const history = useHistory();
   const [ comment, setComment ] = useState("");
   const [ postComments, setPostComments ] = useState([]);
   const handleShowPost = (e) => {

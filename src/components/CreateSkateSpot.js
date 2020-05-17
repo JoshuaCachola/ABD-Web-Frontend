@@ -5,9 +5,11 @@ import {
   Box,
   Card,
   CardContent,
-  makeStyles
+  makeStyles,
+  Button
 } from "@material-ui/core";
 import { useDropzone } from "react-dropzone"; 
+import styled from 'styled-components';
 
 import api from "../utils";
 import Navbar from "./utils/Navbar";
@@ -27,34 +29,60 @@ const useStyles = makeStyles({
     minWidth: 925,
     margin: 10
   },
-  // dropContainer: {
-  //   border: "1px solid black"
-  // }
 });
 
-const CreateSkateSpot = () => {
+const getColor = (props) => {
+  if (props.isDragAccept) {
+    return "#326C73";
+  }
+  if (props.isDragReject) {
+    return '#ff1744';
+  }
+  if (props.isDragActive) {
+    return '#2196f3';
+  }
+  return '#eeeeee';
+}
+
+const Container = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-width: 2px;
+  border-radius: 2px;
+  border-color: ${props => getColor(props)};
+  border-style: dashed;
+  background-color: #fafafa;
+  color: #bdbdbd;
+  outline: none;
+  transition: border .24s ease-in-out;
+`;
+
+const CreateSkateSpot = (props) => {
   const history = useHistory();
   const [name, setSpotName] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCityName] = useState("");
   const [state, setStateName] = useState("");
   const [imgPath, setImgPath] = useState("");
-  const dropContainer = document.getElementById("dropContainer");
 
   const handleSpotName = e => setSpotName(e.target.value);
   const handleCityName = e => setCityName(e.target.value);
   const handleStateName = e => setStateName(e.target.value);
   const handleAddress = e => setAddress(e.target.value);
-  // const handleImgFileInput = e => {
-  //   setImgPath(e.target.file[0]);
+  // const handleSetImgPath = file => {
+  //   // console.log(file)
+  //   setImgPath(file);
   // }
 
   const createSpot = async e => {
     e.preventDefault();
     try {
       const body = new FormData();
-      body.append("image", imgPath);
-      let res = await fetch(`${api.url}/skatespots/upload-picture`, {
+      body.append("image", imgPath[0]);
+      let res = await fetch(`${api.url}/skatespots/upload-image`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
@@ -91,21 +119,18 @@ const CreateSkateSpot = () => {
 
   const onDrop = useCallback((acceptedFiles) => {
     setImgPath(acceptedFiles);
-    console.log(acceptedFiles);
-    console.log(imgPath);
+    // console.log(acceptedFiles);
     
-  }, [imgPath]);
+  }, [setImgPath]);
 
-  // const handleDragEnter = e => {
-  //   dropContainer.classList.add("skate-spots__drag--active")
-  // };
-
-  // const handleDragLeave = e => {
-  //   dropContainer.classList.remove("skate-spots__drag--active");
-  // };
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject
+  } = useDropzone({ accept: 'image/*', onDrop });
+  // console.log(imgPath[0].name);
   const classes = useStyles();
   return (
     <div className="skate-spots__create-form">
@@ -123,114 +148,125 @@ const CreateSkateSpot = () => {
         className={classes.formContainer}
       >
         <Card className={classes.root}>
-          {/* <CardContent>
-            <label>Image of Spot</label>
-            <input type="file" name={imgPath} onChange={handleImgFileInput} />
-          </CardContent> */}
           <CardContent>
-            <Box display="flex" className={classes.root}>
-              <form onSubmit={createSpot}>
-                <Box flexDirection="column" flexBasis="50%">
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Box flexBasis="25%">
-                      <label>Name</label>
-                    </Box>
-                    <Box flexBasis="75%" justifyContent="flex-end">
-                      <TextField
-                        margin="dense"
-                        variant="outlined"
-                        type="text"
-                        name={name}
-                        onChange={handleSpotName}
-                      />
-                    </Box>
-                  </Box>
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Box flexBasis="25%">
-                      <label>City</label>
-                    </Box>
-                    <Box flexBasis="75%">
-                      <TextField
-                        margin="dense"
-                        variant="outlined"
-                        type="text"
-                        name={city}
-                        onChange={handleCityName}
-                      />
-                    </Box>
-                  </Box>
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Box flexBasis="25%">
-                      <label>State</label>
-                    </Box>
-                    <Box flexBasis="75%">
-                      <TextField
-                        margin="dense"
-                        variant="outlined"
-                        type="text"
-                        name={state}
-                        onChange={handleStateName}
-                      />
-                    </Box>
-                  </Box>
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Box flexBasis="25%">
-                      <label>Address</label>
-                    </Box>
-                    <Box flexBasis="75%">
-                      <TextField
-                        margin="dense"
-                        variant="outlined"
-                        type="text"
-                        name={address}
-                        onChange={handleAddress}
-                      />
-                    </Box>
-                  </Box>
-                </Box>
-                <Box display="flex" justifyContent="flex-end">
-                  <button type="submit">Share Spot</button>
-                </Box>
-              </form>
-              {/* <Box display="flex" justifyContent="flex-end">
-                <Box flexBasis="75%"> */}
-                  <div 
-                    id="dropContainer" 
-                    // onDragEnter={handleDragEnter} 
-                    // onDragLeave={handleDragLeave}
-                    {...getRootProps()}>
-                    <input {...getInputProps()} />
-                    {isDragActive ? (
-                      <Box alignContent="center">
-                        <p>Drop the files here...</p>
+            <Box
+              display="flex"
+              justifyContent="center"
+              // className={classes.root}
+            >
+              <Box display="flex" justifyContent="center">
+                <form onSubmit={createSpot}>
+                  <Box flexDirection="column">
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <Box flexBasis="25%">
+                        <label>Name</label>
                       </Box>
-                    ) : (
-                      <Box>
+                      <Box justifyContent="flex-end">
+                        <TextField
+                          margin="dense"
+                          variant="outlined"
+                          type="text"
+                          name={name}
+                          onChange={handleSpotName}
+                        />
+                      </Box>
+                    </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <Box flexBasis="25%">
+                        <label>City</label>
+                      </Box>
+                      <Box >
+                        <TextField
+                          margin="dense"
+                          variant="outlined"
+                          type="text"
+                          name={city}
+                          onChange={handleCityName}
+                        />
+                      </Box>
+                    </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <Box flexBasis="25%">
+                        <label>State</label>
+                      </Box>
+                      <Box >
+                        <TextField
+                          margin="dense"
+                          variant="outlined"
+                          type="text"
+                          name={state}
+                          onChange={handleStateName}
+                        />
+                      </Box>
+                    </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <Box flexBasis="25%">
+                        <label>Address</label>
+                      </Box>
+                      <Box >
+                        <TextField
+                          margin="dense"
+                          variant="outlined"
+                          type="text"
+                          name={address}
+                          onChange={handleAddress}
+                        />
+                      </Box>
+                    </Box>
+                  </Box>
+                  <div className="container">
+                    <Container
+                      className={classes.dropContainer}
+                      // onDragEnter={handleDragEnter}
+                      // onDragLeave={handleDragLeave}
+                      {...getRootProps({
+                        isDragActive,
+                        isDragAccept,
+                        isDragReject,
+                      })}
+                    >
+                      <input {...getInputProps()} />
+                      {isDragActive ? (
                         <p>
-                          Drag 'n' drop some files here, or click to select
-                          files
+                          Drag 'n' drop an image file here, or click to select a
+                          file
                         </p>
-                      </Box>
-                    )}
-                  {/* </Box>
+                      ) : (
+                        <>
+                          <p>
+                            Drag 'n' drop a different image file here, or click to select
+                            a different file
+                          </p>
+                          <div>
+                              {imgPath[0] ? <p>{imgPath[0].name}</p> : <p></p>}
+                          </div>
+                        </>
+                      )}
+                      {/* </Box>
                 </Box> */}
-              </div>
+                    </Container>
+                  </div>
+                  <Box display="flex" justifyContent="center">
+                    <Button type="submit">Share Spot</Button>
+                  </Box>
+                </form>
+              </Box>
             </Box>
           </CardContent>
         </Card>

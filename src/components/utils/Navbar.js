@@ -14,6 +14,7 @@ const Navbar = () => {
     // return <Redirect to="/skatespots/create-spot" />;
   };
 
+  const handleHome = e => history.push("/skatespots");
   return (
     <nav className="navbar">
       <Box display="flex" justifyContent="space-around" alignItems="center">
@@ -30,7 +31,7 @@ const Navbar = () => {
           />
         </Box>
         <Box display="flex">
-          <div className="navbar__icons">
+          <div onClick={handleHome} className="navbar__icons">
             <HomeIcon />
           </div>
           <div className="navbar__icons">

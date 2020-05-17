@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Avatar, makeStyles } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   large: {

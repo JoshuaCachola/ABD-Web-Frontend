@@ -4,20 +4,20 @@ import { connect } from "react-redux";
 import { setSkateSpots } from "../store/skateSpots";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import { makeStyles, Box, Button } from "@material-ui/core";
+import { makeStyles, Box, Button, Avatar } from "@material-ui/core";
 
 // Components
 import Navbar from "./utils/Navbar";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 600
+    minWidth: 600,
   },
   img: {
-    maxWidth: 100,
-    maxHeight: 100,
+    width: theme.spacing(10),
+    height: theme.spacing(10),
   },
-});
+}));
 
 const SkateSpots = ({ skateSpots, getSkateSpots }) => {
   // const history = useHistory()
@@ -70,7 +70,7 @@ const SkateSpots = ({ skateSpots, getSkateSpots }) => {
                   >
                     <Box display="flex" justifyContent="space-between">
                       <Box flexBasis="30%">
-                        <img
+                        <Avatar
                           className={classes.img}
                           src={skateSpot.imgs[0]}
                           alt="skate-img"
@@ -87,7 +87,7 @@ const SkateSpots = ({ skateSpots, getSkateSpots }) => {
                           {skateSpot.state}
                         </div>
                       </Box>
-                      <Box flexBasis="30%">
+                      <Box flexBasis="30%" justifyContent="flex-end">
                         <Button>Follow</Button>
                       </Box>
                     </Box>
