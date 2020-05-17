@@ -74,12 +74,14 @@ const CreateSkatePost = ({ match: { url } }) => {
       <Box display="flex" justifyContent="center">
         <Card>
           <form onSubmit={handleSubmit}>
+            <label>Caption</label>
             <input
               type="text"
               name={caption}
               onChange={handleSetCaption}
               placeholder="Caption"
             />
+            <label>File</label>
             <input
               type="file"
               name={file}

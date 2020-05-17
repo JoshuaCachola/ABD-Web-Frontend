@@ -17,22 +17,22 @@ const useStyles = makeStyles({
     maxWidth: 100,
     maxHeight: 100,
   },
-  
 });
 
 const SkateSpots = ({ skateSpots, getSkateSpots }) => {
-  const history = useHistory()
+  // const history = useHistory()
 
   useEffect(() => {
     if (!skateSpots.length) {
       getSkateSpots();
     }
+    // } else if (!skateSpot)
   }, [skateSpots, skateSpots.length, getSkateSpots]);
 
-  const addNewSpot = () => {
-    history.push("/skatespots/create-spot");
-    // return <Redirect to="/skatespots/create-spot" />;
-  };
+  // const addNewSpot = () => {
+  //   history.push("/skatespots/create-spot");
+  //   // return <Redirect to="/skatespots/create-spot" />;
+  // };
 
   const classes = useStyles();
   return (
@@ -41,22 +41,32 @@ const SkateSpots = ({ skateSpots, getSkateSpots }) => {
         <Navbar />
       </header>
       <div className="skate-spots">
-        <Box display="flex" flexDirection="column" className="skate-spots__container">
-          <Box display="flex" className={"skate-spots__header"}>
-            <h1>Suggested Skate Spots</h1>
+        <Box
+          display="flex"
+          flexDirection="column"
+          className="skate-spots__container"
+        >
+          <Box display="flex" justifyContent="center">
+            <Box className={classes.root}>
+              <h2>Suggested Skate Spots</h2>
+            </Box>
           </Box>
-          <Box display="flex" alignItems="center" justifyContent="center" className="skate-spots__listings">
+          <Box
+            display="flex"
+            justifyContent="center"
+            className="skate-spots__listings"
+          >
             <Card className={classes.root}>
               {skateSpots.map((skateSpot) => (
                 <CardContent key={skateSpot.id}>
-                  <Link 
+                  <Link
                     to={{
                       pathname: `/skatespots/${skateSpot.id}`,
                       state: {
-                        skateSpot
+                        skateSpot,
                       },
                     }}
-                    style={{ textDecoration: "none"}}
+                    style={{ textDecoration: "none" }}
                   >
                     <Box display="flex" justifyContent="space-between">
                       <Box flexBasis="30%">
@@ -67,12 +77,18 @@ const SkateSpots = ({ skateSpots, getSkateSpots }) => {
                         />
                       </Box>
                       <Box alignItems="center" flexBasis="30%">
-                        <div className="skate-spots__name">{skateSpot.name}</div>
-                        <div className="skate-spots__city">{skateSpot.city}</div>
-                        <div className="skate-spots__state">{skateSpot.state}</div>
+                        <div className="skate-spots__name">
+                          {skateSpot.name}
+                        </div>
+                        <div className="skate-spots__city">
+                          {skateSpot.city}
+                        </div>
+                        <div className="skate-spots__state">
+                          {skateSpot.state}
+                        </div>
                       </Box>
-                      <Box>
-                        <Button flexBasis="30%">Follow</Button>
+                      <Box flexBasis="30%">
+                        <Button>Follow</Button>
                       </Box>
                     </Box>
                   </Link>
@@ -80,9 +96,27 @@ const SkateSpots = ({ skateSpots, getSkateSpots }) => {
               ))}
             </Card>
           </Box>
-          <Box display="flex" justifyContent="flex-end">
-            <Button onClick={addNewSpot}>Add spot</Button>
-          </Box>
+          {/* <Box
+            display="flex"
+            justifyContent="center"
+            flexDirection="column"
+            className={classes.addSpotContainer}
+          >
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              className={classes.addSpotContent}
+            >
+              <img src={addSpotImg} alt="add-spot" height="42" width="42" />
+            </Box>
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              className={classes.addSpotContent}
+            >
+              <Button onClick={addNewSpot}>Add spot</Button>
+            </Box>
+          </Box> */}
         </Box>
       </div>
     </>
@@ -98,7 +132,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getSkateSpots: () => dispatch(setSkateSpots())
+    getSkateSpots: () => dispatch(setSkateSpots()),
   };
 };
 

@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
 import { login } from "../../store/authentication";
 import { TextField, Button, makeStyles, Box, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
-import { SportsRugbySharp } from "@material-ui/icons";
 // import logo from "../../images/abd-logo.png";
 
 const useStyles = makeStyles({
@@ -13,11 +12,18 @@ const useStyles = makeStyles({
   login: {
     paddingRight: 20,
     paddingTop: 40,
+  },
+  loginButton: {
+    marginRight: 10,
+    marginTop: 30,
+  },
+  focused: {
+    color: "#326C73"
   }
 });
 
 const LoginPanel = (props) => {
-  // const history = useHistory();
+  const history = useHistory();
   const classes = useStyles();
   const [username, setUsername] = useState("crookiemonster");
   const [password, setPassword] = useState("verygoodpassword");
@@ -36,26 +42,31 @@ const LoginPanel = (props) => {
     // history.push("/skatespots");
     // return <Redirect push to="/skatespots" />
   };
+  const handleSignUp = () => history.push("/sign-up");
 
   // if (props.token) {
   //   return <Redirect to="/skatespots" />;
   // }
 
   return (
-    <Box 
-      display="flex" 
-      justifyContent="flex-end" 
-      alignContent="center" 
+    <Box
+      display="flex"
+      justifyContent="flex-end"
+      alignContent="center"
       className={classes.login}
     >
       <form>
         <Card
           style={{
             backgroundColor: "rgba(0, 0, 0, .25)",
-            fontFamily: "Rock salt",
+            fontFamily: "Rock Salt",
           }}
         >
-          <CardHeader style={{ color: "white" }} title="already been done" />
+          <CardHeader
+            className="hompage__login-form"
+            style={{ color: "white" }}
+            title="already been done"
+          />
           <CardContent>
             <Box>
               <TextField
@@ -85,7 +96,14 @@ const LoginPanel = (props) => {
                 }}
               />
             </Box>
-            <Box>
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              className={classes.loginButton}
+            >
+              <Button style={{ color: "white" }} onClick={handleSignUp}>
+                Sign Up
+              </Button>
               <Button style={{ color: "white" }} onClick={handleLogin}>
                 Log In
               </Button>

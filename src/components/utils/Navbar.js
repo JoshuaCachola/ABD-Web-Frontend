@@ -1,12 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 // import Homepage from "../homepage/Homepage";
 import { TextField, Box } from "@material-ui/core";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import GroupIcon from '@material-ui/icons/Group';
 import HomeIcon from '@material-ui/icons/Home';
+import addSpotImg from "../../images/add-spot.svg";
 
 const Navbar = () => {
+  const history = useHistory();
+  const addNewSpot = () => {
+    history.push("/skatespots/create-spot");
+    // return <Redirect to="/skatespots/create-spot" />;
+  };
+
   return (
     <nav className="navbar">
       <Box display="flex" justifyContent="space-around" alignItems="center">
@@ -27,10 +34,13 @@ const Navbar = () => {
             <HomeIcon />
           </div>
           <div className="navbar__icons">
-            <GroupIcon />
+            <AccountCircleIcon />
           </div>
           <div className="navbar__icons">
-            <AccountCircleIcon />
+            <GroupIcon />
+          </div>
+          <div onClick={addNewSpot} className="navbar__icons">
+            <img src={addSpotImg} alt="add-spot" height="24" width="24" />
           </div>
         </Box>
       </Box>

@@ -2,11 +2,12 @@ import React from "react";
 import { Box, makeStyles } from "@material-ui/core";
 import { AddAPhoto } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
 
 import Navbar from "../utils/Navbar";
 import SkateSpotFeed from "./SkateSpotFeed";
 import SkateSpotDetails from "./SkateSpotDetails";
-
+import { setSkateSpot } from "../../store/skateSpots";
 
 const useStyles = makeStyles({
   root: {
@@ -27,6 +28,7 @@ const SkateSpot = ({ location, match }) => {
     history.push(`/skatespots/${id}/post`)
   };
 
+  console.log(skateSpot);
   const classes = useStyles();
   return (
     <>
@@ -44,21 +46,34 @@ const SkateSpot = ({ location, match }) => {
           <div className="skate-spot__menu-bar-button">All</div>
           <div className="skate-spot__menu-bar-button">Images</div>
           <div className="skate-spot__menu-bar-button">Videos</div>
+          <Box className="skate-spot__menu-bar-button">
+            <AddAPhoto onClick={handleAddPost} />
+          </Box>
         </div>
         <br />
         <Box>
-          <SkateSpotFeed id={id} className={classes.child}/>
-          </Box>
-        <Box
-          display="flex"
-          justifyContent="flex-end"
-          className="skate-spot__add-a-photo"
-        >
-          <AddAPhoto onClick={handleAddPost} />
+          <SkateSpotFeed id={id} className={classes.child} />
         </Box>
       </Box>
     </>
   );
 };
 
-export default SkateSpot;
+const mapStateToProps = state => {
+  return {
+    skateSpot: state.skateSpotFeed.skateSpot
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setSkateSpot: (skateSpot) => dispatch(setSkateSpot(skateSpot)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  SkateSpot
+); 

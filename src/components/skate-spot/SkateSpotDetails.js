@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Avatar, makeStyles } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -14,18 +15,20 @@ const useStyles = makeStyles((theme) => ({
 
 const SkateSpotDetails = ({skateSpot}) => {
   const classes = useStyles();
-
+  console.log(skateSpot);
   return (
     <Box display="flex" className="skate-spots-details">
       <Box className="skate-spot-details__child">
-        {/* <canvas class="skate-spot-details__canvas"></canvas> */}
-        <span className="skate-spot-details__img">
-          <Avatar
-            src={skateSpot.imgs[0]}
-            alt="skate-spot-pic"
-            className={classes.large}
-          />
-        </span>
+        <div className="skate-spot-details__img-container">
+          {/* <canvas class="skate-spot-details__canvas"></canvas> */}
+          <span className="skate-spot-details__img">
+            <Avatar
+              src={skateSpot.imgs[0]}
+              alt="skate-spot-pic"
+              className={classes.large}
+            />
+          </span>
+        </div>
       </Box>
       <Box className="skate-spot-details__child skate-spot-details__child-text">
         <div className="skate-spots__name">
@@ -42,3 +45,15 @@ const SkateSpotDetails = ({skateSpot}) => {
 };
 
 export default SkateSpotDetails;
+
+// const mapStateToProps = (state) => {
+//   return {
+//     skateSpot: state.skateSpotFeed.skateSpot,
+//   };
+// };
+
+// export default connect(
+//   mapStateToProps
+// )(
+//   SkateSpotDetails
+// ); 

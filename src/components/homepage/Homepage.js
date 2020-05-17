@@ -1,12 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import LoginPanel from "./LoginPanel";
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { Box } from "@material-ui/core";
+import abdLogo from "../../images/abd-splash-logo.png";
 
 const Homepage = (props) => {
-  const history = useHistory();
-
   // useEffect(() => {
     if (props.authToken) {
     console.log(props.authToken);
@@ -22,7 +20,7 @@ const Homepage = (props) => {
   return (
     <div className="homepage">
       <div className="homepage__logo">
-        <h1>already been done</h1>
+        <img src={abdLogo} alt="abd-logo" />
         {/* <img src={logo} alt="abd-logo" /> */}
       </div>
       {/* <div className="homepage__login"> */}

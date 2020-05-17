@@ -369,13 +369,11 @@ textarea {
 
 .homepage__login-form {
   font-family: "Rock Salt", cursive;
-  font-size: 20px;
+  font-size: 40px;
 }
 
 .homepage__logo {
-  color: white;
-  font-family: "Rock Salt", cursive;
-  font-size: 20px;
+  margin: 30px;
 }
 
 .navbar__logo {
@@ -523,10 +521,10 @@ textarea {
   margin: 10px;
 }
 
-.skate-spots__header {
+/* .skate-spots__header {
   margin-left: 215px;
   font-weight: 600;
-}
+} */
 
 .skate-spot-details {
   min-width: 600px;
@@ -538,7 +536,6 @@ textarea {
 
 .skate-spot__comment-input {
   border-top: 1px solid #c8c8c8;
-
 } 
 
 .skate-spot__comment-content {
@@ -546,13 +543,13 @@ textarea {
 }
 
 .skate-spot-details__canvas {
-  position: absolute;
-  top: 46px;
-  left: 187px;
+  position: relative;
+  /* top: 46px;
+  left: 187px; */
   width: 170px;
   height: 170px;
   /* color: rgba(var(--i1d,38,38,38),1); */
-  background: -webkit-linear-gradient(left top, #326C73 0%, #FFFFFF 100%);
+  background: -webkit-linear-gradient(left top, #326C73 0%, #000000 100%);
   border-radius: 50%;
 }
 
@@ -583,4 +580,23 @@ textarea {
   height: 514px;
   background-color: black;
   background-size: cover;
+}
+
+.skate-spot__comment-content {
+  overflow-y: scroll;
+}
+
+.skate-spot__comment-content::-webkit-scrollbar {
+  display: none;
+}
+
+.skate-spot-details__img {
+  /* position: fixed; */
+  left: 15.9%;
+  top: 12.3%;
+}
+
+.skate-spots__drag--active {
+  border: 1px solid black;
+  background-color: rgba(50, 108, 115, 0.5);
 }

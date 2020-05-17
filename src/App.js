@@ -13,6 +13,7 @@ import Homepage from "./components/homepage/Homepage";
 import SkateSpots from "./components/SkateSpots";
 import SkateSpot from "./components/skate-spot/SkateSpot";
 import SkateSpotPost from "./components/skate-spot/SkateSpotPost";
+import SignUp from "./components/SignUp";
 import { PrivateRoute } from "./routesUtils";
 import CreateSkateSpot from "./components/CreateSkateSpot";
 import CreateSkatePost from "./components/skate-spot/CreateSkatePost";
@@ -37,6 +38,7 @@ const App = () => {
             component={SkateSpotPost}
             needLogin={needLogin}
           /> */}
+            <Route exact path="/sign-up" component={SignUp} />
             <PrivateRoute
               exact
               path="/skatespots"

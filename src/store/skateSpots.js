@@ -1,7 +1,7 @@
 import api from "../utils";
 
 const SET_SPOTS = "abd/skateSpots/SET_SPOTS";
-// const ADD_SKATE_SPOT = "abd/skateSpots/ADD_SKATE_SPOT";
+const SET_SPOT = "abd/skateSpots/SET_SPOT";
 
 export const setSpots = skateSpots => {
   return {
@@ -10,12 +10,12 @@ export const setSpots = skateSpots => {
   };
 };
 
-// export const addSkateSpot = skateSpot => {
-//   return {
-//     type: ADD_SKATE_SPOT,
-//     skateSpot,
-//   };
-// };
+export const setSpot= skateSpot => {
+  return {
+    type: SET_SPOT,
+    skateSpot,
+  };
+};
 
 export const setSkateSpots = () => async (dispatch, getState) => {
   try {
@@ -38,39 +38,23 @@ export const setSkateSpots = () => async (dispatch, getState) => {
   }
 };
 
-// export const addSpot = (name, city, state, address) => async (dispatch) => {
-//   try {
-//     const res = await fetch(`${apiBaseUrl}/skatespots`, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
-//       },
-//       body: JSON.stringify({
-//         name,
-//         city,
-//         state,
-//         address,
-//       }),
-//     });
+export const setSkateSpot = (skateSpot) => dispatch => {
+  dispatch(setSpot(skateSpot));
+};
 
-//     if (!res.ok) {
-//       throw res;
-//     }
-
-//     dispatch(setSpots());
-//   } catch (err) {
-//     console.error(err);
-//   }
-// };
-
-export default function reducer(state = {skateSpots: []}, action) {
+export default function reducer(state = {skateSpots: [], skateSpot: {}}, action) {
   switch (action.type) {
     case SET_SPOTS: {
       return {
         ...state,
         skateSpots: action.skateSpots,
       };
+    }
+    case SET_SPOT: {
+      return {
+        ...state,
+        skateSpot: action.skateSpot
+      }
     }
     default:
       return state;
