@@ -351,6 +351,9 @@ textarea {
   resize: vertical;
 }
 
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&family=Rock+Salt&display=swap');
+
 .chromeframe {
   margin: 0.2em 0;
   background: #ccc;
@@ -408,6 +411,8 @@ textarea {
   border-bottom: 1px solid #cecece;
   background-color: white;
   font-family: 'Raleway', sans-serif;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);
 }
 
 .navbar__icons {
@@ -416,16 +421,19 @@ textarea {
 
 
 .skate-spots__name {
-  font-size: 28px;
+  font-size: 24px;
   line-height: 32px;
+  font-family: "Raleway", sans-serif;
 }
 
 .skate-spots__city {
   font-size: 16px;
+  font-family: "Raleway";
 }
 
 .skate-spots__state {
   font-size: 14px;
+  font-family: "Raleway";
 }
 
 .skate-spot__img-avatar {
@@ -540,6 +548,7 @@ textarea {
 
 .skate-spot__comment-content {
   height: 409px;
+  font-family: "Raleway", sans-serif;
 }
 
 .skate-spot-details__canvas {
@@ -565,6 +574,8 @@ textarea {
 .skate-spot__menu-bar-button {
   padding-right: 50px;
   margin-top: 15px;
+  font-family: "Raleway", sans-serif;
+  font-weight: bold;
 }
 
 .skate-spot__post-img {
@@ -599,4 +610,13 @@ textarea {
 .skate-spots__drag--active {
   border: 1px solid black;
   background-color: rgba(50, 108, 115, 0.5);
+}
+
+.navbar__search {
+  font-family: "Raleway";
+  font-size: 12px;
+}
+
+a, a:visited, a:hover, a:active {
+  color: inherit;
 }

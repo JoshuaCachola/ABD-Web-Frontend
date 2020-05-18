@@ -10,11 +10,26 @@ import api from "../../utils";
 const useStyles = makeStyles({
   root: {
     minWidth: 925,
-    padding: 20
+    padding: 20,
   },
   childLabel: {
-    marginTop: 10
-  }
+    minWidth: 925,
+    marginBottom: 20,
+    fontFamily: "Raleway",
+    fontWeight: "bold",
+  },
+  childButton: {
+    marginTop: 20,
+    fontFamily: "Raleway",
+    fontWeight: "bold",
+  },
+  file: {
+    marginTop: 20,
+    color: "#326C73",
+  },
+  button: {
+    color: "#326C73",
+  },
 });
 
 const getColor = (props) => {
@@ -44,6 +59,7 @@ const Container = styled.div`
   color: #bdbdbd;
   outline: none;
   transition: border 0.24s ease-in-out;
+  height: 300px;
 `;
 
 const CreateSkatePost = ({ match: { url } }) => {
@@ -129,62 +145,79 @@ const CreateSkatePost = ({ match: { url } }) => {
       <nav>
         <Navbar />
       </nav>
-      <Box display="flex" justifyContent="center">
-        <Card className={classes.root}>
-          <form onSubmit={handleSubmit}>
-            <Box flexDirection="column" className={classes.child}>
-              <Box>
-                <label>Caption</label>
-              </Box>
-              <Box className={classes.child}>
-                <TextField
-                  type="text"
-                  name={caption}
-                  onChange={handleSetCaption}
-                  placeholder="Caption"
-                />
-              </Box>
-              <Box className={classes.childLabel}>
-                <label>File</label>
-              </Box>
-              <div className="container">
-                <Container
-                  className={classes.dropContainer}
-                  // onDragEnter={handleDragEnter}
-                  // onDragLeave={handleDragLeave}
-                  {...getRootProps({
-                    isDragActive,
-                    isDragAccept,
-                    isDragReject,
-                  })}
-                >
-                  <input {...getInputProps()} />
-                  {isDragActive ? (
-                    <p>
-                      Drag 'n' drop an file here, or click to select a
-                      file
-                    </p>
-                  ) : (
-                    <>
+      <Box className={classes.root} display="flex" flexDirection="column">
+        <Box display="flex" justifyContent="center">
+          <Box className={classes.childLabel}>
+            <h2>Post a clip</h2>
+          </Box>
+        </Box>
+        <Box
+          className={classes.childLabel}
+          display="flex"
+          justifyContent="center"
+        >
+          <Card className={classes.root}>
+            <form onSubmit={handleSubmit}>
+              <Box flexDirection="column" className={classes.child}>
+                <Box>
+                  <label>Caption</label>
+                </Box>
+                <Box className={classes.child} width="100%">
+                  <TextField
+                    fullWidth="true"
+                    type="text"
+                    name={caption}
+                    onChange={handleSetCaption}
+                    multiline
+                  />
+                </Box>
+                <Box className={classes.childLabel}>
+                  <label>File</label>
+                </Box>
+                <div className="container">
+                  <Container
+                    className={classes.dropContainer}
+                    // onDragEnter={handleDragEnter}
+                    // onDragLeave={handleDragLeave}
+                    {...getRootProps({
+                      isDragActive,
+                      isDragAccept,
+                      isDragReject,
+                    })}
+                  >
+                    <input {...getInputProps()} />
+                    {isDragActive ? (
                       <p>
-                        Drag 'n' drop a different file here, or click to
-                        select a different file
+                        Drag 'n' drop an file here, or click to select a file
                       </p>
-                      <div>
-                        {file[0] ? <p>{file[0].name}</p> : <p></p>}
-                      </div>
-                    </>
-                  )}
-                  {/* </Box>
+                    ) : (
+                      <>
+                        <p>
+                          Drag 'n' drop a different file here, or click to
+                          select a different file
+                        </p>
+                        <div className={classes.file}>
+                          {file[0] ? <p>{file[0].name}</p> : <p></p>}
+                        </div>
+                      </>
+                    )}
+                    {/* </Box>
                 </Box> */}
-                </Container>
-              </div>
-              <Box className={classes.childLabel}display="flex" justifyContent="center">
-                <Button type="submit">Post</Button>
+                  </Container>
+                </div>
+                <Box
+                  className={classes.childButton}
+                  display="flex"
+                  justifyContent="center"
+                >
+                  <Button type="submit" variant="contained" color="secondary">
+                    Post
+                  </Button>
+                </Box>
               </Box>
-            </Box>
-          </form>
-        </Card>
+            </form>
+          </Card>
+        </Box>
       </Box>
     </div>
   );

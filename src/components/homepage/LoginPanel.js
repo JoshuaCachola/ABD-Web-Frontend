@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { login } from "../../store/authentication";
-import { TextField, Button, makeStyles, Box, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
-// import logo from "../../images/abd-logo.png";
+import { TextField, Button, makeStyles, Box, Card, CardContent, CardHeader } from "@material-ui/core";
 
 const useStyles = makeStyles({
   input: {
@@ -19,6 +18,11 @@ const useStyles = makeStyles({
   },
   focused: {
     color: "#326C73"
+  },
+  loginForm: {
+    fontFamily: "Rock Salt",
+    color: "white",
+    fontSize: 20
   }
 });
 
@@ -28,25 +32,14 @@ const LoginPanel = (props) => {
   const [username, setUsername] = useState("crookiemonster");
   const [password, setPassword] = useState("verygoodpassword");
 
-  // if (!props.needLogin) {
-  //   return <Redirect push to="/skatespots" />
-  //   // history.push("/skatespots");
-  // }
-
   const handleSetUsername = (e) => setUsername(e.target.value);
   const handleSetPassword = (e) => setPassword(e.target.value);
   const handleLogin = (e) => {
     console.log("in handle login");
     e.preventDefault();
     props.login(username, password);
-    // history.push("/skatespots");
-    // return <Redirect push to="/skatespots" />
   };
   const handleSignUp = () => history.push("/sign-up");
-
-  // if (props.token) {
-  //   return <Redirect to="/skatespots" />;
-  // }
 
   return (
     <Box
@@ -58,13 +51,13 @@ const LoginPanel = (props) => {
       <form>
         <Card
           style={{
-            backgroundColor: "rgba(0, 0, 0, .25)",
-            fontFamily: "Rock Salt",
+            backgroundColor: "rgba(0, 0, 0, .25)"
           }}
         >
           <CardHeader
-            className="hompage__login-form"
+            className={classes.loginForm}
             style={{ color: "white" }}
+            disableTypography="false"
             title="already been done"
           />
           <CardContent>
@@ -101,10 +94,10 @@ const LoginPanel = (props) => {
               justifyContent="flex-end"
               className={classes.loginButton}
             >
-              <Button style={{ color: "white" }} onClick={handleSignUp}>
+              <Button style={{ color: "white", fontFamily: "Rock Salt" }} onClick={handleSignUp}>
                 Sign Up
               </Button>
-              <Button style={{ color: "white" }} onClick={handleLogin}>
+              <Button style={{ color: "white", fontFamily: "Rock Salt" }} onClick={handleLogin}>
                 Log In
               </Button>
             </Box>

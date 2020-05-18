@@ -25,11 +25,9 @@ const useStyles = makeStyles({
     paddingTop: 2
   },
   commentsBody: {
-    marginTop: 2
+    marginTop: 2,
+    fontFamily: "Raleway"
   },
-  commentInput: {
-    maxWidth: "90%"
-  }
 });
 
 const SkateSpotPost = (
@@ -127,7 +125,8 @@ const SkateSpotPost = (
               subheader={caption}
               className="skate-spot__comment-header"
             />
-            <CardContent className="skate-spot__comment-content">
+            <CardContent 
+              className="skate-spot__comment-content">
               <ul>
                 {postComments &&
                   postComments.map((postComment, i) => (
@@ -154,8 +153,9 @@ const SkateSpotPost = (
                 justifyContent="space-between"
                 className="skate-spot__comment-input"
               >
-                <Box>
+                <Box width="100%">
                   <TextField
+                    fullWidth="true"
                     name={comment}
                     onChange={handleSetComment}
                     placeholder="  Add a comment..."

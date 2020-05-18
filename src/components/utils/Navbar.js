@@ -1,6 +1,5 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
-// import Homepage from "../homepage/Homepage";
+import { useHistory } from "react-router-dom";
 import { TextField, Box } from "@material-ui/core";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import GroupIcon from '@material-ui/icons/Group';
@@ -11,7 +10,6 @@ const Navbar = () => {
   const history = useHistory();
   const addNewSpot = () => {
     history.push("/skatespots/create-spot");
-    // return <Redirect to="/skatespots/create-spot" />;
   };
 
   const handleHome = e => history.push("/skatespots");
@@ -23,7 +21,6 @@ const Navbar = () => {
         </Box>
         <Box flexBasis="33%">
           <TextField
-            // flexBasis="30%"
             defaultValue="Search"
             variant="outlined"
             size="small"

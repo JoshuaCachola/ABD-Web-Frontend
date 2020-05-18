@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useHistory, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { setSkateSpots } from "../store/skateSpots";
 import Card from "@material-ui/core/Card";
@@ -12,6 +12,8 @@ import Navbar from "./utils/Navbar";
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 600,
+    fontFamily: "Raleway",
+    fontWeight: "bold"
   },
   img: {
     width: theme.spacing(10),
@@ -20,19 +22,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SkateSpots = ({ skateSpots, getSkateSpots }) => {
-  // const history = useHistory()
 
   useEffect(() => {
     if (!skateSpots.length) {
       getSkateSpots();
     }
-    // } else if (!skateSpot)
   }, [skateSpots, skateSpots.length, getSkateSpots]);
-
-  // const addNewSpot = () => {
-  //   history.push("/skatespots/create-spot");
-  //   // return <Redirect to="/skatespots/create-spot" />;
-  // };
 
   const classes = useStyles();
   return (
@@ -69,14 +64,14 @@ const SkateSpots = ({ skateSpots, getSkateSpots }) => {
                     style={{ textDecoration: "none" }}
                   >
                     <Box display="flex" justifyContent="space-between">
-                      <Box flexBasis="30%">
+                      <Box flexBasis="20%">
                         <Avatar
                           className={classes.img}
                           src={skateSpot.imgs[0]}
                           alt="skate-img"
                         />
                       </Box>
-                      <Box alignItems="center" flexBasis="30%">
+                      <Box alignItems="center" flexBasis="40%">
                         <div className="skate-spots__name">
                           {skateSpot.name}
                         </div>
@@ -87,8 +82,13 @@ const SkateSpots = ({ skateSpots, getSkateSpots }) => {
                           {skateSpot.state}
                         </div>
                       </Box>
-                      <Box flexBasis="30%" justifyContent="flex-end">
-                        <Button>Follow</Button>
+                      <Box justifyContent="flex-end">
+                        <Button
+                        variant="contained"
+                        color="secondary"
+                      >
+                        Follow
+                      </Button>
                       </Box>
                     </Box>
                   </Link>
@@ -96,27 +96,6 @@ const SkateSpots = ({ skateSpots, getSkateSpots }) => {
               ))}
             </Card>
           </Box>
-          {/* <Box
-            display="flex"
-            justifyContent="center"
-            flexDirection="column"
-            className={classes.addSpotContainer}
-          >
-            <Box
-              display="flex"
-              justifyContent="flex-end"
-              className={classes.addSpotContent}
-            >
-              <img src={addSpotImg} alt="add-spot" height="42" width="42" />
-            </Box>
-            <Box
-              display="flex"
-              justifyContent="flex-end"
-              className={classes.addSpotContent}
-            >
-              <Button onClick={addNewSpot}>Add spot</Button>
-            </Box>
-          </Box> */}
         </Box>
       </div>
     </>

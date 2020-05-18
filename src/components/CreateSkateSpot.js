@@ -27,8 +27,16 @@ const useStyles = makeStyles({
   },
   header: {
     minWidth: 925,
-    margin: 10
+    margin: 10,
+    fontFamily: "Raleway",
+    fontWeight: "bold"
   },
+  dropContainer: {
+    marginTop: 10
+  },
+  button: {
+    marginTop: 10
+  }
 });
 
 const getColor = (props) => {
@@ -52,12 +60,13 @@ const Container = styled.div`
   padding: 20px;
   border-width: 2px;
   border-radius: 2px;
-  border-color: ${props => getColor(props)};
+  border-color: ${(props) => getColor(props)};
   border-style: dashed;
   background-color: #fafafa;
   color: #bdbdbd;
   outline: none;
-  transition: border .24s ease-in-out;
+  transition: border 0.24s ease-in-out;
+  height: 300px;
 `;
 
 const CreateSkateSpot = (props) => {
@@ -183,7 +192,7 @@ const CreateSkateSpot = (props) => {
                       <Box flexBasis="25%">
                         <label>City</label>
                       </Box>
-                      <Box >
+                      <Box>
                         <TextField
                           margin="dense"
                           variant="outlined"
@@ -201,7 +210,7 @@ const CreateSkateSpot = (props) => {
                       <Box flexBasis="25%">
                         <label>State</label>
                       </Box>
-                      <Box >
+                      <Box>
                         <TextField
                           margin="dense"
                           variant="outlined"
@@ -219,7 +228,7 @@ const CreateSkateSpot = (props) => {
                       <Box flexBasis="25%">
                         <label>Address</label>
                       </Box>
-                      <Box >
+                      <Box>
                         <TextField
                           margin="dense"
                           variant="outlined"
@@ -233,8 +242,6 @@ const CreateSkateSpot = (props) => {
                   <div className="container">
                     <Container
                       className={classes.dropContainer}
-                      // onDragEnter={handleDragEnter}
-                      // onDragLeave={handleDragLeave}
                       {...getRootProps({
                         isDragActive,
                         isDragAccept,
@@ -244,17 +251,17 @@ const CreateSkateSpot = (props) => {
                       <input {...getInputProps()} />
                       {isDragActive ? (
                         <p>
-                          Drag 'n' drop an image file here, or click to select a
-                          file
+                          Drag 'n' drop a different image file here, or click to
+                          select a file
                         </p>
                       ) : (
                         <>
                           <p>
-                            Drag 'n' drop a different image file here, or click to select
-                            a different file
+                            Drag 'n' drop an image file here, or click to select
+                            a file
                           </p>
                           <div>
-                              {imgPath[0] ? <p>{imgPath[0].name}</p> : <p></p>}
+                            {imgPath[0] ? <p>{imgPath[0].name}</p> : <p></p>}
                           </div>
                         </>
                       )}
@@ -263,7 +270,14 @@ const CreateSkateSpot = (props) => {
                     </Container>
                   </div>
                   <Box display="flex" justifyContent="center">
-                    <Button type="submit">Share Spot</Button>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="secondary"
+                      className={classes.button}
+                    >
+                      Share spot
+                    </Button>
                   </Box>
                 </form>
               </Box>
