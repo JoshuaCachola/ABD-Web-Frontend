@@ -1,5 +1,6 @@
 import React from "react";
-import { Box, Avatar, makeStyles } from "@material-ui/core";
+import { Box, Avatar, makeStyles, ListItemSecondaryAction } from "@material-ui/core";
+import { borders } from '@material-ui/system';
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 // import { connect } from "react-redux";
 
@@ -7,6 +8,22 @@ const useStyles = makeStyles((theme) => ({
   large: {
     width: theme.spacing(20),
     height: theme.spacing(20),
+//     backgroundColor: '#fff',
+//     border: '1px solid red',
+//     height: '100px',
+//     borderRadius: '50%',
+// //     -moz - border - radius: 50 %;
+// // -webkit - border - radius: 50 %;
+//     width: '100px',
+  },
+  skateSpotDetailsImg: {
+    backgroundColor: '#fff',
+    border: '1px solid red',
+    height: '100px',
+    borderRadius: '50%',
+    // mozBorderRadius: '50%',
+    // webkitBorderRadius: '50%',
+    width: '100px',
   },
   control: {
     paddingLeft: theme.spacing(10)
@@ -15,19 +32,19 @@ const useStyles = makeStyles((theme) => ({
 
 const SkateSpotDetails = ({skateSpot}) => {
   const classes = useStyles();
-  console.log(skateSpot);
+
   return (
     <Box display="flex" className="skate-spots-details">
       <Box className="skate-spot-details__child">
         <div className="skate-spot-details__img-container">
           {/* <canvas class="skate-spot-details__canvas"></canvas> */}
-          <span className="skate-spot-details__img">
+          <Box borderRadius="50%" border={6} borderColor='secondary.main'>
             <Avatar
               src={skateSpot.imgs[0]}
               alt="skate-spot-pic"
               className={classes.large}
             />
-          </span>
+          </Box>
         </div>
       </Box>
       <Box className="skate-spot-details__child skate-spot-details__child-text">

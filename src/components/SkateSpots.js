@@ -13,12 +13,37 @@ const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 600,
     fontFamily: "Raleway",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    fontSize: '14px',
+    margin: '10px 0'
   },
   img: {
     width: theme.spacing(10),
     height: theme.spacing(10),
   },
+  skateSpotsContainer: {
+    boxShadow: '0 0 12px rgba(0,0,0,0.2)',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(293px, 1fr))',
+    gridGap: '30px 0px',
+    marginLeft: '35px',
+  },
+  buttons: {
+    lineHeight: '18px',
+    marginLeft: '7px',
+    padding: '9px 14px'
+  },
+  avatar: {
+    paddingLeft: '14px'
+  },
+  spotListingsContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  skateSpotListings: {
+    margin: '10px',
+    border: '1px solid black'
+  }
 }));
 
 const SkateSpots = ({ skateSpots, getSkateSpots }) => {
@@ -32,9 +57,7 @@ const SkateSpots = ({ skateSpots, getSkateSpots }) => {
   const classes = useStyles();
   return (
     <>
-      <header>
-        <Navbar />
-      </header>
+      <Navbar />
       <div className="skate-spots">
         <Box
           display="flex"
@@ -49,7 +72,7 @@ const SkateSpots = ({ skateSpots, getSkateSpots }) => {
           <Box
             display="flex"
             justifyContent="center"
-            className="skate-spots__listings"
+            className={classes.skateSpotsListings}
           >
             <Card className={classes.root}>
               {skateSpots.map((skateSpot) => (
@@ -63,15 +86,15 @@ const SkateSpots = ({ skateSpots, getSkateSpots }) => {
                     }}
                     style={{ textDecoration: "none" }}
                   >
-                    <Box display="flex" justifyContent="space-between">
-                      <Box flexBasis="20%">
+                    <Box className={classes.spotListingsContainer}>
+                      <Box flexBasis="20%" className={classes.avatar}>
                         <Avatar
                           className={classes.img}
                           src={skateSpot.imgs[0]}
                           alt="skate-img"
                         />
                       </Box>
-                      <Box alignItems="center" flexBasis="40%">
+                      <Box alignItems="center" flexBasis="50%">
                         <div className="skate-spots__name">
                           {skateSpot.name}
                         </div>
@@ -82,7 +105,10 @@ const SkateSpots = ({ skateSpots, getSkateSpots }) => {
                           {skateSpot.state}
                         </div>
                       </Box>
-                      <Box justifyContent="flex-end">
+                      <Box 
+                        justifyContent="flex-end"
+                        className={classes.buttons}
+                      >
                         <Button
                         variant="contained"
                         color="secondary"

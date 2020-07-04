@@ -1,13 +1,32 @@
 import React, { useState, useEffect } from "react";
 import SkateSpotPost from "./SkateSpotPost";
 import { connect } from "react-redux";
-import { getSpotPosts, isShowPost } from "../../store/skateSpotPosts";
-import { Box } from "@material-ui/core";
+import { Box, makeStyles } from "@material-ui/core";
 import ReactPlayer from "react-player";
-// import { apiBaseUrl } from "../../config";
+
+import { getSpotPosts, isShowPost } from "../../store/skateSpotPosts";
+import {theme} from '../../theme';
+
+const useStyles = makeStyles({
+  skateSpotFeed: {
+    [theme.breakpoints.down('xs')]: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(393px 1fr)',
+      gridGap: '30px 0px',
+      margin: 'auto auto',
+      justifyContent: 'center'
+    },
+    [theme.breakpoints.up('sm')]: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fill, minmax(293px, 3fr))',
+      gridGap: '30px 0px',
+      marginLeft: '35px',
+      justifyContent: 'center'
+    }
+  }
+});
 
 const SkateSpotFeed = ({ isShowingPost, showPost, id, posts, getSpotPosts }) => {
-  // const id = props.match.url.split("/")[2];
   const [postIndex, setPostIndex] = useState(null);
   const [currentPosts, setCurrentPosts] = useState(null);
   useEffect(() => {
@@ -19,8 +38,6 @@ const SkateSpotFeed = ({ isShowingPost, showPost, id, posts, getSpotPosts }) => 
   }, [currentPosts, id, getSpotPosts]);
 
   const handleSkatePost = (e) => {
-    // const postIndex = e.currentTarget.id;
-    console.log(e.target.tagName);
     if (e.target.tagName === "IMG" || e.target.tagName === "VIDEO") {
       setPostIndex(e.currentTarget.id);
       // debugger
@@ -29,9 +46,10 @@ const SkateSpotFeed = ({ isShowingPost, showPost, id, posts, getSpotPosts }) => 
   };
 
   console.log(posts);
+  const classes = useStyles();
   return (
     <>
-      <div className="skate-spot__feed-container">
+      <div className={classes.skateSpotFeed}>
         {posts &&
           posts.map(({ post }, i) => {
             return (
@@ -60,7 +78,7 @@ const SkateSpotFeed = ({ isShowingPost, showPost, id, posts, getSpotPosts }) => 
           })}
       </div>
       <Box>
-        {isShowingPost === true && (
+        {isShowingPost && (
           <SkateSpotPost
             skateSpotId={id}
             id={posts[postIndex].id}

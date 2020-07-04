@@ -1,12 +1,11 @@
 import React from 'react';
 import {
-  Router,
   Route,
-  Switch
+  Switch,
+  BrowserRouter
 } from "react-router-dom";
 
 import { CssBaseline } from "@material-ui/core";
-import Theme from "./Theme";
 
 // Components
 import Homepage from "./components/homepage/Homepage";
@@ -17,15 +16,12 @@ import SignUp from "./components/SignUp";
 import { PrivateRoute } from "./routesUtils";
 import CreateSkateSpot from "./components/CreateSkateSpot";
 import CreateSkatePost from "./components/skate-spot/CreateSkatePost";
-import createBrowserHistory from './components/utils/history';
 
 const App = () => {
-  const history = createBrowserHistory();
   return (
     <>
       <CssBaseline />
-      <Theme>
-        <Router history={history}>
+        <BrowserRouter>
           <Switch>
             <Route exact path="/" component={Homepage} />
             <Route exact path="/sign-up" component={SignUp} />
@@ -56,8 +52,7 @@ const App = () => {
             />
             <Route render={() => <h1>404: Page not found</h1>} />
           </Switch>
-        </Router>
-      </Theme>
+        </BrowserRouter>
     </>
   );
 };

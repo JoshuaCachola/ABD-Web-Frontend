@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { useHistory } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { Box, Card, makeStyles, Button, TextField } from "@material-ui/core";
 import { useDropzone } from "react-dropzone"; 
 import styled from "styled-components";
@@ -62,9 +62,8 @@ const Container = styled.div`
   height: 300px;
 `;
 
-const CreateSkatePost = ({ match: { url } }) => {
+const CreateSkatePost = ({ match: { url }, history }) => {
   const skateSpotId = url.split("/")[2];
-  const history = useHistory();
   const [caption, setCaption] = useState("");
   const [file, setFileInput] = useState("");
 
@@ -223,4 +222,4 @@ const CreateSkatePost = ({ match: { url } }) => {
   );
 };
 
-export default CreateSkatePost;
+export default withRouter(CreateSkatePost);
