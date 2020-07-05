@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { useHistory } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import {
   TextField,
   Box,
@@ -69,8 +69,7 @@ const Container = styled.div`
   height: 300px;
 `;
 
-const CreateSkateSpot = (props) => {
-  const history = useHistory();
+const CreateSkateSpot = ({ history }) => {
   const [name, setSpotName] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCityName] = useState("");
@@ -289,4 +288,4 @@ const CreateSkateSpot = (props) => {
   );
 };
 
-export default CreateSkateSpot;
+export default withRouter(CreateSkateSpot);

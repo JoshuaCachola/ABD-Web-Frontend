@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SkateSpotPost from "./SkateSpotPost";
 import { connect } from "react-redux";
-import { Box, makeStyles } from "@material-ui/core";
+import { Box, makeStyles, Paper, Container } from "@material-ui/core";
 import ReactPlayer from "react-player";
 
 import { getSpotPosts, isShowPost } from "../../store/skateSpotPosts";
@@ -20,7 +20,7 @@ const useStyles = makeStyles({
       display: 'grid',
       gridTemplateColumns: 'repeat(auto-fill, minmax(293px, 3fr))',
       gridGap: '30px 0px',
-      marginLeft: '35px',
+      margin: 'auto auto',
       justifyContent: 'center'
     }
   }
@@ -40,16 +40,14 @@ const SkateSpotFeed = ({ isShowingPost, showPost, id, posts, getSpotPosts }) => 
   const handleSkatePost = (e) => {
     if (e.target.tagName === "IMG" || e.target.tagName === "VIDEO") {
       setPostIndex(e.currentTarget.id);
-      // debugger
       showPost(isShowingPost);
     }
   };
 
-  console.log(posts);
   const classes = useStyles();
   return (
     <>
-      <div className={classes.skateSpotFeed}>
+      <Container className={classes.skateSpotFeed}>
         {posts &&
           posts.map(({ post }, i) => {
             return (
@@ -76,7 +74,7 @@ const SkateSpotFeed = ({ isShowingPost, showPost, id, posts, getSpotPosts }) => 
               </div>
             );
           })}
-      </div>
+      </Container>
       <Box>
         {isShowingPost && (
           <SkateSpotPost

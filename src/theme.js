@@ -13,8 +13,11 @@ export const theme = createMuiTheme({
       contrastText: 'black',
     },
     secondary: {
-      main: 'rgb(50, 108, 115, 0.25)',
+      main: '#F08080',
       contrastText: '#000000',
+    },
+    border: {
+      gradient: 'background-image: linear-gradient(to up, rgba(255,0,0,0), #F08080'
     }
   }
 });

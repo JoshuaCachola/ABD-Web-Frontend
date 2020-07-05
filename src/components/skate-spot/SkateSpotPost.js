@@ -41,30 +41,30 @@ const SkateSpotPost = (
   };
 
   useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch(
-          `${api.url}/skatespots/${skateSpotId}/posts/${id}/comments`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
-            },
-          }
-        );
+    getComments();
+  }, []);
 
-        if (!res.ok) throw res;
+  const getComments = async () => {
+    try {
+      const res = await fetch(
+        `${api.url}/skatespots/${skateSpotId}/posts/${id}/comments`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+          },
+        }
+      );
 
-        const comments = await res.json();
-        setPostComments(comments);
-      } catch (err) {
-        console.error(err);
-      }
-    })();
+      if (!res.ok) throw res;
 
-  }, [setPostComments, id, skateSpotId]);
+      const comments = await res.json();
+      setPostComments(comments);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-  const handleSetComment = e => setComment(e.target.value);
   const submitComment = async e => {
     e.preventDefault();
     try {
@@ -81,11 +81,14 @@ const SkateSpotPost = (
       });
 
       if (!res.ok) throw res;
-
-      window.location.href = `/skatespots/${skateSpotId}`;
+      // reset comment to empty string after post
+      setComment('');
+      // refetch comments to display new comment
+      getComments();
     } catch (err) {
       console.error(err);
     }
+
   };
 
   console.log(postComments);
@@ -156,10 +159,9 @@ const SkateSpotPost = (
                 <Box width="100%">
                   <TextField
                     fullWidth="true"
-                    name={comment}
-                    onChange={handleSetComment}
+                    value={comment}
+                    onChange={e => setComment(e.target.value)}
                     placeholder="  Add a comment..."
-                    className={classes.commentInput}
                     multiline
                   ></TextField>
                 </Box>

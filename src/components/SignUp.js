@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { 
   Box, 
   TextField,
@@ -31,15 +31,14 @@ const useStyles = makeStyles({
   }
 });
 
-const SignUp = () => {
+const SignUp = ({ history }) => {
   const [ firstName, setFirstName ] = useState(""),
         [ lastName, setLastName ] = useState(""),
         [ username, setUsername ] = useState(""),
         [ email, setEmail ] = useState(""),
         [ phoneNumber, setPhoneNumber ] = useState(""),
         [ password, setPassword ] = useState(""),
-        [ confirmPassword, setConfirmPassword ] = useState(""),
-        history = useHistory();
+        [ confirmPassword, setConfirmPassword ] = useState("");
   
   const handleSignUp = async e => {
     e.preventDefault();
@@ -204,4 +203,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default withRouter(SignUp);

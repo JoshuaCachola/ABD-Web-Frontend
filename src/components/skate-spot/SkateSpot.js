@@ -17,6 +17,13 @@ const useStyles = makeStyles({
     maxWidth: "80%",
     marginLeft: "10px"
   },
+  menuBar: {
+    borderTop: '1px solid #c8c8c8',
+    margin: 'auto auto',
+    justifyContent: 'center',
+    display: 'flex',
+    maxWidth: '95%'
+  }
 });
 
 const SkateSpot = ({ location, match }) => {
@@ -42,7 +49,7 @@ const SkateSpot = ({ location, match }) => {
           </Box>
         </Box>
         <br />
-        <div className="skate-spot__menu-bar">
+        <div className={classes.menuBar}>
           <div className="skate-spot__menu-bar-button">All</div>
           <div className="skate-spot__menu-bar-button">Images</div>
           <div className="skate-spot__menu-bar-button">Videos</div>

@@ -6,8 +6,8 @@ import GroupIcon from '@material-ui/icons/Group';
 import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
 
-import addSpotImg from "../../images/add-spot.svg";
-
+import addSpotImg from '../../images/add-spot.svg';
+import { theme } from '../../theme';
 const useStyles = makeStyles({
   navbar: {
     backgroundColor: 'white',
@@ -17,14 +17,21 @@ const useStyles = makeStyles({
     margin: '5px 0'
   },
   navbarLogo: {
-    color: 'black',
+    color: 'white',
     fontFamily: "Rock Salt, cursive",
     fontSize: '20px',
-    paddingLeft: '10px'
+    border: '1px solid black',
+    backgroundColor: 'black',
+    textAlign: 'center',
+    padding: '0 5px',
+    margin: '0 5px'
   },
   navbarIcons: {
     paddingLeft: '16px',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    '&:hover': {
+      color: `${theme.palette.secondary.main}`
+    }
   },
   navbarSearch: {
     fontFamily: 'Raleway',
@@ -44,7 +51,7 @@ const Navbar = ({history}) => {
   return (
     <nav className={classes.navbar}>
       <Box display="flex" justifyContent="space-around" alignItems="center">
-        <Box className={classes.navbarLogo} flexBasis="33%">
+        <Box className={classes.navbarLogo} >
           <h1>already been done</h1>
         </Box>
         <Box flexBasis="33%" className={classes.search}>
@@ -73,7 +80,12 @@ const Navbar = ({history}) => {
             <GroupIcon />
           </div>
           <div onClick={addNewSpot} className={classes.navbarIcons}>
-            <img src={addSpotImg} alt="add-spot" height="24" width="24" />
+            <img 
+              src={addSpotImg} 
+              alt="add-spot" 
+              height="24" 
+              width="24" 
+            />
           </div>
         </Box>
       </Box>

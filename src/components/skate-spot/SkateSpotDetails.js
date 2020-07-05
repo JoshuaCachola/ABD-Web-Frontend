@@ -1,6 +1,5 @@
 import React from "react";
-import { Box, Avatar, makeStyles, ListItemSecondaryAction } from "@material-ui/core";
-import { borders } from '@material-ui/system';
+import { Box, Avatar, makeStyles } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 // import { connect } from "react-redux";
 
@@ -28,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
   control: {
     paddingLeft: theme.spacing(10)
   },
+  checkCircle: {
+    paddingTop: '5px'
+  }
 }));
 
 const SkateSpotDetails = ({skateSpot}) => {
@@ -51,7 +53,7 @@ const SkateSpotDetails = ({skateSpot}) => {
         <div className="skate-spots__name">
           <span className="skate-spot-details__check">
             {skateSpot.name} &nbsp;
-            <CheckCircleIcon className="skate-spot-details__check" />
+            <CheckCircleIcon color='secondary' className={classes.checkCircle} />
           </span>
         </div>
         <div className="skate-spots__city">{skateSpot.city}</div>
