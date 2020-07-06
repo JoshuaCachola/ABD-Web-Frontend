@@ -1,10 +1,10 @@
 # Already Been Done
 
-Already Been Done, or ABD for short, tackles a problem that my friends and I had as kids of finding skate spots you would only see in skate videos and magazines. ABD solves that problem by allowing skaters to not only share those skate spots, but any apot they like to skate everyday. Not only can you share skate spots, but skaters also have the ability to upload videos and photos of the tricks they landed at those spots to claim that it has "already been done"
+Already Been Done, or ABD for short, tackles a problem that my friends and I had as kids of finding skate spots you would only see in skate videos and magazines. ABD solves that problem by allowing skaters to not only share those skate spots, but any apot they like to skate everyday. Not only can skaters share skate spots, but they will also have the ability to upload videos and photos of the tricks they landed at those spots to claim that it has "already been done"
 
 ## Project Description
 
-ABD is a web application for users to share skate spots that they come upon in their skating career and share it with a community. It is also a platform where skaters can show off any tricks they have landed through photos and videos giving themselves a platform to share their progress with a community catered directly to skaters.
+ABD is a web application for users to share skate spots that they come upon in their skating career and share it with a community. It is also a social app where skaters can show off any tricks they have landed through photos and videos giving themselves a platform to share their progress with a community catered directly to skaters.
 
 ### Application Feature Screenshots and Gifs
 
