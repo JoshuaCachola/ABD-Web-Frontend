@@ -1,64 +1,35 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Already Been Done
 
-## Available Scripts
+Already Been Done, or ABD for short, tackles a problem that my friends and I had as kids of finding skate spots you would only see in skate videos and magazines. ABD solves that problem by allowing skaters to not only share those skate spots, but any apot they like to skate everyday. Not only can you share skate spots, but skaters also have the ability to upload videos and photos of the tricks they landed at those spots to claim that it has "already been done"
 
-In the project directory, you can run:
+## Project Description
 
-### `npm start`
+ABD is a web application for users to share skate spots that they come upon in their skating career and share it with a community. It is also a platform where skaters can show off any tricks they have landed through photos and videos giving themselves a platform to share their progress with a community catered directly to skaters.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Application Feature Screenshots and Gifs
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+#### Landing page
 
-### `npm test`
+![ABD-Landing page](/public/landing-page.png)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### Video playback
 
-### `npm run build`
+![ABD-video playback](https://media.giphy.com/media/XEIfqFJkfLTaWSe5fO/giphy.gif)
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### Post a comment to post
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+![ABD-create comment](https://media.giphy.com/media/ZY399zr6rjcsx6Kjlx/giphy.gif)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Technology List
 
-### `npm run eject`
+- Javascript
+- React (with hooks)
+- Redux
+- Express
+- PostgreSQL
+- Material UI
+- AWS S3
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Link to backend repository
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+[ABD Backend API](https://github.com/JoshuaCachola/Already-Been-Done)

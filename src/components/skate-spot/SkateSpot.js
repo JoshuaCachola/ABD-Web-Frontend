@@ -35,7 +35,6 @@ const SkateSpot = ({ location, match }) => {
     history.push(`/skatespots/${id}/post`)
   };
 
-  console.log(skateSpot);
   const classes = useStyles();
   return (
     <>
