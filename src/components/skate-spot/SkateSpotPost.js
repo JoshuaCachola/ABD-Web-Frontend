@@ -42,7 +42,7 @@ const SkateSpotPost = (
 
   useEffect(() => {
     getComments();
-  }, []);
+  });
 
   const getComments = async () => {
     try {
@@ -83,6 +83,7 @@ const SkateSpotPost = (
       if (!res.ok) throw res;
       // reset comment to empty string after post
       setComment('');
+      
       // refetch comments to display new comment
       getComments();
     } catch (err) {
@@ -91,7 +92,6 @@ const SkateSpotPost = (
 
   };
 
-  console.log(postComments);
   const classes = useStyles();
   return (
     <Box onClick={handleShowPost} className="skate-spot">
@@ -158,7 +158,7 @@ const SkateSpotPost = (
               >
                 <Box width="100%">
                   <TextField
-                    fullWidth="true"
+                    fullWidth={true}
                     value={comment}
                     onChange={e => setComment(e.target.value)}
                     placeholder="  Add a comment..."

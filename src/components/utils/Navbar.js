@@ -1,6 +1,13 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { TextField, Box, makeStyles, InputAdornment } from "@material-ui/core";
+import { 
+  TextField, 
+  Box, 
+  makeStyles, 
+  InputAdornment, 
+  Button 
+} from "@material-ui/core";
+import { useDispatch } from 'react-redux';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import GroupIcon from '@material-ui/icons/Group';
 import HomeIcon from '@material-ui/icons/Home';
@@ -8,6 +15,8 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import addSpotImg from '../../images/add-spot.svg';
 import { theme } from '../../theme';
+import { removeToken } from '../../store/authentication';
+
 const useStyles = makeStyles({
   navbar: {
     backgroundColor: 'white',
@@ -37,16 +46,28 @@ const useStyles = makeStyles({
     fontFamily: 'Raleway',
     fontSize: '12px',
     backgroundColor: '#f6f6f6'
+  },
+  logoutButton: {
+    color: `${theme.palette.primary.main}`,
+    '&:hover': {
+      color: `${theme.palette.secondary.main}`
+    }
   }
 });
 
 const Navbar = ({history}) => {
+  const dispatch = useDispatch();
   const addNewSpot = () => {
     history.push("/skatespots/create-spot");
   };
 
-  const handleHome = e => history.push("/skatespots");
-
+  const handleHome = () => history.push("/skatespots");
+  const handleLogout = () => {
+    localStorage.clear()
+    dispatch(removeToken());
+    history.push('/');
+  };
+  
   const classes = useStyles();
   return (
     <nav className={classes.navbar}>
@@ -86,6 +107,16 @@ const Navbar = ({history}) => {
               height="24" 
               width="24" 
             />
+          </div>
+          <div className={classes.navbarIcons}>
+            <Button
+              color="primary"
+              size="small"
+              className={classes.logoutButton}
+              onClick={handleLogout}
+            >
+              Log out
+            </Button>
           </div>
         </Box>
       </Box>

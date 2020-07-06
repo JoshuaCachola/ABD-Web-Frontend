@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SkateSpotPost from "./SkateSpotPost";
 import { connect } from "react-redux";
-import { Box, makeStyles, Paper, Container } from "@material-ui/core";
+import { Box, makeStyles, Container } from "@material-ui/core";
 import ReactPlayer from "react-player";
 
 import { getSpotPosts, isShowPost } from "../../store/skateSpotPosts";

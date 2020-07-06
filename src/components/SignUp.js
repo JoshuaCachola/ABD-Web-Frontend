@@ -99,6 +99,7 @@ const SignUp = ({ history }) => {
                     variant="outlined"
                     type="text"
                     onChange={(e) => setUsername(e.target.value)}
+                    required={true}
                   />
                 </Box>
               </Box>
@@ -113,6 +114,7 @@ const SignUp = ({ history }) => {
                     variant="outlined"
                     type="text"
                     onChange={(e) => setFirstName(e.target.value)}
+                    required={true}
                   />
                 </Box>
               </Box>
@@ -127,6 +129,7 @@ const SignUp = ({ history }) => {
                     variant="outlined"
                     type="text"
                     onChange={(e) => setLastName(e.target.value)}
+                    required={true}
                   />
                 </Box>
               </Box>
@@ -141,6 +144,7 @@ const SignUp = ({ history }) => {
                     margin="dense"
                     variant="outlined"
                     onChange={(e) => setEmail(e.target.value)}
+                    required={true}
                   />
                 </Box>
               </Box>
@@ -155,6 +159,7 @@ const SignUp = ({ history }) => {
                     variant="outlined"
                     type="text"
                     onChange={(e) => setPhoneNumber(e.target.value)}
+                    required={true}
                   />
                 </Box>
               </Box>
@@ -169,6 +174,7 @@ const SignUp = ({ history }) => {
                     margin="dense"
                     variant="outlined"
                     onChange={(e) => setPassword(e.target.value)}
+                    required={true}
                   />
                 </Box>
               </Box>
@@ -183,6 +189,7 @@ const SignUp = ({ history }) => {
                     margin="dense"
                     variant="outlined"
                     onChange={(e) => setConfirmPassword(e.target.value)}
+                    required={true}
                   />
                 </Box>
               </Box>

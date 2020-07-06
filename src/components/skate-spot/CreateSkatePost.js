@@ -1,11 +1,12 @@
 import React, { useState, useCallback } from "react";
 import { withRouter } from "react-router-dom";
-import { Box, Card, makeStyles, Button, TextField } from "@material-ui/core";
+import { Box, Card, makeStyles, Button, TextField, CircularProgress } from "@material-ui/core";
 import { useDropzone } from "react-dropzone"; 
 import styled from "styled-components";
 
 import Navbar from "../utils/Navbar";
 import api from "../../utils";
+import { theme } from "../../theme";
 
 const useStyles = makeStyles({
   root: {
@@ -25,22 +26,24 @@ const useStyles = makeStyles({
   },
   file: {
     marginTop: 20,
-    color: "#326C73",
+    color: "#F08080",
   },
-  button: {
-    color: "#326C73",
-  },
+  loading: {
+    color: `${theme.palette.secondary.main}`,
+    display: 'flex',
+    justifyContent: 'center'
+  }
 });
 
 const getColor = (props) => {
   if (props.isDragAccept) {
-    return "#326C73";
+    return "#F08080";
   }
   if (props.isDragReject) {
     return "#ff1744";
   }
   if (props.isDragActive) {
-    return "#2196f3";
+    return "#F08080";
   }
   return "#eeeeee";
 };
@@ -56,7 +59,7 @@ const Container = styled.div`
   border-color: ${(props) => getColor(props)};
   border-style: dashed;
   background-color: #fafafa;
-  color: #bdbdbd;
+  color: #F08080;
   outline: none;
   transition: border 0.24s ease-in-out;
   height: 300px;
@@ -66,6 +69,7 @@ const CreateSkatePost = ({ match: { url }, history }) => {
   const skateSpotId = url.split("/")[2];
   const [caption, setCaption] = useState("");
   const [file, setFileInput] = useState("");
+  const [isLoading, isSetLoading] = useState(false);
 
   const handleSetCaption = e => setCaption(e.target.value);
   
@@ -73,7 +77,7 @@ const CreateSkatePost = ({ match: { url }, history }) => {
     e.preventDefault();
     try {
       const { type } = file[0];
-      console.log(type, file[0])
+      isSetLoading(true);
       const body = new FormData();
       let res;
       if (type === "video/mp4") {
@@ -96,7 +100,6 @@ const CreateSkatePost = ({ match: { url }, history }) => {
         });
       }
 
-      console.log(res);
       if (!res.ok) throw res;
 
       const { postUrl } = await res.json();
@@ -114,7 +117,7 @@ const CreateSkatePost = ({ match: { url }, history }) => {
       });
 
       if (!res.ok) throw res;
-
+      isSetLoading(false);
       history.push(`/skatespots`);
     } catch (err) {
       console.error(err);
@@ -200,10 +203,13 @@ const CreateSkatePost = ({ match: { url }, history }) => {
                         </div>
                       </>
                     )}
-                    {/* </Box>
-                </Box> */}
                   </Container>
                 </div>
+                {isLoading &&
+                  <Box m={2} className={classes.loading}>
+                    <CircularProgress color="secondary" />
+                  </Box>
+                }
                 <Box
                   className={classes.childButton}
                   display="flex"

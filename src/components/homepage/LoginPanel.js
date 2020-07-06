@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
+// import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { login } from "../../store/authentication";
 import { TextField, Button, makeStyles, Box, Card, CardContent, CardHeader } from "@material-ui/core";
 
@@ -26,19 +27,19 @@ const useStyles = makeStyles({
   }
 });
 
-const LoginPanel = (props) => {
-  const history = useHistory();
+const LoginPanel = ({ history }) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [username, setUsername] = useState("crookiemonster");
   const [password, setPassword] = useState("verygoodpassword");
 
   const handleSetUsername = (e) => setUsername(e.target.value);
   const handleSetPassword = (e) => setPassword(e.target.value);
-  const handleLogin = (e) => {
-    console.log("in handle login");
-    e.preventDefault();
-    props.login(username, password);
+  const handleLogin = () => {
+    dispatch(login(username, password));
+    history.push('/skatespots');
   };
+
   const handleSignUp = () => history.push("/sign-up");
 
   return (
@@ -57,7 +58,7 @@ const LoginPanel = (props) => {
           <CardHeader
             className={classes.loginForm}
             style={{ color: "white" }}
-            disableTypography="false"
+            disableTypography={true}
             title="already been done"
           />
           <CardContent>
@@ -108,21 +109,23 @@ const LoginPanel = (props) => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    authToken: state.authentication.authToken
-  };
-};
+// const mapStateToProps = state => {
+//   return {
+//     authToken: state.authentication.authToken
+//   };
+// };
 
-const mapDispathToProps = dispatch => {
-  return {
-    login: (username, password) => dispatch(login(username, password))
-  };
-};
+// const mapDispathToProps = dispatch => {
+//   return {
+//     login: (username, password) => dispatch(login(username, password))
+//   };
+// };
 
-export default connect(
-  mapStateToProps,
-  mapDispathToProps
-)(
-  LoginPanel
-);
+// export default connect(
+//   mapStateToProps,
+//   mapDispathToProps
+// )(
+//   LoginPanel
+// );
+
+export default withRouter(LoginPanel);

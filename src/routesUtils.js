@@ -12,10 +12,10 @@ export const PrivateRoute = ({
     exact={exact}
     path={path}
     render={(props) =>
-      needLogin === true ? (
-        <Redirect to="/" />
-      ) : (
+      needLogin ? (
         <Component {...props} {...componentProps} />
+      ) : (
+        <Redirect to="/" />
       )
     }
   />
