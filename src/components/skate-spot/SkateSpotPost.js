@@ -1,42 +1,52 @@
 import React, { useState, useEffect } from "react";
 import VideoPlayer from "react-video-js-player";
-import { 
-  Box, 
-  Card, 
-  Avatar, 
+import { useSelector, useDispatch } from "react-redux";
+import {
+  Box,
+  Card,
+  Avatar,
   CardHeader,
   CardContent,
   TextField,
   Button,
   makeStyles,
 } from "@material-ui/core";
-import { connect } from "react-redux";
 
-import { isShowPost } from "../../store/skateSpotPosts";
 import api from "../../utils";
+import { isShowPost } from "../../store/skateSpotPosts";
 
 const useStyles = makeStyles({
   comment: {
     paddingLeft: 10,
     wordWrap: "break-word",
-    overflowWrap: "anywhere"
+    overflowWrap: "anywhere",
   },
   commentsContainer: {
-    paddingTop: 2
+    paddingTop: 2,
   },
   commentsBody: {
     marginTop: 2,
-    fontFamily: "Raleway"
+    fontFamily: "Raleway",
   },
 });
 
-const SkateSpotPost = (
-  { showPost, isShowingPost, id, post, caption, skater, skateSpotId }) => {
-  const [ comment, setComment ] = useState("");
-  const [ postComments, setPostComments ] = useState([]);
+const SkateSpotPost = ({
+  showPost,
+  id,
+  post,
+  caption,
+  skater,
+  skateSpotId,
+}) => {
+  const [comment, setComment] = useState("");
+  const [postComments, setPostComments] = useState([]);
+  const isShowingPost = useSelector(
+    ({ skateSpotPosts }) => skateSpotPosts.isShowingPost
+  );
+  const dispatch = useDispatch();
   const handleShowPost = (e) => {
     if (e.target.tagName === "DIV") {
-      showPost(isShowingPost);
+      dispatch(isShowPost(isShowingPost));
     }
   };
 
@@ -65,31 +75,32 @@ const SkateSpotPost = (
     }
   };
 
-  const submitComment = async e => {
+  const submitComment = async (e) => {
     e.preventDefault();
     try {
       const res = await fetch(
-        `${api.url}/skatespots/${skateSpotId}/posts/${id}/comments`, {
+        `${api.url}/skatespots/${skateSpotId}/posts/${id}/comments`,
+        {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
+            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
           },
           body: JSON.stringify({
-            comment
-          })
-      });
+            comment,
+          }),
+        }
+      );
 
       if (!res.ok) throw res;
       // reset comment to empty string after post
-      setComment('');
-      
+      setComment("");
+
       // refetch comments to display new comment
       getComments();
     } catch (err) {
       console.error(err);
     }
-
   };
 
   const classes = useStyles();
@@ -128,8 +139,7 @@ const SkateSpotPost = (
               subheader={caption}
               className="skate-spot__comment-header"
             />
-            <CardContent 
-              className="skate-spot__comment-content">
+            <CardContent className="skate-spot__comment-content">
               <ul>
                 {postComments &&
                   postComments.map((postComment, i) => (
@@ -160,7 +170,7 @@ const SkateSpotPost = (
                   <TextField
                     fullWidth={true}
                     value={comment}
-                    onChange={e => setComment(e.target.value)}
+                    onChange={(e) => setComment(e.target.value)}
                     placeholder="  Add a comment..."
                     multiline
                   ></TextField>
@@ -177,21 +187,16 @@ const SkateSpotPost = (
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    isShowingPost: state.skateSpotPosts.isShowingPost
-  };
-};
+// const mapStateToProps = state => {
+//   return {
+//     isShowingPost: state.skateSpotPosts.isShowingPost
+//   };
+// };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    showPost: toggle => dispatch(isShowPost(toggle))
-  };
-};
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     showPost: toggle => dispatch(isShowPost(toggle))
+//   };
+// };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(
-  SkateSpotPost
-);
+export default SkateSpotPost;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, makeStyles } from "@material-ui/core";
+import { Box, makeStyles, Tooltip } from "@material-ui/core";
 import { AddAPhoto } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
@@ -8,6 +8,7 @@ import Navbar from "../utils/Navbar";
 import SkateSpotFeed from "./SkateSpotFeed";
 import SkateSpotDetails from "./SkateSpotDetails";
 import { setSkateSpot } from "../../store/skateSpots";
+import { theme } from "../../theme";
 
 const useStyles = makeStyles({
   root: {
@@ -15,15 +16,21 @@ const useStyles = makeStyles({
   },
   child: {
     maxWidth: "80%",
-    marginLeft: "10px"
+    marginLeft: "10px",
   },
   menuBar: {
-    borderTop: '1px solid #c8c8c8',
-    margin: 'auto auto',
-    justifyContent: 'center',
-    display: 'flex',
-    maxWidth: '95%'
-  }
+    borderTop: "1px solid #c8c8c8",
+    margin: "auto auto",
+    justifyContent: "center",
+    display: "flex",
+    maxWidth: "95%",
+  },
+  addAPhoto: {
+    cursor: "pointer",
+    "&:hover": {
+      color: `${theme.palette.secondary.main}`,
+    },
+  },
 });
 
 const SkateSpot = ({ location, match }) => {
@@ -32,7 +39,7 @@ const SkateSpot = ({ location, match }) => {
   const history = useHistory();
 
   const handleAddPost = (e) => {
-    history.push(`/skatespots/${id}/post`)
+    history.push(`/skatespots/${id}/post`);
   };
 
   const classes = useStyles();
@@ -53,7 +60,12 @@ const SkateSpot = ({ location, match }) => {
           <div className="skate-spot__menu-bar-button">Images</div>
           <div className="skate-spot__menu-bar-button">Videos</div>
           <Box className="skate-spot__menu-bar-button">
-            <AddAPhoto onClick={handleAddPost} />
+            <Tooltip title="Post a photo to this spot">
+              <AddAPhoto
+                className={classes.addAPhoto}
+                onClick={handleAddPost}
+              />
+            </Tooltip>
           </Box>
         </div>
         <br />
@@ -65,11 +77,11 @@ const SkateSpot = ({ location, match }) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    skateSpot: state.skateSpotFeed.skateSpot
+    skateSpot: state.skateSpotFeed.skateSpot,
   };
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -77,9 +89,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(
-  SkateSpot
-); 
+export default connect(mapStateToProps, mapDispatchToProps)(SkateSpot);

@@ -5,28 +5,34 @@ import { Box, makeStyles, Container } from "@material-ui/core";
 import ReactPlayer from "react-player";
 
 import { getSpotPosts, isShowPost } from "../../store/skateSpotPosts";
-import {theme} from '../../theme';
+import { theme } from "../../theme";
 
 const useStyles = makeStyles({
   skateSpotFeed: {
-    [theme.breakpoints.down('xs')]: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(393px 1fr)',
-      gridGap: '30px 0px',
-      margin: 'auto auto',
-      justifyContent: 'center'
+    [theme.breakpoints.down("xs")]: {
+      display: "grid",
+      gridTemplateColumns: "repeat(393px 1fr)",
+      gridGap: "30px 0px",
+      margin: "auto auto",
+      justifyContent: "center",
     },
-    [theme.breakpoints.up('sm')]: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fill, minmax(293px, 3fr))',
-      gridGap: '30px 0px',
-      margin: 'auto auto',
-      justifyContent: 'center'
-    }
-  }
+    [theme.breakpoints.up("sm")]: {
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fill, minmax(293px, 3fr))",
+      gridGap: "30px 0px",
+      margin: "auto auto",
+      justifyContent: "center",
+    },
+  },
 });
 
-const SkateSpotFeed = ({ isShowingPost, showPost, id, posts, getSpotPosts }) => {
+const SkateSpotFeed = ({
+  isShowingPost,
+  showPost,
+  id,
+  posts,
+  getSpotPosts,
+}) => {
   const [postIndex, setPostIndex] = useState(null);
   const [currentPosts, setCurrentPosts] = useState(null);
   useEffect(() => {
@@ -94,20 +100,15 @@ const SkateSpotFeed = ({ isShowingPost, showPost, id, posts, getSpotPosts }) => 
 const mapStateToProps = (state) => {
   return {
     posts: state.skateSpotPosts.posts,
-    isShowingPost: state.skateSpotPosts.isShowingPost
+    isShowingPost: state.skateSpotPosts.isShowingPost,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getSpotPosts: (id) => dispatch(getSpotPosts(id)),
-    showPost: (toggle) => dispatch(isShowPost(toggle))
+    showPost: (toggle) => dispatch(isShowPost(toggle)),
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(
-  SkateSpotFeed
-);
+export default connect(mapStateToProps, mapDispatchToProps)(SkateSpotFeed);
