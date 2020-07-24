@@ -24,6 +24,20 @@ const useStyles = makeStyles({
       justifyContent: "center",
     },
   },
+  skateFeedChild: {
+    backgroundColor: "#000000",
+    backgroundSize: "cover",
+    height: "100%",
+    width: "100%",
+    maxWidth: "293px",
+    minHeight: "293px",
+    cursor: "pointer",
+  },
+  skateFeedImg: {
+    maxWidth: "100%",
+    width: "293px",
+    height: "293px",
+  },
 });
 
 const SkateSpotFeed = ({
@@ -61,7 +75,7 @@ const SkateSpotFeed = ({
                 key={i}
                 id={i}
                 onClick={handleSkatePost}
-                className="skate-spot__feed-child"
+                className={classes.skateFeedChild}
               >
                 {post[0].endsWith("mp4") ? (
                   <ReactPlayer
@@ -72,7 +86,7 @@ const SkateSpotFeed = ({
                   />
                 ) : (
                   <img
-                    className="skate-spot__feed-image"
+                    className={classes.skateFeedImg}
                     src={post[0]}
                     alt="skate-pic"
                   />

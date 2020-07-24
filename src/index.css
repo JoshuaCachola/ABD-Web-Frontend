@@ -5,7 +5,87 @@
    License: none (public domain)
 */
 
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
   margin: 0;
   padding: 0;
   border: 0;
@@ -22,7 +102,17 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 
 /* HTML5 display-role reset for older browsers */
 
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
   display: block;
 }
 
@@ -30,16 +120,21 @@ body {
   line-height: 1;
 }
 
-ol, ul {
+ol,
+ul {
   list-style: none;
 }
 
-blockquote, q {
+blockquote,
+q {
   quotes: none;
 }
 
-blockquote:before, blockquote:after, q:before, q:after {
-  content: '';
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
   content: none;
 }
 
@@ -48,12 +143,15 @@ table {
   border-spacing: 0;
 }
 
-input[type=search]::-webkit-search-cancel-button, input[type=search]::-webkit-search-decoration, input[type=search]::-webkit-search-results-button, input[type=search]::-webkit-search-results-decoration {
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
   -webkit-appearance: none;
   -moz-appearance: none;
 }
 
-input[type=search] {
+input[type="search"] {
   -webkit-appearance: none;
   -moz-appearance: none;
   -webkit-box-sizing: content-box;
@@ -71,7 +169,9 @@ textarea {
  * Correct `inline-block` display not defined in IE 6/7/8/9 and Firefox 3.
  */
 
-audio, canvas, video {
+audio,
+canvas,
+video {
   display: inline-block;
   *display: inline;
   *zoom: 1;
@@ -125,7 +225,8 @@ a:focus {
  * Improve readability when focused and also mouse hovered in all browsers.
  */
 
-a:active, a:hover {
+a:active,
+a:hover {
   outline: 0;
 }
 
@@ -190,7 +291,10 @@ legend {
  * 3. Improve appearance and consistency in all browsers.
  */
 
-button, input, select, textarea {
+button,
+input,
+select,
+textarea {
   font-size: 100%;
   /* 1 */
   margin: 0;
@@ -206,7 +310,8 @@ button, input, select, textarea {
  * the UA stylesheet.
  */
 
-button, input {
+button,
+input {
   line-height: normal;
 }
 
@@ -217,7 +322,8 @@ button, input {
  * Correct `select` style inheritance in Firefox 4+ and Opera.
  */
 
-button, select {
+button,
+select {
   text-transform: none;
 }
 
@@ -247,7 +353,8 @@ input[type="reset"], input[type="submit"] {
  * Re-set default cursor for disabled elements.
  */
 
-button[disabled], html input[disabled] {
+button[disabled],
+html input[disabled] {
   cursor: default;
 }
 
@@ -258,7 +365,8 @@ button[disabled], html input[disabled] {
  *    Known issue: excess padding remains in IE 6.
  */
 
-input[type="checkbox"], input[type="radio"] {
+input[type="checkbox"],
+input[type="radio"] {
   box-sizing: border-box;
   /* 1 */
   padding: 0;
@@ -289,7 +397,8 @@ input[type="search"] {
  * on OS X.
  */
 
-input[type="search"]::-webkit-search-cancel-button, input[type="search"]::-webkit-search-decoration {
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
   -webkit-appearance: none;
 }
 
@@ -297,7 +406,8 @@ input[type="search"]::-webkit-search-cancel-button, input[type="search"]::-webki
  * Remove inner padding and border in Firefox 3+.
  */
 
-button::-moz-focus-inner, input::-moz-focus-inner {
+button::-moz-focus-inner,
+input::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
@@ -323,7 +433,11 @@ table {
   border-spacing: 0;
 }
 
-html, button, input, select, textarea {
+html,
+button,
+input,
+select,
+textarea {
   color: #222;
 }
 
@@ -351,8 +465,7 @@ textarea {
   resize: vertical;
 }
 
-
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&family=Rock+Salt&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&family=Rock+Salt&display=swap");
 
 .chromeframe {
   margin: 0.2em 0;
@@ -379,13 +492,6 @@ textarea {
   margin: 30px;
 }
 
-/* .navbar__logo {
-  color: black;
-  font-family: "Rock Salt", cursive;
-  font-size: 20px;
-  padding-left: 10px;
-} */
-
 .homepage__login {
   border: 1px black solid;
   max-width: 300px;
@@ -394,31 +500,19 @@ textarea {
   background-color: rgba(0, 0, 0, 0.25);
 }
 
-.skate-spots, .skate-spots__create-form {
+.skate-spots,
+.skate-spots__create-form {
   background-color: rgba(var(--b3f, 250, 250, 250), 1);
   background-size: cover;
   height: 100%;
   /* position: fixed; */
   width: 100%;
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
 }
 
 .skate-spots__create-form form {
   font-weight: 600;
 }
-
-/* .navbar {
-  border-bottom: 1px solid #cecece;
-  background-color: white;
-  font-family: 'Raleway', sans-serif;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);
-} */
-
-/* .navbar__icons {
-  padding-left: 24px;
-} */
-
 
 .skate-spots__name {
   font-size: 24px;
@@ -472,11 +566,6 @@ textarea {
   /* transform: translate(-50%, -50%);  */
 }
 
-.skate-spot__feed-image {
-  width: 293px;
-  height: 293px;
-}
-
 .skate-spot__feed-div {
   display: flex;
   max-width: 293px;
@@ -487,15 +576,7 @@ textarea {
   /* flex-basis: 30%; */
 }
 
-/* .skate-spot__feed-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(293px, 3fr));
-  grid-gap: 30px 0px;
-  margin: auto auto;
-  justify-content: center;
-} */
-
-  /* margin-left: 35px; */
+/* margin-left: 35px; */
 .skate-spot__comment-container {
   width: 335px;
   height: 514px;
@@ -504,32 +585,6 @@ textarea {
 .skate-spots__container {
   padding: 10px;
 }
-
-.skate-spot__feed-child{
-  /* max-width: 100%; */
-  background-color: black;
-  background-size: cover;
-  height: 100%;
-  width: 100%;
-  max-width: 293px;
-  min-height: 293px;
-  /* object-fit: cover; */
-  background-color: #000;
-}
-
-.skate-spot__feed-image {
-  max-width: 100%;
-}
-
-/* .skate-spots__header,
-.skate-spots__listings {
-  margin: 10px;
-} */
-
-/* .skate-spots__header {
-  margin-left: 215px;
-  font-weight: 600;
-} */
 
 .skate-spot-details {
   min-width: 600px;
@@ -541,7 +596,7 @@ textarea {
 
 .skate-spot__comment-input {
   border-top: 1px solid #c8c8c8;
-} 
+}
 
 .skate-spot__comment-content {
   height: 409px;
@@ -555,7 +610,7 @@ textarea {
   width: 170px;
   height: 170px;
   /* color: rgba(var(--i1d,38,38,38),1); */
-  background: -webkit-linear-gradient(left top, #326C73 0%, #000000 100%);
+  background: -webkit-linear-gradient(left top, #326c73 0%, #000000 100%);
   border-radius: 50%;
 }
 
@@ -609,11 +664,9 @@ textarea {
   background-color: rgba(50, 108, 115, 0.5);
 }
 
-/* .navbar__search {
-  font-family: "Raleway";
-  font-size: 12px;
-} */
-
-a, a:visited, a:hover, a:active {
+a,
+a:visited,
+a:hover,
+a:active {
   color: inherit;
 }

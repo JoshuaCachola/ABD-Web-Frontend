@@ -62,7 +62,9 @@ const Navbar = ({ history }) => {
   const addNewSpot = () => {
     history.push("/skatespots/create-spot");
   };
-
+  const handleMessaging = () => {
+    history.push("/messaging");
+  };
   const handleHome = () => history.push("/skatespots");
   const handleLogout = () => {
     localStorage.clear();
@@ -102,7 +104,7 @@ const Navbar = ({ history }) => {
           <div className={classes.navbarIcons}>
             <GroupIcon />
           </div>
-          <div className={classes.navbarIcons}>
+          <div onClick={handleMessaging} className={classes.navbarIcons}>
             <MessageIcon />
           </div>
           <div onClick={addNewSpot} className={classes.navbarIcons}>
