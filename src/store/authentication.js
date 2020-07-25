@@ -1,4 +1,5 @@
 import api from "../utils";
+import socket from "../socket";
 
 // Action - Login User
 const SET_TOKEN = "abd/authentication/SET_TOKEN";
@@ -27,11 +28,11 @@ export const login = (username, password) => async dispatch => {
       throw res;
     }
 
-    const { token } = await res.json();
+    const { token, id } = await res.json();
 
     localStorage.setItem("TOKEN_KEY", token);
-
     dispatch(setToken(token));
+    socket.emit("logged-in", id);
   } catch (err) {
     console.error(err);
   }

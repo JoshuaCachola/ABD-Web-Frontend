@@ -24,7 +24,8 @@ const useStyles = makeStyles({
     borderBottom: "1px solid #ececec",
   },
   search: {
-    margin: "5px 0",
+    margin: "5px auto",
+    justifyContent: "center"
   },
   navbarLogo: {
     color: "white",
@@ -34,7 +35,7 @@ const useStyles = makeStyles({
     backgroundColor: "black",
     textAlign: "center",
     padding: "0 5px",
-    margin: "0 5px",
+    margin: "0 20px",
   },
   navbarIcons: {
     paddingLeft: "16px",
@@ -42,6 +43,9 @@ const useStyles = makeStyles({
     "&:hover": {
       color: `${theme.palette.secondary.main}`,
     },
+  },
+  iconsContainer: {
+    margin: '0 20px'
   },
   navbarSearch: {
     fontFamily: "Raleway",
@@ -79,7 +83,7 @@ const Navbar = ({ history }) => {
         <Box className={classes.navbarLogo}>
           <h1>already been done</h1>
         </Box>
-        <Box flexBasis="33%" className={classes.search}>
+        <Box className={classes.search}>
           <TextField
             placeholder="Search by city"
             variant="outlined"
@@ -94,7 +98,7 @@ const Navbar = ({ history }) => {
             }}
           />
         </Box>
-        <Box display="flex">
+        <Box display="flex" className={classes.iconsContainer}>
           <div onClick={handleHome} className={classes.navbarIcons}>
             <HomeIcon />
           </div>

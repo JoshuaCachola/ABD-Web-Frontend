@@ -10,13 +10,15 @@ import thunk from "redux-thunk";
 import authentication from "./authentication";
 import skateSpotFeed from "./skateSpots";
 import skateSpotPosts from "./skateSpotPosts";
+import skaterMessages from "./skaterMessages";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const reducer = combineReducers({
   authentication,
   skateSpotFeed,
-  skateSpotPosts
+  skateSpotPosts,
+  skaterMessages
 });
 
 const configureStore = initialState => {
