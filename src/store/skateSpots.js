@@ -26,10 +26,10 @@ export const setSpot = (skateSpot) => {
 //   };
 // };
 
-export const currentSkateSpot = (skateSpot) => {
+export const currentSkateSpot = (currentSkateSpot) => {
   return {
     type: CURRENT_SKATE_SPOT,
-    skateSpot,
+    currentSkateSpot,
   };
 };
 export const setSkateSpots = () => async (dispatch, getState) => {
@@ -54,6 +54,7 @@ export const setSkateSpots = () => async (dispatch, getState) => {
 };
 
 export const setSkateSpot = (skateSpot) => (dispatch) => {
+  // localStorage.setItem("CURRENT_SKATE_SPOT", skateSpot);
   dispatch(setSpot(skateSpot));
 };
 
@@ -62,11 +63,12 @@ export const setSkateSpot = (skateSpot) => (dispatch) => {
 // };
 
 export const setCurrentSkateSpot = (skateSpot) => (dispatch) => {
+  localStorage.setItem("CURRENT_SKATE_SPOT", JSON.stringify(skateSpot));
   dispatch(currentSkateSpot(skateSpot));
 };
 
 export default function reducer(
-  state = { skateSpots: [], skateSpot: {} },
+  state = { skateSpots: [], skateSpot: {}, currentSkateSpot: {} },
   action
 ) {
   switch (action.type) {
@@ -85,7 +87,7 @@ export default function reducer(
     case CURRENT_SKATE_SPOT: {
       return {
         ...state,
-        currentSkateSpot: action.skateSpot,
+        currentSkateSpot: action.currentSkateSpot,
       };
     }
     default:

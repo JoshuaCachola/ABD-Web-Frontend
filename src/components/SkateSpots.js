@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { setSkateSpots, currentSkateSpot } from "../store/skateSpots";
+import { setSkateSpots, setCurrentSkateSpot } from "../store/skateSpots";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { makeStyles, Box, Button, Avatar } from "@material-ui/core";
@@ -55,6 +55,12 @@ const useStyles = makeStyles((theme) => ({
   skateSpotsState: {
     fontSize: "14px",
   },
+  skateSpot: {
+    cursor: "pointer",
+  },
+  skateSpotDetails: {
+    marginLeft: "20px",
+  },
 }));
 
 const SkateSpots = ({ history }) => {
@@ -74,7 +80,8 @@ const SkateSpots = ({ history }) => {
 
   const followSkateSpot = async (skateSpotId) => {
     try {
-      const res = await fetch(`${api.url}/${skateSpotId}/follow`, {
+      const res = await fetch(`${api.url}/skatespots/${skateSpotId}/follow`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
@@ -90,7 +97,7 @@ const SkateSpots = ({ history }) => {
   };
 
   const handleRouteToSpot = (skateSpotId, skateSpot) => {
-    dispatch(currentSkateSpot(skateSpot));
+    dispatch(setCurrentSkateSpot(skateSpot));
     history.push(`/skatespots/${skateSpotId}`);
   };
 
@@ -122,27 +129,33 @@ const SkateSpots = ({ history }) => {
                     }}
                     style={{ textDecoration: "none" }}
                   > */}
-                  <Box
-                    onClick={() => handleRouteToSpot(skateSpot.id, skateSpot)}
-                    className={classes.spotListingsContainer}
-                  >
-                    <Box flexBasis="20%" className={classes.avatar}>
-                      <Avatar
-                        className={classes.img}
-                        src={skateSpot.imgs[0]}
-                        alt="skate-img"
-                      />
-                    </Box>
-                    <Box alignItems="center" flexBasis="50%">
-                      <div className={classes.skateSpotsName}>
-                        {skateSpot.name}
-                      </div>
-                      <div className={classes.skateSpotsCity}>
-                        {skateSpot.city}
-                      </div>
-                      <div className={classes.skateSpotsState}>
-                        {skateSpot.state}
-                      </div>
+                  <Box className={classes.spotListingsContainer}>
+                    <Box
+                      className={classes.skateSpot}
+                      display="flex"
+                      onClick={() => handleRouteToSpot(skateSpot.id, skateSpot)}
+                    >
+                      <Box className={classes.avatar}>
+                        <Avatar
+                          className={classes.img}
+                          src={skateSpot.imgs[0]}
+                          alt="skate-img"
+                        />
+                      </Box>
+                      <Box
+                        className={classes.skateSpotDetails}
+                        alignItems="center"
+                      >
+                        <div className={classes.skateSpotsName}>
+                          {skateSpot.name}
+                        </div>
+                        <div className={classes.skateSpotsCity}>
+                          {skateSpot.city}
+                        </div>
+                        <div className={classes.skateSpotsState}>
+                          {skateSpot.state}
+                        </div>
+                      </Box>
                     </Box>
                     <Box justifyContent="flex-end" className={classes.buttons}>
                       <Button

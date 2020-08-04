@@ -1,7 +1,14 @@
 import React, { useState, useCallback } from "react";
 import { withRouter } from "react-router-dom";
-import { Box, Card, makeStyles, Button, TextField, CircularProgress } from "@material-ui/core";
-import { useDropzone } from "react-dropzone"; 
+import {
+  Box,
+  Card,
+  makeStyles,
+  Button,
+  TextField,
+  CircularProgress,
+} from "@material-ui/core";
+import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
 
 import Navbar from "../utils/Navbar";
@@ -30,9 +37,9 @@ const useStyles = makeStyles({
   },
   loading: {
     color: `${theme.palette.secondary.main}`,
-    display: 'flex',
-    justifyContent: 'center'
-  }
+    display: "flex",
+    justifyContent: "center",
+  },
 });
 
 const getColor = (props) => {
@@ -59,7 +66,7 @@ const Container = styled.div`
   border-color: ${(props) => getColor(props)};
   border-style: dashed;
   background-color: #fafafa;
-  color: #F08080;
+  color: #f08080;
   outline: none;
   transition: border 0.24s ease-in-out;
   height: 300px;
@@ -71,9 +78,9 @@ const CreateSkatePost = ({ match: { url }, history }) => {
   const [file, setFileInput] = useState("");
   const [isLoading, isSetLoading] = useState(false);
 
-  const handleSetCaption = e => setCaption(e.target.value);
-  
-  const handleSubmit = async e => {
+  const handleSetCaption = (e) => setCaption(e.target.value);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const { type } = file[0];
@@ -85,18 +92,18 @@ const CreateSkatePost = ({ match: { url }, history }) => {
         res = await fetch(`${api.url}/skatespots/upload-video`, {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
+            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
           },
-          body
+          body,
         });
       } else {
         body.append("image", file[0]);
         res = await fetch(`${api.url}/skatespots/upload-image`, {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
+            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
           },
-          body
+          body,
         });
       }
 
@@ -108,12 +115,12 @@ const CreateSkatePost = ({ match: { url }, history }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
+          Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
         },
         body: JSON.stringify({
           post: [postUrl],
-          caption
-        })
+          caption,
+        }),
       });
 
       if (!res.ok) throw res;
@@ -138,8 +145,8 @@ const CreateSkatePost = ({ match: { url }, history }) => {
     isDragActive,
     isDragAccept,
     isDragReject,
-  } = useDropzone( { onDrop });
-  
+  } = useDropzone({ onDrop });
+
   const classes = useStyles();
 
   return (
@@ -179,8 +186,6 @@ const CreateSkatePost = ({ match: { url }, history }) => {
                 <div className="container">
                   <Container
                     className={classes.dropContainer}
-                    // onDragEnter={handleDragEnter}
-                    // onDragLeave={handleDragLeave}
                     {...getRootProps({
                       isDragActive,
                       isDragAccept,
@@ -205,11 +210,11 @@ const CreateSkatePost = ({ match: { url }, history }) => {
                     )}
                   </Container>
                 </div>
-                {isLoading &&
+                {isLoading && (
                   <Box m={2} className={classes.loading}>
                     <CircularProgress color="secondary" />
                   </Box>
-                }
+                )}
                 <Box
                   className={classes.childButton}
                   display="flex"

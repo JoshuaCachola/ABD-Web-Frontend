@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { withRouter } from "react-router-dom";
 import { Box, makeStyles, Tooltip } from "@material-ui/core";
 import { AddAPhoto } from "@material-ui/icons";
@@ -34,10 +34,11 @@ const useStyles = makeStyles({
 });
 
 const SkateSpot = ({ match, history }) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const skateSpot = useSelector(
     ({ skateSpotFeed }) => skateSpotFeed.currentSkateSpot
   );
+  const skateSpotDetails = useRef(skateSpot);
   // const { skateSpot } = location.state;
   const id = match.url.split("/")[2];
 
@@ -54,14 +55,14 @@ const SkateSpot = ({ match, history }) => {
       <Box className={classes.root}>
         <Box className={classes.child}>
           <Box display="flex" justifyContent="center">
-            <SkateSpotDetails skateSpot={skateSpot} />
+            <SkateSpotDetails skateSpotDetails={skateSpotDetails.current} />
           </Box>
         </Box>
         <br />
         <div className={classes.menuBar}>
-          <div className="skate-spot__menu-bar-button">All</div>
+          {/* <div className="skate-spot__menu-bar-button">All</div>
           <div className="skate-spot__menu-bar-button">Images</div>
-          <div className="skate-spot__menu-bar-button">Videos</div>
+          <div className="skate-spot__menu-bar-button">Videos</div> */}
           <Box className="skate-spot__menu-bar-button">
             <Tooltip title="Post a photo to this spot">
               <AddAPhoto

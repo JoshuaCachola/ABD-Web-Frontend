@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
-
 import { CssBaseline } from "@material-ui/core";
 
 // Components
@@ -8,6 +7,7 @@ import Homepage from "./components/homepage/Homepage";
 import SkateSpots from "./components/SkateSpots";
 import SkateSpot from "./components/skate-spot/SkateSpot";
 import SkateSpotPost from "./components/skate-spot/SkateSpotPost";
+import SkaterFeed from "./components/SkaterFeed";
 import SignUp from "./components/SignUp";
 import { PrivateRoute } from "./routesUtils";
 import CreateSkateSpot from "./components/CreateSkateSpot";
@@ -25,6 +25,12 @@ const App = () => {
       <CssBaseline />
       <BrowserRouter>
         <Switch>
+          <PrivateRoute
+            exact={true}
+            path="skater-feed"
+            component={SkaterFeed}
+            needLogin={needLogin}
+          />
           <PrivateRoute
             exact={true}
             path="/skatespots"
