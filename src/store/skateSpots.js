@@ -2,28 +2,43 @@ import api from "../utils";
 
 const SET_SPOTS = "abd/skateSpots/SET_SPOTS";
 const SET_SPOT = "abd/skateSpots/SET_SPOT";
+const CURRENT_SKATE_SPOT = "abd/skateSpots/CURRENT_SKATE_SPOT";
+// const FOLLOW_SKATE_SPOT = "abd/skateSpots/FOLLOW_SKATE_SPOT";
 
-export const setSpots = skateSpots => {
+export const setSpots = (skateSpots) => {
   return {
     type: SET_SPOTS,
-    skateSpots
+    skateSpots,
   };
 };
 
-export const setSpot= skateSpot => {
+export const setSpot = (skateSpot) => {
   return {
     type: SET_SPOT,
     skateSpot,
   };
 };
 
+// export const followSpot = (skateSpot) => {
+//   return {
+//     type: FOLLOW_SKATE_SPOT,
+//     skateSpot,
+//   };
+// };
+
+export const currentSkateSpot = (skateSpot) => {
+  return {
+    type: CURRENT_SKATE_SPOT,
+    skateSpot,
+  };
+};
 export const setSkateSpots = () => async (dispatch, getState) => {
   try {
     const res = await fetch(`${api.url}/skatespots`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
-      }
+        Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+      },
     });
 
     if (!res.ok) {
@@ -38,11 +53,22 @@ export const setSkateSpots = () => async (dispatch, getState) => {
   }
 };
 
-export const setSkateSpot = (skateSpot) => dispatch => {
+export const setSkateSpot = (skateSpot) => (dispatch) => {
   dispatch(setSpot(skateSpot));
 };
 
-export default function reducer(state = {skateSpots: [], skateSpot: {}}, action) {
+// export const followSkateSpot = (skateSpotId) => (dispatch) => {
+
+// };
+
+export const setCurrentSkateSpot = (skateSpot) => (dispatch) => {
+  dispatch(currentSkateSpot(skateSpot));
+};
+
+export default function reducer(
+  state = { skateSpots: [], skateSpot: {} },
+  action
+) {
   switch (action.type) {
     case SET_SPOTS: {
       return {
@@ -53,10 +79,16 @@ export default function reducer(state = {skateSpots: [], skateSpot: {}}, action)
     case SET_SPOT: {
       return {
         ...state,
-        skateSpot: action.skateSpot
-      }
+        skateSpot: action.skateSpot,
+      };
+    }
+    case CURRENT_SKATE_SPOT: {
+      return {
+        ...state,
+        currentSkateSpot: action.skateSpot,
+      };
     }
     default:
       return state;
   }
-};
+}

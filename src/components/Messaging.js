@@ -7,7 +7,7 @@ import {
   makeStyles,
   Box,
   TextField,
-  Button
+  Button,
 } from "@material-ui/core";
 
 const useStyles = makeStyles({
@@ -21,7 +21,7 @@ const useStyles = makeStyles({
     display: "flex",
   },
   openChats: {
-    borderRight: "2px solid #ECECEC"
+    borderRight: "2px solid #ECECEC",
   },
   sendButton: {
     fontWeight: "bold",
@@ -32,7 +32,7 @@ const useStyles = makeStyles({
   // messageInput: {
   //   position: "absolute",
   //   bottom: 0
-  // }
+  //
 });
 
 const Messaging = () => {
@@ -81,9 +81,7 @@ const Messaging = () => {
           </Box>
         </Box>
         <Box display="flex" flexBasis="60%">
-          <Box>
-
-          </Box>
+          <Box></Box>
           <Box
             display="flex"
             alignSelf="flex-end"

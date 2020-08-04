@@ -1,8 +1,8 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import { Box, makeStyles, Tooltip } from "@material-ui/core";
 import { AddAPhoto } from "@material-ui/icons";
-import { useHistory } from "react-router-dom";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import Navbar from "../utils/Navbar";
 import SkateSpotFeed from "./SkateSpotFeed";
@@ -33,10 +33,13 @@ const useStyles = makeStyles({
   },
 });
 
-const SkateSpot = ({ location, match }) => {
-  const { skateSpot } = location.state;
+const SkateSpot = ({ match, history }) => {
+  const dispatch = useDispatch();
+  const skateSpot = useSelector(
+    ({ skateSpotFeed }) => skateSpotFeed.currentSkateSpot
+  );
+  // const { skateSpot } = location.state;
   const id = match.url.split("/")[2];
-  const history = useHistory();
 
   const handleAddPost = (e) => {
     history.push(`/skatespots/${id}/post`);
@@ -77,16 +80,16 @@ const SkateSpot = ({ location, match }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    skateSpot: state.skateSpotFeed.skateSpot,
-  };
-};
+// const mapStateToProps = (state) => {
+//   return {
+//     skateSpot: state.skateSpotFeed.skateSpot,
+//   };
+// };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setSkateSpot: (skateSpot) => dispatch(setSkateSpot(skateSpot)),
-  };
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     setSkateSpot: (skateSpot) => dispatch(setSkateSpot(skateSpot)),
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SkateSpot);
+export default withRouter(SkateSpot);

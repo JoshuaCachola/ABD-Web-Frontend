@@ -514,12 +514,12 @@ textarea {
   font-weight: 600;
 }
 
-.skate-spots__name {
+/* .skate-spots__name {
   font-size: 24px;
   line-height: 32px;
   font-family: "Raleway", sans-serif;
-}
-
+} */
+/* 
 .skate-spots__city {
   font-size: 16px;
   font-family: "Raleway";
@@ -528,7 +528,7 @@ textarea {
 .skate-spots__state {
   font-size: 14px;
   font-family: "Raleway";
-}
+} */
 
 .skate-spot__img-avatar {
   max-width: 200px;
@@ -580,10 +580,6 @@ textarea {
 .skate-spot__comment-container {
   width: 335px;
   height: 514px;
-}
-
-.skate-spots__container {
-  padding: 10px;
 }
 
 .skate-spot-details {
