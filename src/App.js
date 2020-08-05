@@ -27,7 +27,7 @@ const App = () => {
         <Switch>
           <PrivateRoute
             exact={true}
-            path="skater-feed"
+            path="/skater-feed"
             component={SkaterFeed}
             needLogin={needLogin}
           />

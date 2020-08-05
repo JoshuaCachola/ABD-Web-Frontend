@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { Box, Avatar, makeStyles, Container } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-// import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -54,9 +52,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SkateSpotDetails = ({ skateSpotDetails }) => {
-  // const currentSkateSpot = useSelector(
-  // ({ skateSpotFeed }) => skateSpotFeed.currentSkateSpot
-  // );
   const [skateSpot, setSkateSpot] = useState({});
 
   useEffect(() => {

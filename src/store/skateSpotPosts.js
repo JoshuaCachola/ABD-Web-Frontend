@@ -2,7 +2,7 @@ import api from "../utils";
 
 const SET_SPOT_POSTS = "abd/skateSpotPosts/SET_SPOT_DETAILS";
 const TOGGLE_POST = "abd/skateSpotPosts/TOGGLE_POST";
-const GET_FOLLOWED_SKATE_SPOTS = "abd/skateSpotPosts/GET_FOLLOWED_SKATE_SPOTS";
+const GET_FOLLOWED_SKATE_POSTS = "abd/skateSpotPosts/GET_FOLLOWED_SKATE_POSTS";
 
 export const setSpotPosts = (posts) => {
   return {
@@ -18,10 +18,10 @@ export const showPost = (isShowPost) => {
   };
 };
 
-export const followedSkateSpots = (skateSpots) => {
+export const followedSkatePosts = (skatePosts) => {
   return {
-    type: GET_FOLLOWED_SKATE_SPOTS,
-    skateSpots,
+    type: GET_FOLLOWED_SKATE_POSTS,
+    skatePosts,
   };
 };
 
@@ -50,25 +50,32 @@ export const isShowPost = (toggle) => (dispatch) => {
   dispatch(showPost(!toggle));
 };
 
-export const getFollowedSkateSpots = (skaterId) => async (dispatch) => {
+export const getFollowedSkatePosts = (followedSkateSpots) => async (
+  dispatch
+) => {
   try {
-    let res = await fetch(
-      `{api.url}/skatespots/${skaterId}/followed-skate-spots`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
-        },
+    const followedFeed = [];
+    followedSkateSpots.forEach(async (skateSpot) => {
+      let res = await fetch(
+        `${api.url}/skatespots/following/${skateSpot.skateSpotId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+          },
+        }
+      );
+
+      if (!res.ok) {
+        throw res;
       }
-    );
 
-    if (!res.ok) {
-      throw res;
-    }
+      res = await res.json();
 
-    res = await res.json();
+      followedFeed.push(...res);
+    });
 
-    dispatch(followedSkateSpots(res));
+    dispatch(followedSkatePosts(followedFeed));
   } catch (err) {
     console.error(err);
   }
@@ -91,10 +98,10 @@ export default function reducer(
         isShowingPost: action.isShowPost,
       };
     }
-    case GET_FOLLOWED_SKATE_SPOTS: {
+    case GET_FOLLOWED_SKATE_POSTS: {
       return {
         ...state,
-        getFollowedSkateSpots: action.skateSpots,
+        followedSkatePosts: action.skatePosts,
       };
     }
     default:

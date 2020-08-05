@@ -3,11 +3,19 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { login } from "../../store/authentication";
-import { TextField, Button, makeStyles, Box, Card, CardContent, CardHeader } from "@material-ui/core";
+import {
+  TextField,
+  Button,
+  makeStyles,
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+} from "@material-ui/core";
 
 const useStyles = makeStyles({
   input: {
-    color: "white"
+    color: "white",
   },
   login: {
     paddingRight: 20,
@@ -18,13 +26,13 @@ const useStyles = makeStyles({
     marginTop: 30,
   },
   focused: {
-    color: "#326C73"
+    color: "#326C73",
   },
   loginForm: {
     fontFamily: "Rock Salt",
     color: "white",
-    fontSize: 20
-  }
+    fontSize: 20,
+  },
 });
 
 const LoginPanel = ({ history }) => {
@@ -37,7 +45,7 @@ const LoginPanel = ({ history }) => {
   const handleSetPassword = (e) => setPassword(e.target.value);
   const handleLogin = () => {
     dispatch(login(username, password));
-    history.push('/skatespots');
+    history.push("/skater-feed");
   };
 
   const handleSignUp = () => history.push("/sign-up");
@@ -52,7 +60,7 @@ const LoginPanel = ({ history }) => {
       <form>
         <Card
           style={{
-            backgroundColor: "rgba(0, 0, 0, .25)"
+            backgroundColor: "rgba(0, 0, 0, .25)",
           }}
         >
           <CardHeader
@@ -95,10 +103,16 @@ const LoginPanel = ({ history }) => {
               justifyContent="flex-end"
               className={classes.loginButton}
             >
-              <Button style={{ color: "white", fontFamily: "Rock Salt" }} onClick={handleSignUp}>
+              <Button
+                style={{ color: "white", fontFamily: "Rock Salt" }}
+                onClick={handleSignUp}
+              >
                 Sign Up
               </Button>
-              <Button style={{ color: "white", fontFamily: "Rock Salt" }} onClick={handleLogin}>
+              <Button
+                style={{ color: "white", fontFamily: "Rock Salt" }}
+                onClick={handleLogin}
+              >
                 Log In
               </Button>
             </Box>
