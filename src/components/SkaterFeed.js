@@ -12,9 +12,10 @@ import {
   IconButton,
   CardContent,
   Typography,
-  Box
+  Box,
 } from "@material-ui/core";
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import VideoPlayer from "react-video-js-player";
 
 import api from "../utils";
 import { getFollowedSkatePosts } from "../store/skateSpotPosts";
@@ -23,17 +24,17 @@ import Navbar from "./utils/Navbar";
 const useStyles = makeStyles({
   root: {
     maxWidth: 500,
-    margin: "50px auto"
+    margin: "50px auto",
   },
   media: {
     height: 0,
     paddingTop: "56.25%",
-    objectFit: "contain"
+    objectFit: "contain",
   },
   commentUsername: {
     paddingRight: "5px",
-    fontWeight: "bold"
-  }
+    fontWeight: "bold",
+  },
 });
 
 const SkaterFeed = ({ history }) => {
@@ -83,16 +84,22 @@ const SkaterFeed = ({ history }) => {
                   avatar={
                     <Avatar aria-label="skate-post" className={classes.avatar}>
                       R
-                  </Avatar>
+                    </Avatar>
                   }
                   title={post.skater.username}
                   subheader={post.caption}
                 />
-                <CardMedia
-                  className={classes.media}
-                  image={post.post[0]}
-                  title="Paella dish"
-                />
+                {post.post[0].endsWith(".mp4") ? (
+                  <VideoPlayer
+                    controls={true}
+                    src={post.post[0]}
+                    width={500}
+                    height={281.25}
+                    type="video/mp4"
+                  />
+                ) : (
+                  <CardMedia className={classes.media} image={post.post[0]} />
+                )}
                 <CardActions disableSpacing>
                   <IconButton aria-label="add to favorites">
                     <FavoriteIcon /> {/* Add custom skateboard icon */}
@@ -103,20 +110,23 @@ const SkaterFeed = ({ history }) => {
                     post.SkatePostComments.map((comment, i) => {
                       return (
                         <Box display="flex" key={i}>
-                          <Typography variant="subtitle2" gutterBottom className={classes.commentUsername}>
+                          <Typography
+                            variant="subtitle2"
+                            gutterBottom
+                            className={classes.commentUsername}
+                          >
                             {comment.skaterCommenter.username}
                           </Typography>
                           <Typography variant="body2" gutterBottom>
                             {comment.comment}
                           </Typography>
                         </Box>
-                      )
+                      );
                     })}
                 </Container>
               </Card>
             );
-          })
-        }
+          })}
       </div>
     </>
   );
