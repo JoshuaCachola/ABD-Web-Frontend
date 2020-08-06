@@ -37,6 +37,7 @@ const useStyles = makeStyles({
     maxWidth: "100%",
     width: "293px",
     height: "293px",
+    objectFit: "contain"
   },
 });
 
@@ -85,12 +86,12 @@ const SkateSpotFeed = ({
                     width="293px"
                   />
                 ) : (
-                  <img
-                    className={classes.skateFeedImg}
-                    src={post[0]}
-                    alt="skate-pic"
-                  />
-                )}
+                    <img
+                      className={classes.skateFeedImg}
+                      src={post[0]}
+                      alt="skate-pic"
+                    />
+                  )}
               </div>
             );
           })}

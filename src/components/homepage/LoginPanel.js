@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import { connect } from "react-redux";
 import { useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -12,7 +12,8 @@ import {
   CardContent,
   CardHeader,
 } from "@material-ui/core";
-
+import api from "../../utils";
+import { getFollowedSkatePosts } from "../../store/skateSpotPosts";
 const useStyles = makeStyles({
   input: {
     color: "white",
@@ -49,6 +50,7 @@ const LoginPanel = ({ history }) => {
   };
 
   const handleSignUp = () => history.push("/sign-up");
+
 
   return (
     <Box

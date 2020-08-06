@@ -53,9 +53,9 @@ export const isShowPost = (toggle) => (dispatch) => {
 export const getFollowedSkatePosts = (followedSkateSpots) => async (
   dispatch
 ) => {
+  let followedFeed = [];
   try {
-    const followedFeed = [];
-    followedSkateSpots.forEach(async (skateSpot) => {
+    followedSkateSpots.forEach(async (skateSpot, i) => {
       let res = await fetch(
         `${api.url}/skatespots/following/${skateSpot.skateSpotId}`,
         {
@@ -71,11 +71,11 @@ export const getFollowedSkatePosts = (followedSkateSpots) => async (
       }
 
       res = await res.json();
-
-      followedFeed.push(...res);
+      followedFeed = [...followedFeed, ...res];
+      if (i === followedSkateSpots.length - 1) {
+        dispatch(followedSkatePosts(followedFeed));
+      }
     });
-
-    dispatch(followedSkatePosts(followedFeed));
   } catch (err) {
     console.error(err);
   }

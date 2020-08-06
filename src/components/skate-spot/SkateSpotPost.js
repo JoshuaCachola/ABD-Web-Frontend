@@ -28,6 +28,13 @@ const useStyles = makeStyles({
     marginTop: 2,
     fontFamily: "Raleway",
   },
+  skateSpotPostImg: {
+    width: "100%",
+    height: "auto",
+    justifyContent: "center",
+    alignItems: "center",
+    objectFit: "contain"
+  }
 });
 
 const SkateSpotPost = ({
@@ -52,7 +59,15 @@ const SkateSpotPost = ({
 
   useEffect(() => {
     getComments();
-  });
+  }, []);
+
+  // clean up function to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      setComment("");
+      setPostComments([]);
+    };
+  }, []);
 
   const getComments = async () => {
     try {
@@ -122,14 +137,14 @@ const SkateSpotPost = ({
               type="video/mp4"
             />
           ) : (
-            <div className="skate-spot__post-image-container">
-              <img
-                className="skate-spot__post-img"
-                src={post[0]}
-                alt="skate-pic"
-              />
-            </div>
-          )}
+              <div className="skate-spot__post-image-container">
+                <img
+                  className={classes.skateSpotPostImg}
+                  src={post[0]}
+                  alt="skate-pic"
+                />
+              </div>
+            )}
         </Box>
         <Box display="flex" flexDirection="column">
           <Card className="skate-spot__comment-container">

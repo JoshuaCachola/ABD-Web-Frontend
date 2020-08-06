@@ -36,6 +36,7 @@ const useStyles = makeStyles({
     textAlign: "center",
     padding: "0 5px",
     margin: "0 20px",
+    cursor: "pointer"
   },
   navbarIcons: {
     paddingLeft: "16px",
@@ -76,11 +77,15 @@ const Navbar = ({ history }) => {
     history.push("/");
   };
 
+  const handleRouteHome = () => {
+    history.push("/skater-feed");
+  };
+
   const classes = useStyles();
   return (
     <nav className={classes.navbar}>
       <Box display="flex" justifyContent="space-around" alignItems="center">
-        <Box className={classes.navbarLogo}>
+        <Box className={classes.navbarLogo} onClick={handleRouteHome}>
           <h1>already been done</h1>
         </Box>
         <Box className={classes.search}>
