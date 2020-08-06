@@ -98,7 +98,7 @@ const SkaterFeed = ({ history }) => {
                     <FavoriteIcon /> {/* Add custom skateboard icon */}
                   </IconButton>
                 </CardActions>
-                <CardContent>
+                <Container>
                   {post.SkatePostComments.length > 0 &&
                     post.SkatePostComments.map((comment, i) => {
                       return (
@@ -112,7 +112,7 @@ const SkaterFeed = ({ history }) => {
                         </Box>
                       )
                     })}
-                </CardContent>
+                </Container>
               </Card>
             );
           })
