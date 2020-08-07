@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { setSkateSpots, setCurrentSkateSpot } from "../store/skateSpots";
+import { setSkateSpots } from "../store/skateSpots";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { makeStyles, Box, Button, Avatar } from "@material-ui/core";
@@ -9,6 +9,7 @@ import { makeStyles, Box, Button, Avatar } from "@material-ui/core";
 // Components
 import Navbar from "./utils/Navbar";
 import api from "../utils";
+import { setCurrentSkateSpot } from "../store/skateSpots";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,6 +69,9 @@ const SkateSpots = ({ history }) => {
   const skateSpots = useSelector(
     ({ skateSpotFeed }) => skateSpotFeed.skateSpots
   );
+  const followedSpots = useSelector(({ skateSpotFeed }) => skateSpotFeed.followedSkateSpots);
+  // const [currentSkateSpot, setCurrentSkateSpot] = useState({});
+  const [followedSkateSpots, setFollowedSkateSpots] = useState({});
   useEffect(
     () => {
       if (!skateSpots.length) {
@@ -76,6 +80,50 @@ const SkateSpots = ({ history }) => {
     },
     // eslint-disable-next-line
     [skateSpots, skateSpots.length, setSkateSpots]
+  );
+
+  const updateFollowedSpots = () => {
+    const followedSpotsObj = {};
+    skateSpots.forEach(spot => {
+      const foundSpot = followedSpots.find(skateSpot => skateSpot.skateSpotId === spot.id);
+      console.log(spot)
+      if (foundSpot) {
+        followedSpotsObj[spot.id] = true;
+      } else {
+        followedSpotsObj[spot.id] = false;
+      }
+    });
+    console.log(followedSpotsObj);
+    setFollowedSkateSpots(followedSpotsObj);
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        let res = await fetch(`${api.url}/skatespots/following`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw res;
+        }
+
+        res = await res.json();
+        dispatch(setFollowedSkateSpots(res));
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    updateFollowedSpots();
+  },
+    // eslint-disable-next-line
+    []
   );
 
   const followSkateSpot = async (skateSpotId) => {
@@ -91,6 +139,33 @@ const SkateSpots = ({ history }) => {
       if (!res.ok) {
         throw res;
       }
+
+      const newFollowedSpots = { ...followedSkateSpots };
+      newFollowedSpots[skateSpotId] = true;
+      setFollowedSkateSpots(newFollowedSpots);
+      // updateFollowedSpots();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const unfollowSkateSpot = async (skateSpotId) => {
+    try {
+      const res = await fetch(`${api.url}/skatespots/${skateSpotId}/unfollow`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw res;
+      }
+
+      const newFollowedSpots = { ...followedSkateSpots };
+      newFollowedSpots[skateSpotId] = false;
+      setFollowedSkateSpots(newFollowedSpots);
     } catch (err) {
       console.error(err);
     }
@@ -100,7 +175,6 @@ const SkateSpots = ({ history }) => {
     dispatch(setCurrentSkateSpot(skateSpot));
     history.push(`/skatespots/${skateSpotId}`);
   };
-
   const classes = useStyles();
   return (
     <>
@@ -119,7 +193,7 @@ const SkateSpots = ({ history }) => {
           >
             <Card className={classes.root}>
               {skateSpots.map((skateSpot) => (
-                <CardContent key={skateSpot.id}>
+                <CardContent key={skateSpot.id} id={skateSpot.id}>
                   {/* <Link
                     to={{
                       pathname: `/skatespots/${skateSpot.id}`,
@@ -158,13 +232,22 @@ const SkateSpots = ({ history }) => {
                       </Box>
                     </Box>
                     <Box justifyContent="flex-end" className={classes.buttons}>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={() => followSkateSpot(skateSpot.id)}
-                      >
-                        Follow
+                      {followedSkateSpots[skateSpot.id] ?
+                        <Button
+                          color="secondary"
+                          onClick={() => unfollowSkateSpot(skateSpot.id)}
+                        >
+                          Unfollow
+                        </Button>
+                        :
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => followSkateSpot(skateSpot.id)}
+                        >
+                          Follow
                       </Button>
+                      }
                     </Box>
                   </Box>
                   {/* </Link> */}

@@ -19,6 +19,7 @@ import VideoPlayer from "react-video-js-player";
 
 import api from "../utils";
 import { getFollowedSkatePosts } from "../store/skateSpotPosts";
+import { setFollowedSkateSpots } from "../store/skateSpots";
 import Navbar from "./utils/Navbar";
 
 const useStyles = makeStyles({
@@ -27,8 +28,8 @@ const useStyles = makeStyles({
     margin: "50px auto",
   },
   media: {
-    height: 0,
-    paddingTop: "56.25%",
+    height: "281.25px",
+    width: "500px",
     objectFit: "contain",
   },
   commentUsername: {
@@ -59,7 +60,7 @@ const SkaterFeed = ({ history }) => {
         }
 
         res = await res.json();
-
+        // dispatch(setFollowedSkateSpots(res));
         if (!res.length) {
           history.push("/skatespots");
         } else {
@@ -98,8 +99,8 @@ const SkaterFeed = ({ history }) => {
                     type="video/mp4"
                   />
                 ) : (
-                  <CardMedia className={classes.media} image={post.post[0]} />
-                )}
+                    <img className={classes.media} src={post.post[0]} alt="skate-img" />
+                  )}
                 <CardActions disableSpacing>
                   <IconButton aria-label="add to favorites">
                     <FavoriteIcon /> {/* Add custom skateboard icon */}

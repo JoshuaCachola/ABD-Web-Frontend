@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { Box, makeStyles, Tooltip } from "@material-ui/core";
 import { AddAPhoto } from "@material-ui/icons";
@@ -9,6 +9,7 @@ import SkateSpotFeed from "./SkateSpotFeed";
 import SkateSpotDetails from "./SkateSpotDetails";
 import { setSkateSpot } from "../../store/skateSpots";
 import { theme } from "../../theme";
+import { getSpotPosts } from "../../store/skateSpotPosts";
 
 const useStyles = makeStyles({
   root: {
@@ -23,7 +24,7 @@ const useStyles = makeStyles({
     margin: "auto auto",
     justifyContent: "center",
     display: "flex",
-    maxWidth: "95%",
+    maxWidth: "80%",
   },
   addAPhoto: {
     cursor: "pointer",
@@ -34,14 +35,16 @@ const useStyles = makeStyles({
 });
 
 const SkateSpot = ({ match, history }) => {
-  // const dispatch = useDispatch();
   const skateSpot = useSelector(
     ({ skateSpotFeed }) => skateSpotFeed.currentSkateSpot
   );
-  const skateSpotDetails = useRef(skateSpot);
-  // const { skateSpot } = location.state;
-  const id = match.url.split("/")[2];
 
+  const skateSpotDetails = useRef(skateSpot);
+  const id = match.url.split("/")[2];
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getSpotPosts(id));
+  }, []);
   const handleAddPost = (e) => {
     history.push(`/skatespots/${id}/post`);
   };
@@ -80,17 +83,5 @@ const SkateSpot = ({ match, history }) => {
     </>
   );
 };
-
-// const mapStateToProps = (state) => {
-//   return {
-//     skateSpot: state.skateSpotFeed.skateSpot,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     setSkateSpot: (skateSpot) => dispatch(setSkateSpot(skateSpot)),
-//   };
-// };
 
 export default withRouter(SkateSpot);

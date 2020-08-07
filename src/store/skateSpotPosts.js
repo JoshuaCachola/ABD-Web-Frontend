@@ -3,6 +3,7 @@ import api from "../utils";
 const SET_SPOT_POSTS = "abd/skateSpotPosts/SET_SPOT_DETAILS";
 const TOGGLE_POST = "abd/skateSpotPosts/TOGGLE_POST";
 const GET_FOLLOWED_SKATE_POSTS = "abd/skateSpotPosts/GET_FOLLOWED_SKATE_POSTS";
+const GET_NUMBER_OF_POSTS = "abd/skateSpotPosts/GET_NUMBER_OF_POSTS";
 
 export const setSpotPosts = (posts) => {
   return {
@@ -25,6 +26,13 @@ export const followedSkatePosts = (skatePosts) => {
   };
 };
 
+export const getNumberOfPosts = num => {
+  return {
+    type: GET_NUMBER_OF_POSTS,
+    num
+  };
+};
+
 export const getSpotPosts = (id) => async (dispatch) => {
   try {
     const res = await fetch(`${api.url}/skatespots/${id}/posts`, {
@@ -41,6 +49,7 @@ export const getSpotPosts = (id) => async (dispatch) => {
     const posts = await res.json();
 
     dispatch(setSpotPosts(posts));
+    dispatch(getNumberOfPosts(posts.length));
   } catch (err) {
     console.error(err);
   }
@@ -82,7 +91,7 @@ export const getFollowedSkatePosts = (followedSkateSpots) => async (
 };
 
 export default function reducer(
-  state = { posts: [], isShowingPost: false, postDetails: {} },
+  state = { posts: [], isShowingPost: false, postDetails: {}, num: 0 },
   action
 ) {
   switch (action.type) {
@@ -103,6 +112,12 @@ export default function reducer(
         ...state,
         followedSkatePosts: action.skatePosts,
       };
+    }
+    case GET_NUMBER_OF_POSTS: {
+      return {
+        ...state,
+        getNumberOfPosts: action.num
+      }
     }
     default:
       return state;

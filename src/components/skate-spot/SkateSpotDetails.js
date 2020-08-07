@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Box, Avatar, makeStyles, Container } from "@material-ui/core";
+import { useSelector } from "react-redux";
+import { Box, Avatar, makeStyles, Container, Button } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
   skateSpotName: {
     fontSize: "24px",
     lineHeight: "32px",
+    fontWeight: "bold"
   },
   skateSpotDetails: {
     margin: "20px 90px 20px 20px",
@@ -49,18 +51,20 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
   },
+  bold: {
+    fontWeight: "bold"
+  }
 }));
 
 const SkateSpotDetails = ({ skateSpotDetails }) => {
   const [skateSpot, setSkateSpot] = useState({});
-
+  const numOfPosts = useSelector(({ skateSpotPosts }) => skateSpotPosts.getNumberOfPosts);
   useEffect(() => {
     if (Object.keys(skateSpotDetails).length === 0) {
       setSkateSpot(JSON.parse(localStorage.getItem("CURRENT_SKATE_SPOT")));
     } else {
       setSkateSpot(skateSpotDetails);
     }
-    console.log(skateSpot);
   }, [Object.keys(skateSpotDetails).length, skateSpotDetails]);
 
   console.log(skateSpotDetails);
@@ -82,7 +86,7 @@ const SkateSpotDetails = ({ skateSpotDetails }) => {
             </div>
           </Box>
           <Box className="skate-spot-details__child skate-spot-details__child-text">
-            <div className={classes.skateSpotName}>
+            <Box mb={2} display="flex" className={classes.skateSpotName}>
               <span className="skate-spot-details__check">
                 {skateSpot.name} &nbsp;
                 <CheckCircleIcon
@@ -90,9 +94,27 @@ const SkateSpotDetails = ({ skateSpotDetails }) => {
                   className={classes.checkCircle}
                 />
               </span>
-            </div>
-            <div className={classes.skateSpotCity}>{skateSpot.city}</div>
-            <div className={classes.skateSpotState}>{skateSpot.state}</div>
+              <Box pl={2}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                >
+                  Follow
+              </Button>
+              </Box>
+            </Box>
+            <Box mb={2} display="flex">
+              <div className={classes.skateSpotCity}>{skateSpot.city}, {skateSpot.state}</div>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box>
+                <span className={classes.bold}>{skateSpot.following}</span> {skateSpot.following === 1 ? "follower" : "follower"}
+              </Box>
+              <Box>
+                <span className={classes.bold}>{numOfPosts}</span> {numOfPosts === 1 ? "post" : "posts"}
+              </Box>
+            </Box>
           </Box>
         </>
       )}

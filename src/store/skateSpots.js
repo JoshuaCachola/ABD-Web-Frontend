@@ -3,7 +3,7 @@ import api from "../utils";
 const SET_SPOTS = "abd/skateSpots/SET_SPOTS";
 const SET_SPOT = "abd/skateSpots/SET_SPOT";
 const CURRENT_SKATE_SPOT = "abd/skateSpots/CURRENT_SKATE_SPOT";
-// const FOLLOW_SKATE_SPOT = "abd/skateSpots/FOLLOW_SKATE_SPOT";
+const FOLLOWED_SKATE_SPOTS = "abd/skateSpots/FOLLOWED_SKATE_SPOTS";
 
 export const setSpots = (skateSpots) => {
   return {
@@ -19,12 +19,12 @@ export const setSpot = (skateSpot) => {
   };
 };
 
-// export const followSpot = (skateSpot) => {
-//   return {
-//     type: FOLLOW_SKATE_SPOT,
-//     skateSpot,
-//   };
-// };
+export const followSpot = (followedSkateSpots) => {
+  return {
+    type: FOLLOWED_SKATE_SPOTS,
+    followedSkateSpots,
+  };
+};
 
 export const currentSkateSpot = (currentSkateSpot) => {
   return {
@@ -58,9 +58,9 @@ export const setSkateSpot = (skateSpot) => (dispatch) => {
   dispatch(setSpot(skateSpot));
 };
 
-// export const followSkateSpot = (skateSpotId) => (dispatch) => {
-
-// };
+export const setFollowedSkateSpots = (skateSpots) => (dispatch) => {
+  dispatch(followSpot(skateSpots));
+};
 
 export const setCurrentSkateSpot = (skateSpot) => (dispatch) => {
   localStorage.setItem("CURRENT_SKATE_SPOT", JSON.stringify(skateSpot));
@@ -68,7 +68,7 @@ export const setCurrentSkateSpot = (skateSpot) => (dispatch) => {
 };
 
 export default function reducer(
-  state = { skateSpots: [], skateSpot: {}, currentSkateSpot: {} },
+  state = { skateSpots: [], skateSpot: {}, currentSkateSpot: {}, followedSkateSpots: [] },
   action
 ) {
   switch (action.type) {
@@ -90,7 +90,12 @@ export default function reducer(
         currentSkateSpot: action.currentSkateSpot,
       };
     }
-    default:
-      return state;
+    case FOLLOWED_SKATE_SPOTS: {
+      return {
+        ...state,
+        followedSkateSpots: action.followedSkateSpots
+      }
+    }
+    default: return state;
   }
 }
