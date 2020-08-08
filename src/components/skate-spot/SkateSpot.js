@@ -32,6 +32,11 @@ const useStyles = makeStyles({
       color: `${theme.palette.secondary.main}`,
     },
   },
+  skateSpotMenuBarButton: {
+    // borderTop: "1px solid #c8c8c8",
+    maxWidth: "80%",
+    margin: "5px auto",
+  },
 });
 
 const SkateSpot = ({ match, history }) => {
@@ -51,7 +56,7 @@ const SkateSpot = ({ match, history }) => {
 
   const classes = useStyles();
   return (
-    <>
+    <div>
       <nav>
         <Navbar />
       </nav>
@@ -69,7 +74,11 @@ const SkateSpot = ({ match, history }) => {
           {/* <div className="skate-spot__menu-bar-button">All</div>
           <div className="skate-spot__menu-bar-button">Images</div>
           <div className="skate-spot__menu-bar-button">Videos</div> */}
-          <Box className="skate-spot__menu-bar-button">
+          <Box
+            className={classes.skateSpotMenuBarButton}
+            display="flex"
+            justifyContent="center"
+          >
             <Tooltip title="Post a photo to this spot">
               <AddAPhoto
                 className={classes.addAPhoto}
@@ -83,7 +92,7 @@ const SkateSpot = ({ match, history }) => {
           <SkateSpotFeed id={id} className={classes.child} />
         </Box>
       </Box>
-    </>
+    </div>
   );
 };
 
