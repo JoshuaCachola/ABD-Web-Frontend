@@ -58,7 +58,7 @@ export const setSkateSpot = (skateSpot) => (dispatch) => {
   dispatch(setSpot(skateSpot));
 };
 
-export const setFollowedSkateSpots = (skateSpots) => (dispatch) => {
+export const setYourFollowedSpots = (skateSpots) => (dispatch) => {
   dispatch(followSpot(skateSpots));
 };
 
@@ -68,7 +68,12 @@ export const setCurrentSkateSpot = (skateSpot) => (dispatch) => {
 };
 
 export default function reducer(
-  state = { skateSpots: [], skateSpot: {}, currentSkateSpot: {}, followedSkateSpots: [] },
+  state = {
+    skateSpots: [],
+    skateSpot: {},
+    currentSkateSpot: {},
+    followedSkateSpots: [],
+  },
   action
 ) {
   switch (action.type) {
@@ -93,9 +98,10 @@ export default function reducer(
     case FOLLOWED_SKATE_SPOTS: {
       return {
         ...state,
-        followedSkateSpots: action.followedSkateSpots
-      }
+        followedSkateSpots: action.followedSkateSpots,
+      };
     }
-    default: return state;
+    default:
+      return state;
   }
 }

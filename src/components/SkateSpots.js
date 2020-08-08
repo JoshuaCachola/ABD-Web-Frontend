@@ -10,6 +10,7 @@ import { makeStyles, Box, Button, Avatar } from "@material-ui/core";
 import Navbar from "./utils/Navbar";
 import api from "../utils";
 import { setCurrentSkateSpot } from "../store/skateSpots";
+import { setYourFollowedSpots } from "../store/skateSpots";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,9 +70,35 @@ const SkateSpots = ({ history }) => {
   const skateSpots = useSelector(
     ({ skateSpotFeed }) => skateSpotFeed.skateSpots
   );
-  const followedSpots = useSelector(({ skateSpotFeed }) => skateSpotFeed.followedSkateSpots);
-  // const [currentSkateSpot, setCurrentSkateSpot] = useState({});
-  const [followedSkateSpots, setFollowedSkateSpots] = useState({});
+
+  // followed spots queried from db
+  const [followedSpots, setFollowedSpots] = useState([]);
+
+  // gets followed skate spots and updates followedSpots state
+  const getFollowedSpots = async () => {
+    try {
+      let res = await fetch(`${api.url}/skatespots/following`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw res;
+      }
+
+      res = await res.json();
+      setFollowedSpots(res);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    getFollowedSpots();
+  }, [followedSpots.length]);
+
   useEffect(
     () => {
       if (!skateSpots.length) {
@@ -82,90 +109,40 @@ const SkateSpots = ({ history }) => {
     [skateSpots, skateSpots.length, setSkateSpots]
   );
 
-  const updateFollowedSpots = () => {
-    const followedSpotsObj = {};
-    skateSpots.forEach(spot => {
-      const foundSpot = followedSpots.find(skateSpot => skateSpot.skateSpotId === spot.id);
-      console.log(spot)
-      if (foundSpot) {
-        followedSpotsObj[spot.id] = true;
+  const followSkateSpot = async (skateSpotId, type) => {
+    try {
+      let res;
+      if (type === "follow") {
+        res = await fetch(`${api.url}/skatespots/${skateSpotId}/follow`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+          },
+        });
       } else {
-        followedSpotsObj[spot.id] = false;
-      }
-    });
-    console.log(followedSpotsObj);
-    setFollowedSkateSpots(followedSpotsObj);
-  };
-
-  useEffect(() => {
-    (async () => {
-      try {
-        let res = await fetch(`${api.url}/skatespots/following`, {
+        res = await fetch(`${api.url}/skatespots/${skateSpotId}/unfollow`, {
+          method: "DELETE",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
           },
         });
 
-        if (!res.ok) {
-          throw res;
-        }
-
-        res = await res.json();
-        dispatch(setFollowedSkateSpots(res));
-      } catch (err) {
-        console.error(err);
+        console.log("it worked");
+        const newArr = followedSpots.filter(
+          (spot) => spot.skateSpotId !== skateSpotId
+        );
+        setFollowedSpots(newArr);
+        console.log("im here");
+        return;
       }
-    })();
-  }, []);
-
-  useEffect(() => {
-    updateFollowedSpots();
-  },
-    // eslint-disable-next-line
-    []
-  );
-
-  const followSkateSpot = async (skateSpotId) => {
-    try {
-      const res = await fetch(`${api.url}/skatespots/${skateSpotId}/follow`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
-        },
-      });
 
       if (!res.ok) {
         throw res;
       }
 
-      const newFollowedSpots = { ...followedSkateSpots };
-      newFollowedSpots[skateSpotId] = true;
-      setFollowedSkateSpots(newFollowedSpots);
-      // updateFollowedSpots();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const unfollowSkateSpot = async (skateSpotId) => {
-    try {
-      const res = await fetch(`${api.url}/skatespots/${skateSpotId}/unfollow`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
-        },
-      });
-
-      if (!res.ok) {
-        throw res;
-      }
-
-      const newFollowedSpots = { ...followedSkateSpots };
-      newFollowedSpots[skateSpotId] = false;
-      setFollowedSkateSpots(newFollowedSpots);
+      getFollowedSpots();
     } catch (err) {
       console.error(err);
     }
@@ -175,6 +152,7 @@ const SkateSpots = ({ history }) => {
     dispatch(setCurrentSkateSpot(skateSpot));
     history.push(`/skatespots/${skateSpotId}`);
   };
+  console.log(followedSpots);
   const classes = useStyles();
   return (
     <>
@@ -232,22 +210,28 @@ const SkateSpots = ({ history }) => {
                       </Box>
                     </Box>
                     <Box justifyContent="flex-end" className={classes.buttons}>
-                      {followedSkateSpots[skateSpot.id] ?
+                      {followedSpots.find(
+                        (spot) => spot.skateSpotId === skateSpot.id
+                      ) ? (
                         <Button
                           color="secondary"
-                          onClick={() => unfollowSkateSpot(skateSpot.id)}
+                          onClick={() =>
+                            followSkateSpot(skateSpot.id, "unfollow")
+                          }
                         >
                           Unfollow
                         </Button>
-                        :
+                      ) : (
                         <Button
                           variant="contained"
                           color="secondary"
-                          onClick={() => followSkateSpot(skateSpot.id)}
+                          onClick={() =>
+                            followSkateSpot(skateSpot.id, "follow")
+                          }
                         >
                           Follow
-                      </Button>
-                      }
+                        </Button>
+                      )}
                     </Box>
                   </Box>
                   {/* </Link> */}
