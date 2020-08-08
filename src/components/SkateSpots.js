@@ -128,14 +128,6 @@ const SkateSpots = ({ history }) => {
             Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
           },
         });
-
-        console.log("it worked");
-        const newArr = followedSpots.filter(
-          (spot) => spot.skateSpotId !== skateSpotId
-        );
-        setFollowedSpots(newArr);
-        console.log("im here");
-        return;
       }
 
       if (!res.ok) {

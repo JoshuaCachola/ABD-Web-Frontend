@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Box, Avatar, makeStyles, Container, Button } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 
+import api from "../../utils";
 const useStyles = makeStyles((theme) => ({
   large: {
     width: theme.spacing(20),
@@ -39,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   skateSpotName: {
     fontSize: "24px",
     lineHeight: "32px",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   skateSpotDetails: {
     margin: "20px 90px 20px 20px",
@@ -52,13 +53,16 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   bold: {
-    fontWeight: "bold"
-  }
+    fontWeight: "bold",
+  },
 }));
 
-const SkateSpotDetails = ({ skateSpotDetails }) => {
+const SkateSpotDetails = ({ skateSpotDetails, id }) => {
   const [skateSpot, setSkateSpot] = useState({});
-  const numOfPosts = useSelector(({ skateSpotPosts }) => skateSpotPosts.getNumberOfPosts);
+  const [following, setFollowing] = useState(false);
+  const numOfPosts = useSelector(
+    ({ skateSpotPosts }) => skateSpotPosts.getNumberOfPosts
+  );
   useEffect(() => {
     if (Object.keys(skateSpotDetails).length === 0) {
       setSkateSpot(JSON.parse(localStorage.getItem("CURRENT_SKATE_SPOT")));
@@ -67,7 +71,63 @@ const SkateSpotDetails = ({ skateSpotDetails }) => {
     }
   }, [Object.keys(skateSpotDetails).length, skateSpotDetails]);
 
-  console.log(skateSpotDetails);
+  useEffect(() => {
+    (async () => {
+      try {
+        let res = await fetch(`${api.url}/skatespots/${id}/following`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw res;
+        }
+
+        res = await res.json();
+        if (res) {
+          setFollowing(true);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  });
+
+  const followSkateSpot = async (skateSpotId, type) => {
+    try {
+      let res;
+      if (type === "follow") {
+        res = await fetch(`${api.url}/skatespots/${skateSpotId}/follow`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+          },
+        });
+
+        setFollowing(true);
+      } else {
+        res = await fetch(`${api.url}/skatespots/${skateSpotId}/unfollow`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+          },
+        });
+
+        setFollowing(false);
+      }
+
+      if (!res.ok) {
+        throw res;
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const classes = useStyles();
   return (
     <Container className={classes.root}>
@@ -95,24 +155,37 @@ const SkateSpotDetails = ({ skateSpotDetails }) => {
                 />
               </span>
               <Box pl={2}>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="small"
-                >
-                  Follow
-              </Button>
+                {following ? (
+                  <Button
+                    color="secondary"
+                    onClick={() => followSkateSpot(skateSpot.id, "unfollow")}
+                  >
+                    Unfollow
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => followSkateSpot(skateSpot.id, "follow")}
+                  >
+                    Follow
+                  </Button>
+                )}
               </Box>
             </Box>
             <Box mb={2} display="flex">
-              <div className={classes.skateSpotCity}>{skateSpot.city}, {skateSpot.state}</div>
+              <div className={classes.skateSpotCity}>
+                {skateSpot.city}, {skateSpot.state}
+              </div>
             </Box>
-            <Box display="flex" justifyContent="space-between">
-              <Box>
-                <span className={classes.bold}>{skateSpot.following}</span> {skateSpot.following === 1 ? "follower" : "follower"}
+            <Box display="flex">
+              <Box mr={4}>
+                <span className={classes.bold}>{skateSpot.following}</span>{" "}
+                {skateSpot.following === 1 ? "follower" : "follower"}
               </Box>
               <Box>
-                <span className={classes.bold}>{numOfPosts}</span> {numOfPosts === 1 ? "post" : "posts"}
+                <span className={classes.bold}>{numOfPosts}</span>{" "}
+                {numOfPosts === 1 ? "post" : "posts"}
               </Box>
             </Box>
           </Box>

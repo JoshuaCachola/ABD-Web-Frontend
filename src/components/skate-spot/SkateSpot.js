@@ -58,7 +58,10 @@ const SkateSpot = ({ match, history }) => {
       <Box className={classes.root}>
         <Box className={classes.child}>
           <Box display="flex" justifyContent="center">
-            <SkateSpotDetails skateSpotDetails={skateSpotDetails.current} />
+            <SkateSpotDetails
+              skateSpotDetails={skateSpotDetails.current}
+              id={id}
+            />
           </Box>
         </Box>
         <br />
