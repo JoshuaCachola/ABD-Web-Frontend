@@ -32,7 +32,7 @@ export const currentSkateSpot = (currentSkateSpot) => {
     currentSkateSpot,
   };
 };
-export const setSkateSpots = () => async (dispatch, getState) => {
+export const setSkateSpots = () => async (dispatch) => {
   try {
     const res = await fetch(`${api.url}/skatespots`, {
       headers: {

@@ -9,6 +9,7 @@ import SkateSpot from "./components/skate-spot/SkateSpot";
 import SkateSpotPost from "./components/skate-spot/SkateSpotPost";
 import SkaterFeed from "./components/SkaterFeed";
 import SignUp from "./components/SignUp";
+import Profile from "./components/Profile";
 import { PrivateRoute } from "./routesUtils";
 import CreateSkateSpot from "./components/CreateSkateSpot";
 import CreateSkatePost from "./components/skate-spot/CreateSkatePost";
@@ -59,6 +60,12 @@ const App = () => {
             exact={true}
             path="/skatespots/:id/posts/:id"
             component={SkateSpotPost}
+            needLogin={needLogin}
+          />
+          <PrivateRoute
+            exact={true}
+            path="/profile"
+            component={Profile}
             needLogin={needLogin}
           />
           <PrivateRoute

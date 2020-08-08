@@ -10,7 +10,6 @@ import { makeStyles, Box, Button, Avatar } from "@material-ui/core";
 import Navbar from "./utils/Navbar";
 import api from "../utils";
 import { setCurrentSkateSpot } from "../store/skateSpots";
-import { setYourFollowedSpots } from "../store/skateSpots";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,9 +66,11 @@ const useStyles = makeStyles((theme) => ({
 
 const SkateSpots = ({ history }) => {
   const dispatch = useDispatch();
+
   const skateSpots = useSelector(
     ({ skateSpotFeed }) => skateSpotFeed.skateSpots
   );
+
 
   // followed spots queried from db
   const [followedSpots, setFollowedSpots] = useState([]);
@@ -144,7 +145,6 @@ const SkateSpots = ({ history }) => {
     dispatch(setCurrentSkateSpot(skateSpot));
     history.push(`/skatespots/${skateSpotId}`);
   };
-  console.log(followedSpots);
   const classes = useStyles();
   return (
     <>
@@ -205,25 +205,25 @@ const SkateSpots = ({ history }) => {
                       {followedSpots.find(
                         (spot) => spot.skateSpotId === skateSpot.id
                       ) ? (
-                        <Button
-                          color="secondary"
-                          onClick={() =>
-                            followSkateSpot(skateSpot.id, "unfollow")
-                          }
-                        >
-                          Unfollow
-                        </Button>
-                      ) : (
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          onClick={() =>
-                            followSkateSpot(skateSpot.id, "follow")
-                          }
-                        >
-                          Follow
-                        </Button>
-                      )}
+                          <Button
+                            color="secondary"
+                            onClick={() =>
+                              followSkateSpot(skateSpot.id, "unfollow")
+                            }
+                          >
+                            Unfollow
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={() =>
+                              followSkateSpot(skateSpot.id, "follow")
+                            }
+                          >
+                            Follow
+                          </Button>
+                        )}
                     </Box>
                   </Box>
                   {/* </Link> */}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import {
   TextField,
@@ -6,8 +6,10 @@ import {
   makeStyles,
   InputAdornment,
   Button,
+  Paper,
+  Typography,
 } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import GroupIcon from "@material-ui/icons/Group";
 import HomeIcon from "@material-ui/icons/Home";
@@ -17,6 +19,7 @@ import MessageIcon from "@material-ui/icons/Message";
 import addSpotImg from "../../images/add-spot.svg";
 import { theme } from "../../theme";
 import { removeToken } from "../../store/authentication";
+import { setSkateSpots } from "../../store/skateSpots";
 
 const useStyles = makeStyles({
   navbar: {
@@ -60,10 +63,42 @@ const useStyles = makeStyles({
       fontWeight: "bold",
     },
   },
+  searchContainer: {
+    position: "absolute",
+    display: "flex",
+    flexDirection: "column",
+    zIndex: 99
+  },
+  searchResults: {
+    maxWidth: "80%",
+    borderBottom: "1px solid #ececec",
+    margin: "5px auto",
+    cursor: "pointer"
+  },
+  lastSearchResult: {
+    maxWidth: "80%",
+    margin: "5px auto",
+    cursor: "pointer"
+  },
+  name: {
+    fontWeight: "bold",
+    fontSize: "14px"
+  },
+  location: {
+    fontSize: "12px",
+    fontStyle: "italic"
+  }
 });
 
 const Navbar = ({ history }) => {
   const dispatch = useDispatch();
+  const [showSearch, setShowSearch] = useState(false);
+
+  useEffect(() => {
+    dispatch(setSkateSpots());
+  }, []);
+
+  const skateSpots = useSelector(({ skateSpotFeed }) => skateSpotFeed.skateSpots);
   const addNewSpot = () => {
     history.push("/skatespots/create-spot");
   };
@@ -81,9 +116,17 @@ const Navbar = ({ history }) => {
     history.push("/skater-feed");
   };
 
+  const handleShowSearch = (e) => {
+    if (e.target.tagName === "INPUT") {
+      setShowSearch(true);
+    } else {
+      setShowSearch(false);
+    }
+  };
+
   const classes = useStyles();
   return (
-    <nav className={classes.navbar}>
+    <nav className={classes.navbar} onClick={e => handleShowSearch(e)}>
       <Box display="flex" justifyContent="space-around" alignItems="center">
         <Box className={classes.navbarLogo} onClick={handleRouteHome}>
           <h1>already been done</h1>
@@ -101,7 +144,27 @@ const Navbar = ({ history }) => {
                 </InputAdornment>
               ),
             }}
+          // ref={search}
           />
+          {showSearch &&
+            <Paper className={classes.searchContainer}>
+              {skateSpots.map((spot, i) => {
+                return (
+                  <Box
+                    display="flex"
+                    key={i}
+                    justifyContent="space-between"
+                    className={i === skateSpots.length - 1 ? classes.lastSearchResult : classes.searchResults}
+                    onClick={() => history.push(`/skatespots/${spot.id}`)}
+                  >
+                    <Typography className={classes.name}>{spot.name} &nbsp;</Typography>
+                    <Typography className={classes.location}>{spot.city}, {spot.state}</Typography>
+                  </Box>
+                )
+              })
+              }
+            </Paper>
+          }
         </Box>
         <Box display="flex" className={classes.iconsContainer}>
           <div onClick={handleHome} className={classes.navbarIcons}>
