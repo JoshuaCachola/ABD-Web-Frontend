@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import {
@@ -6,7 +6,6 @@ import {
   Card,
   CardHeader,
   Avatar,
-  CardMedia,
   Container,
   CardActions,
   IconButton,
@@ -19,7 +18,6 @@ import VideoPlayer from "react-video-js-player";
 
 import api from "../utils";
 import { getFollowedSkatePosts } from "../store/skateSpotPosts";
-import { setFollowedSkateSpots } from "../store/skateSpots";
 import Navbar from "./utils/Navbar";
 
 const useStyles = makeStyles({
@@ -43,7 +41,49 @@ const SkaterFeed = ({ history }) => {
   const skaterFeed = useSelector(
     ({ skateSpotPosts }) => skateSpotPosts.followedSkatePosts
   );
-  const [expanded, setExpanded] = useState({});
+  const [boardTappedPosts, setBoardTappedPosts] = useState([]);
+  const [postBoardTappedState, setPostBoardTappedState] = useState({});
+  // const [expanded, setExpanded] = useState({});
+
+  // get all liked posts for user
+  useEffect(() => {
+    (async () => {
+      try {
+        let res = await fetch(`${api.url}/skateposts/boardtaps`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw res;
+        }
+
+        res = await res.json();
+        setBoardTappedPosts(res);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (skaterFeed) {
+      const postState = {};
+      skaterFeed.forEach((post) => {
+        const foundBoardTapped = boardTappedPosts.find(
+          (tappedPost) => tappedPost.postId === post.id
+        );
+        if (foundBoardTapped) {
+          postState[post.id] = true;
+        } else {
+          postState[post.id] = false;
+        }
+      });
+      setPostBoardTappedState(postState);
+    }
+  }, [skaterFeed]);
 
   useEffect(() => {
     (async () => {
@@ -71,8 +111,46 @@ const SkaterFeed = ({ history }) => {
       }
     })();
   }, []);
-  console.log(skaterFeed);
+
+  const handleTapPost = async (postId, type) => {
+    try {
+      let res;
+      if (type === "tap") {
+        res = await fetch(`${api.url}/skateposts/${postId}/boardtap`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+          },
+        });
+      } else {
+        res = await fetch(`${api.url}/skateposts/${postId}/boardtap`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+          },
+        });
+      }
+
+      if (!res.ok) {
+        throw res;
+      }
+
+      // change state of post to board tapped (liked)
+      const newTappedState = { ...postBoardTappedState };
+      newTappedState[postId] = !newTappedState[postId];
+      setPostBoardTappedState(newTappedState);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const classes = useStyles();
+
+  // if (!skaterFeed) {
+  //   return <h1>Follow a skate spot to get its feed!</h1>;
+  // }
   return (
     <>
       <Navbar />
@@ -99,12 +177,29 @@ const SkaterFeed = ({ history }) => {
                     type="video/mp4"
                   />
                 ) : (
-                    <img className={classes.media} src={post.post[0]} alt="skate-img" />
-                  )}
+                  <img
+                    className={classes.media}
+                    src={post.post[0]}
+                    alt="skate-img"
+                  />
+                )}
                 <CardActions disableSpacing>
-                  <IconButton aria-label="add to favorites">
-                    <FavoriteIcon /> {/* Add custom skateboard icon */}
-                  </IconButton>
+                  {postBoardTappedState[post.id] ? (
+                    <IconButton
+                      aria-label="add to favorites"
+                      onClick={() => handleTapPost(post.id, "untap")}
+                    >
+                      <FavoriteIcon color="secondary" />
+                    </IconButton>
+                  ) : (
+                    <IconButton
+                      aria-label="remove from favorites"
+                      onClick={() => handleTapPost(post.id, "tap")}
+                    >
+                      <FavoriteIcon />
+                    </IconButton>
+                  )}
+                  {/* Add custom skateboard icon */}
                 </CardActions>
                 <Container>
                   {post.SkatePostComments.length > 0 &&

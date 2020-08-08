@@ -173,7 +173,7 @@ const CreateSkatePost = ({ match: { url }, history }) => {
                 </Box>
                 <Box className={classes.child} width="100%">
                   <TextField
-                    fullWidth="true"
+                    fullWidth
                     type="text"
                     name={caption}
                     onChange={handleSetCaption}

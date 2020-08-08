@@ -60,9 +60,16 @@ const useStyles = makeStyles((theme) => ({
 const SkateSpotDetails = ({ skateSpotDetails, id }) => {
   const [skateSpot, setSkateSpot] = useState({});
   const [following, setFollowing] = useState(false);
+  const [followers, setFollowers] = useState(0);
   const numOfPosts = useSelector(
     ({ skateSpotPosts }) => skateSpotPosts.getNumberOfPosts
   );
+
+  useEffect(() => {
+    if (Object.keys(skateSpot).length) {
+      setFollowers(skateSpot.following);
+    }
+  }, [skateSpot]);
   useEffect(() => {
     if (Object.keys(skateSpotDetails).length === 0) {
       setSkateSpot(JSON.parse(localStorage.getItem("CURRENT_SKATE_SPOT")));
@@ -108,6 +115,7 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
         });
 
         setFollowing(true);
+        setFollowers(followers + 1);
       } else {
         res = await fetch(`${api.url}/skatespots/${skateSpotId}/unfollow`, {
           method: "DELETE",
@@ -118,6 +126,7 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
         });
 
         setFollowing(false);
+        setFollowers(followers - 1);
       }
 
       if (!res.ok) {
@@ -180,7 +189,7 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
             </Box>
             <Box display="flex">
               <Box mr={4}>
-                <span className={classes.bold}>{skateSpot.following}</span>{" "}
+                <span className={classes.bold}>{followers}</span>{" "}
                 {skateSpot.following === 1 ? "follower" : "follower"}
               </Box>
               <Box>
