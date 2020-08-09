@@ -170,7 +170,7 @@ const Navbar = ({ history }) => {
           <div onClick={handleHome} className={classes.navbarIcons}>
             <HomeIcon />
           </div>
-          <div className={classes.navbarIcons}>
+          <div onClick={() => history.push("/profile")} className={classes.navbarIcons}>
             <AccountCircleIcon />
           </div>
           <div className={classes.navbarIcons}>

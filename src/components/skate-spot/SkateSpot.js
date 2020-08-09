@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from "react-redux";
 import Navbar from "../utils/Navbar";
 import SkateSpotFeed from "./SkateSpotFeed";
 import SkateSpotDetails from "./SkateSpotDetails";
-import { setSkateSpot } from "../../store/skateSpots";
 import { theme } from "../../theme";
 import { getSpotPosts } from "../../store/skateSpotPosts";
 
@@ -33,7 +32,6 @@ const useStyles = makeStyles({
     },
   },
   skateSpotMenuBarButton: {
-    // borderTop: "1px solid #c8c8c8",
     maxWidth: "80%",
     margin: "5px auto",
   },

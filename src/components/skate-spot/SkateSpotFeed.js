@@ -47,17 +47,8 @@ const SkateSpotFeed = ({
   showPost,
   id,
   posts,
-  getSpotPosts,
 }) => {
   const [postIndex, setPostIndex] = useState(null);
-  const [currentPosts, setCurrentPosts] = useState(null);
-  // useEffect(() => {
-  //   (async () => {
-  //     if (!currentPosts) {
-  //       setCurrentPosts(await getSpotPosts(id));
-  //     }
-  //   })();
-  // }, [currentPosts, id, getSpotPosts]);
 
   const handleSkatePost = (e) => {
     if (e.target.tagName === "IMG" || e.target.tagName === "VIDEO") {
@@ -87,12 +78,12 @@ const SkateSpotFeed = ({
                     width="293px"
                   />
                 ) : (
-                  <img
-                    className={classes.skateFeedImg}
-                    src={post[0]}
-                    alt="skate-pic"
-                  />
-                )}
+                    <img
+                      className={classes.skateFeedImg}
+                      src={post[0]}
+                      alt="skate-pic"
+                    />
+                  )}
               </div>
             );
           })}
@@ -122,7 +113,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    // getSpotPosts: (id) => dispatch(getSpotPosts(id)),
     showPost: (toggle) => dispatch(isShowPost(toggle)),
   };
 };

@@ -143,16 +143,14 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
       {Object.keys(skateSpot).length && (
         <>
           <Box className={classes.skateSpotDetails}>
-            <div className="skate-spot-details__img-container">
-              {/* <canvas class="skate-spot-details__canvas"></canvas> */}
-              <Box borderRadius="50%" border={6} borderColor="secondary.main">
-                <Avatar
-                  src={skateSpot.imgs[0]}
-                  alt="skate-spot-pic"
-                  className={classes.large}
-                />
-              </Box>
-            </div>
+            {/* <canvas class="skate-spot-details__canvas"></canvas> */}
+            <Box borderRadius="50%" border={6} borderColor="secondary.main">
+              <Avatar
+                src={skateSpot.imgs[0]}
+                alt="skate-spot-pic"
+                className={classes.large}
+              />
+            </Box>
           </Box>
           <Box className="skate-spot-details__child skate-spot-details__child-text">
             <Box mb={2} display="flex" className={classes.skateSpotName}>
@@ -172,14 +170,14 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
                     Unfollow
                   </Button>
                 ) : (
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => followSkateSpot(skateSpot.id, "follow")}
-                  >
-                    Follow
-                  </Button>
-                )}
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => followSkateSpot(skateSpot.id, "follow")}
+                    >
+                      Follow
+                    </Button>
+                  )}
               </Box>
             </Box>
             <Box mb={2} display="flex">
