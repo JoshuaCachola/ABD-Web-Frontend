@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { withRouter } from "react-router-dom";
-import { Box, makeStyles, Tooltip } from "@material-ui/core";
+import { Box, makeStyles, Tooltip, Container } from "@material-ui/core";
 import { AddAPhoto } from "@material-ui/icons";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -11,19 +11,17 @@ import { theme } from "../../theme";
 import { getSpotPosts } from "../../store/skateSpotPosts";
 
 const useStyles = makeStyles({
-  root: {
-    maxWidth: "100%",
-  },
-  child: {
-    maxWidth: "80%",
-    marginLeft: "10px",
+  spotContainer: {
+    maxWidth: "95%",
+    display: "flex",
+    justifyContent: "center"
   },
   menuBar: {
     borderTop: "1px solid #c8c8c8",
     margin: "auto auto",
     justifyContent: "center",
     display: "flex",
-    maxWidth: "80%",
+    maxWidth: "95%",
   },
   addAPhoto: {
     cursor: "pointer",
@@ -35,6 +33,9 @@ const useStyles = makeStyles({
     maxWidth: "80%",
     margin: "5px auto",
   },
+  root: {
+    maxWidth: "70%"
+  }
 });
 
 const SkateSpot = ({ match, history }) => {
@@ -58,16 +59,13 @@ const SkateSpot = ({ match, history }) => {
       <nav>
         <Navbar />
       </nav>
-      <Box className={classes.root}>
-        <Box className={classes.child}>
-          <Box display="flex" justifyContent="center">
-            <SkateSpotDetails
-              skateSpotDetails={skateSpotDetails.current}
-              id={id}
-            />
-          </Box>
-        </Box>
-        <br />
+      <Container className={classes.root}>
+        <Container className={classes.spotContainer}>
+          <SkateSpotDetails
+            skateSpotDetails={skateSpotDetails.current}
+            id={id}
+          />
+        </Container>
         <div className={classes.menuBar}>
           {/* <div className="skate-spot__menu-bar-button">All</div>
           <div className="skate-spot__menu-bar-button">Images</div>
@@ -89,7 +87,7 @@ const SkateSpot = ({ match, history }) => {
         <Box>
           <SkateSpotFeed id={id} className={classes.child} />
         </Box>
-      </Box>
+      </Container>
     </div>
   );
 };

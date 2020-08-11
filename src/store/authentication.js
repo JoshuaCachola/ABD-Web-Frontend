@@ -31,6 +31,7 @@ export const login = (username, password) => async dispatch => {
     const { token, id } = await res.json();
 
     localStorage.setItem("TOKEN_KEY", token);
+    localStorage.setItem("ID", id);
     dispatch(setToken(token));
     socket.emit("logged-in", id);
   } catch (err) {

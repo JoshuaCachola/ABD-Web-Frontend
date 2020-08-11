@@ -87,6 +87,10 @@ const useStyles = makeStyles({
   location: {
     fontSize: "12px",
     fontStyle: "italic"
+  },
+  innerNavbar: {
+    maxWidth: "70%",
+    margin: "0 auto"
   }
 });
 
@@ -127,7 +131,7 @@ const Navbar = ({ history }) => {
   const classes = useStyles();
   return (
     <nav className={classes.navbar} onClick={e => handleShowSearch(e)}>
-      <Box display="flex" justifyContent="space-around" alignItems="center">
+      <Box display="flex" justifyContent="space-around" alignItems="center" className={classes.innerNavbar}>
         <Box className={classes.navbarLogo} onClick={handleRouteHome}>
           <h1>already been done</h1>
         </Box>

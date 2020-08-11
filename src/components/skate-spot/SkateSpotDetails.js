@@ -1,28 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Box, Avatar, makeStyles, Container, Button } from "@material-ui/core";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import { Box, Avatar, makeStyles, Container, Button, Typography } from "@material-ui/core";
 
 import api from "../../utils";
 const useStyles = makeStyles((theme) => ({
   large: {
     width: theme.spacing(20),
     height: theme.spacing(20),
-    //     backgroundColor: '#fff',
-    //     border: '1px solid red',
-    //     height: '100px',
-    //     borderRadius: '50%',
-    // //     -moz - border - radius: 50 %;
-    // // -webkit - border - radius: 50 %;
-    //     width: '100px',
   },
   skateSpotDetailsImg: {
     backgroundColor: "#fff",
     border: "1px solid red",
     height: "100px",
     borderRadius: "50%",
-    // mozBorderRadius: '50%',
-    // webkitBorderRadius: '50%',
     width: "100px",
   },
   control: {
@@ -31,29 +21,20 @@ const useStyles = makeStyles((theme) => ({
   checkCircle: {
     paddingTop: "5px",
   },
-  skateSpotCity: {
-    fontSize: "16px",
-  },
-  skateSpotState: {
-    fontSize: "14px",
-  },
   skateSpotName: {
     fontSize: "24px",
-    lineHeight: "32px",
     fontWeight: "bold",
   },
   skateSpotDetails: {
     margin: "20px 90px 20px 20px",
   },
   root: {
-    // padding: "10px",
-    // margin: "auto auto",
-    maxWidth: "100%",
+    margin: "20px 30px",
     display: "flex",
-    justifyContent: "center",
   },
   bold: {
     fontWeight: "bold",
+    fontSize: "20px"
   },
 }));
 
@@ -142,29 +123,31 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
     <Container className={classes.root}>
       {Object.keys(skateSpot).length && (
         <>
-          <Box className={classes.skateSpotDetails}>
-            {/* <canvas class="skate-spot-details__canvas"></canvas> */}
-            <Box borderRadius="50%" border={6} borderColor="secondary.main">
-              <Avatar
-                src={skateSpot.imgs[0]}
-                alt="skate-spot-pic"
-                className={classes.large}
-              />
-            </Box>
+          {/* <Box className={classes.skateSpotDetails}> */}
+          {/* <canvas class="skate-spot-details__canvas"></canvas> */}
+          <Box borderRadius="50%" border={6} borderColor="secondary.main">
+            <Avatar
+              src={skateSpot.imgs[0]}
+              alt="skate-spot-pic"
+              className={classes.large}
+            />
           </Box>
-          <Box className="skate-spot-details__child skate-spot-details__child-text">
-            <Box mb={2} display="flex" className={classes.skateSpotName}>
-              <span className="skate-spot-details__check">
+          {/* </Box> */}
+          <Box ml={7} display="flex" flexDirection="column">
+            <Box mb={2} display="flex">
+              <Typography className={classes.skateSpotName}>
                 {skateSpot.name} &nbsp;
-                <CheckCircleIcon
+                {/* <CheckCircleIcon
                   color="secondary"
                   className={classes.checkCircle}
-                />
-              </span>
+                /> */}
+              </Typography>
               <Box pl={2}>
                 {following ? (
                   <Button
                     color="secondary"
+                    variant="outlined"
+                    size="small"
                     onClick={() => followSkateSpot(skateSpot.id, "unfollow")}
                   >
                     Unfollow
@@ -173,6 +156,7 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
                     <Button
                       variant="contained"
                       color="secondary"
+                      size="small"
                       onClick={() => followSkateSpot(skateSpot.id, "follow")}
                     >
                       Follow
@@ -181,18 +165,18 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
               </Box>
             </Box>
             <Box mb={2} display="flex">
-              <div className={classes.skateSpotCity}>
+              <Typography className={classes.bold}>
                 {skateSpot.city}, {skateSpot.state}
-              </div>
+              </Typography>
             </Box>
             <Box display="flex">
               <Box mr={4}>
-                <span className={classes.bold}>{followers}</span>{" "}
-                {skateSpot.following === 1 ? "follower" : "follower"}
+                <Typography><span className={classes.bold}>{followers}</span>
+                  &nbsp;{skateSpot.following === 1 ? "follower" : "follower"}</Typography>
               </Box>
               <Box>
-                <span className={classes.bold}>{numOfPosts}</span>{" "}
-                {numOfPosts === 1 ? "post" : "posts"}
+                <Typography><span className={classes.bold}>{numOfPosts}</span>
+                  &nbsp;{numOfPosts === 1 ? "post" : "posts"}</Typography>
               </Box>
             </Box>
           </Box>
