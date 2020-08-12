@@ -8,6 +8,7 @@ import {
   Button,
   Paper,
   Typography,
+  useMediaQuery,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
@@ -28,7 +29,7 @@ const useStyles = makeStyles({
   },
   search: {
     margin: "5px auto",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   navbarLogo: {
     color: "white",
@@ -39,7 +40,8 @@ const useStyles = makeStyles({
     textAlign: "center",
     padding: "0 5px",
     margin: "0 20px",
-    cursor: "pointer"
+    cursor: "pointer",
+    minWidth: "230px",
   },
   navbarIcons: {
     paddingLeft: "16px",
@@ -49,7 +51,7 @@ const useStyles = makeStyles({
     },
   },
   iconsContainer: {
-    margin: '0 20px'
+    margin: "0 20px",
   },
   navbarSearch: {
     fontFamily: "Raleway",
@@ -67,31 +69,31 @@ const useStyles = makeStyles({
     position: "absolute",
     display: "flex",
     flexDirection: "column",
-    zIndex: 99
+    zIndex: 99,
   },
   searchResults: {
     maxWidth: "80%",
     borderBottom: "1px solid #ececec",
     margin: "5px auto",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   lastSearchResult: {
     maxWidth: "80%",
     margin: "5px auto",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   name: {
     fontWeight: "bold",
-    fontSize: "14px"
+    fontSize: "14px",
   },
   location: {
     fontSize: "12px",
-    fontStyle: "italic"
+    fontStyle: "italic",
   },
   innerNavbar: {
     maxWidth: "70%",
-    margin: "0 auto"
-  }
+    margin: "0 auto",
+  },
 });
 
 const Navbar = ({ history }) => {
@@ -102,7 +104,9 @@ const Navbar = ({ history }) => {
     dispatch(setSkateSpots());
   }, []);
 
-  const skateSpots = useSelector(({ skateSpotFeed }) => skateSpotFeed.skateSpots);
+  const skateSpots = useSelector(
+    ({ skateSpotFeed }) => skateSpotFeed.skateSpots
+  );
   const addNewSpot = () => {
     history.push("/skatespots/create-spot");
   };
@@ -129,28 +133,36 @@ const Navbar = ({ history }) => {
   };
 
   const classes = useStyles();
+  const showSearchBar = useMediaQuery("(min-width:1080px");
   return (
-    <nav className={classes.navbar} onClick={e => handleShowSearch(e)}>
-      <Box display="flex" justifyContent="space-around" alignItems="center" className={classes.innerNavbar}>
+    <nav className={classes.navbar} onClick={(e) => handleShowSearch(e)}>
+      <Box
+        display="flex"
+        justifyContent="space-around"
+        alignItems="center"
+        className={classes.innerNavbar}
+      >
         <Box className={classes.navbarLogo} onClick={handleRouteHome}>
           <h1>already been done</h1>
         </Box>
         <Box className={classes.search}>
-          <TextField
-            placeholder="Search by city"
-            variant="outlined"
-            size="small"
-            className={classes.navbarSearch}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          // ref={search}
-          />
-          {showSearch &&
+          {showSearchBar && (
+            <TextField
+              placeholder="Search by city"
+              variant="outlined"
+              size="small"
+              className={classes.navbarSearch}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+              // ref={search}
+            />
+          )}
+          {showSearch && (
             <Paper className={classes.searchContainer}>
               {skateSpots.map((spot, i) => {
                 return (
@@ -158,23 +170,33 @@ const Navbar = ({ history }) => {
                     display="flex"
                     key={i}
                     justifyContent="space-between"
-                    className={i === skateSpots.length - 1 ? classes.lastSearchResult : classes.searchResults}
+                    className={
+                      i === skateSpots.length - 1
+                        ? classes.lastSearchResult
+                        : classes.searchResults
+                    }
                     onClick={() => history.push(`/skatespots/${spot.id}`)}
                   >
-                    <Typography className={classes.name}>{spot.name} &nbsp;</Typography>
-                    <Typography className={classes.location}>{spot.city}, {spot.state}</Typography>
+                    <Typography className={classes.name}>
+                      {spot.name} &nbsp;
+                    </Typography>
+                    <Typography className={classes.location}>
+                      {spot.city}, {spot.state}
+                    </Typography>
                   </Box>
-                )
-              })
-              }
+                );
+              })}
             </Paper>
-          }
+          )}
         </Box>
         <Box display="flex" className={classes.iconsContainer}>
           <div onClick={handleHome} className={classes.navbarIcons}>
             <HomeIcon />
           </div>
-          <div onClick={() => history.push("/profile")} className={classes.navbarIcons}>
+          <div
+            onClick={() => history.push("/profile")}
+            className={classes.navbarIcons}
+          >
             <AccountCircleIcon />
           </div>
           <div className={classes.navbarIcons}>

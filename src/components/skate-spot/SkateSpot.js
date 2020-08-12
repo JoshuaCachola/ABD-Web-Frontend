@@ -14,7 +14,7 @@ const useStyles = makeStyles({
   spotContainer: {
     maxWidth: "95%",
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   menuBar: {
     borderTop: "1px solid #c8c8c8",
@@ -34,8 +34,8 @@ const useStyles = makeStyles({
     margin: "5px auto",
   },
   root: {
-    maxWidth: "70%"
-  }
+    maxWidth: "75%",
+  },
 });
 
 const SkateSpot = ({ match, history }) => {
