@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
-import { 
-  Box, 
-  TextField,
-  Button,
-  Card,
-  makeStyles
-} from "@material-ui/core";
+import { Box, TextField, Button, Card, makeStyles } from "@material-ui/core";
 
 import api from "../config";
 import abdLogo from "../images/abd-splash-logo.png";
@@ -16,10 +10,10 @@ const useStyles = makeStyles({
     minWidth: 925,
   },
   logo: {
-    margin: 20
+    margin: 20,
   },
   loginForm: {
-    margin: 20
+    margin: 20,
   },
   container: {
     padding: 20,
@@ -27,27 +21,27 @@ const useStyles = makeStyles({
   label: {
     margin: 10,
     fontFamily: "Raleway",
-    fontWeight: "bold"
-  }
+    fontWeight: "bold",
+  },
 });
 
 const SignUp = ({ history }) => {
-  const [ firstName, setFirstName ] = useState(""),
-        [ lastName, setLastName ] = useState(""),
-        [ username, setUsername ] = useState(""),
-        [ email, setEmail ] = useState(""),
-        [ phoneNumber, setPhoneNumber ] = useState(""),
-        [ password, setPassword ] = useState(""),
-        [ confirmPassword, setConfirmPassword ] = useState("");
-  
-  const handleSignUp = async e => {
+  const [firstName, setFirstName] = useState(""),
+    [lastName, setLastName] = useState(""),
+    [username, setUsername] = useState(""),
+    [email, setEmail] = useState(""),
+    [phoneNumber, setPhoneNumber] = useState(""),
+    [password, setPassword] = useState(""),
+    [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleSignUp = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
       alert("Passwords do not match");
       return;
     }
-    
+
     try {
       const res = await fetch(`${api.url}/skaters/signup`, {
         method: "POST",
@@ -60,15 +54,13 @@ const SignUp = ({ history }) => {
           username,
           email,
           phoneNumber,
-          password
-        })
+          password,
+        }),
       });
 
       if (!res.ok) throw res;
 
-      const {
-        token
-      } = await res.json();
+      const { token } = await res.json();
 
       localStorage.setItem("TOKEN_KEY", token);
 
@@ -94,7 +86,7 @@ const SignUp = ({ history }) => {
                 </Box>
                 <Box width="50%">
                   <TextField
-                    fullWidth="true"
+                    fullWidth
                     margin="dense"
                     variant="outlined"
                     type="text"
@@ -109,7 +101,7 @@ const SignUp = ({ history }) => {
                 </Box>
                 <Box width="50%">
                   <TextField
-                    fullWidth="true"
+                    fullWidth
                     margin="dense"
                     variant="outlined"
                     type="text"
@@ -124,7 +116,7 @@ const SignUp = ({ history }) => {
                 </Box>
                 <Box width="50%">
                   <TextField
-                    fullWidth="true"
+                    fullWidth
                     margin="dense"
                     variant="outlined"
                     type="text"
@@ -139,7 +131,7 @@ const SignUp = ({ history }) => {
                 </Box>
                 <Box width="50%">
                   <TextField
-                    fullWidth="true"
+                    fullWidth
                     type="email"
                     margin="dense"
                     variant="outlined"
@@ -154,7 +146,7 @@ const SignUp = ({ history }) => {
                 </Box>
                 <Box width="50%">
                   <TextField
-                    fullWidth="true"
+                    fullWidth
                     margin="dense"
                     variant="outlined"
                     type="text"
@@ -169,7 +161,7 @@ const SignUp = ({ history }) => {
                 </Box>
                 <Box width="50%">
                   <TextField
-                    fullWidth="true"
+                    fullWidth
                     type="password"
                     margin="dense"
                     variant="outlined"
@@ -179,12 +171,12 @@ const SignUp = ({ history }) => {
                 </Box>
               </Box>
               <Box display="flex" justifyContent="center" alignItems="center">
-                <Box flexBasis="15%"  className={classes.label}>
+                <Box flexBasis="15%" className={classes.label}>
                   <label>Confirm Password</label>
                 </Box>
                 <Box width="50%">
                   <TextField
-                    fullWidth="true"
+                    fullWidth
                     type="password"
                     margin="dense"
                     variant="outlined"

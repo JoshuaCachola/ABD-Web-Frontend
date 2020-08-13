@@ -5,7 +5,6 @@ import {
   Box,
   makeStyles,
   InputAdornment,
-  Button,
   Paper,
   Typography,
   useMediaQuery,
@@ -13,6 +12,7 @@ import {
   Popper,
   Grow,
   MenuList,
+  MenuItem,
   ClickAwayListener,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
@@ -123,9 +123,7 @@ const Navbar = ({ history }) => {
     history.push("/skatespots/create-spot");
   };
 
-  const handleMessaging = () => {
-    history.push("/messaging");
-  };
+  const handleMessaging = () => history.push("/messaging");
 
   const handleHome = () => history.push("/skatespots");
 
@@ -134,6 +132,8 @@ const Navbar = ({ history }) => {
     dispatch(removeToken());
     history.push("/");
   };
+
+  const handleProfile = () => history.push("/profile");
 
   const handleRouteHome = () => {
     history.push("/skater-feed");
@@ -148,14 +148,24 @@ const Navbar = ({ history }) => {
   };
 
   const handleToggle = () => {
-    setOpen(true);
+    setOpen(!open);
   };
 
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+  const handleClose = (e) => {
+    if (anchorRef.current && anchorRef.current.contains(e.target)) {
       return;
     }
 
+    setOpen(false);
+  };
+
+  const handleMenuItemClick = (_, index) => {
+    setSelectedOption(index);
+    if (index === 0) {
+      handleProfile();
+    } else if (index === 1) {
+      handleLogout();
+    }
     setOpen(false);
   };
 
@@ -229,10 +239,7 @@ const Navbar = ({ history }) => {
           <div onClick={addNewSpot} className={classes.navbarIcons}>
             <img src={addSpotImg} alt="add-spot" height="24" width="24" />
           </div>
-          <div
-            // onClick={() => history.push("/profile")}
-            className={classes.navbarIcons}
-          >
+          <div className={classes.navbarIcons}>
             <ButtonGroup ref={anchorRef} aria-label="drop-menu">
               <div
                 onClick={handleToggle}
@@ -262,18 +269,15 @@ const Navbar = ({ history }) => {
                   <Paper>
                     <ClickAwayListener onClickAway={handleClose}>
                       <MenuList id="split-button-menu">
-                        {/* {options.map((option, index) => (
+                        {options.map((option, index) => (
                           <MenuItem
                             key={option}
-                            disabled={index === 2}
-                            selected={index === selectedIndex}
-                            onClick={(event) =>
-                              handleMenuItemClick(event, index)
-                            }
+                            selected={index === selectedOption}
+                            onClick={(_) => handleMenuItemClick(_, index)}
                           >
                             {option}
                           </MenuItem>
-                        ))} */}
+                        ))}
                       </MenuList>
                     </ClickAwayListener>
                   </Paper>
