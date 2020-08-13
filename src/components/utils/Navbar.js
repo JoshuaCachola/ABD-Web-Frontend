@@ -74,7 +74,9 @@ const useStyles = makeStyles({
     position: "absolute",
     display: "flex",
     flexDirection: "column",
+    width: "250px",
     zIndex: 99,
+    marginLeft: "-125px",
   },
   searchResults: {
     maxWidth: "80%",
@@ -109,7 +111,8 @@ const Navbar = ({ history }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [open, setOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(-1);
-  const anchorRef = useRef(null);
+  const menuRef = useRef(null);
+  const searchRef = useRef(null);
 
   useEffect(() => {
     dispatch(setSkateSpots());
@@ -151,12 +154,20 @@ const Navbar = ({ history }) => {
     setOpen(!open);
   };
 
-  const handleClose = (e) => {
-    if (anchorRef.current && anchorRef.current.contains(e.target)) {
+  const handleMenuClose = (e) => {
+    if (menuRef.current && menuRef.current.contains(e.target)) {
       return;
     }
 
     setOpen(false);
+  };
+
+  const handleSearchClose = (e) => {
+    if (searchRef.current && searchRef.current.contains(e.target)) {
+      return;
+    }
+
+    setShowSearch(false);
   };
 
   const handleMenuItemClick = (_, index) => {
@@ -182,13 +193,18 @@ const Navbar = ({ history }) => {
         <Box className={classes.navbarLogo} onClick={handleRouteHome}>
           <h1>already been done</h1>
         </Box>
-        <Box className={classes.search}>
-          {showSearchBar && (
+        {showSearchBar && (
+          <Box
+            className={classes.search}
+            ref={searchRef}
+            aria-label="drop-search"
+          >
             <TextField
               placeholder="Search by city"
               variant="outlined"
               size="small"
               className={classes.navbarSearch}
+              onClick={() => setShowSearch(!showSearch)}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -198,34 +214,54 @@ const Navbar = ({ history }) => {
               }}
               // ref={search}
             />
-          )}
-          {showSearch && (
-            <Paper className={classes.searchContainer}>
-              {skateSpots.map((spot, i) => {
-                return (
-                  <Box
-                    display="flex"
-                    key={i}
-                    justifyContent="space-between"
-                    className={
-                      i === skateSpots.length - 1
-                        ? classes.lastSearchResult
-                        : classes.searchResults
-                    }
-                    onClick={() => history.push(`/skatespots/${spot.id}`)}
-                  >
-                    <Typography className={classes.name}>
-                      {spot.name} &nbsp;
-                    </Typography>
-                    <Typography className={classes.location}>
-                      {spot.city}, {spot.state}
-                    </Typography>
-                  </Box>
-                );
-              })}
-            </Paper>
-          )}
-        </Box>
+            <Popper
+              open={showSearch}
+              anchorEl={searchRef.current}
+              role={undefined}
+              transition
+              disablePortal
+            >
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  style={{
+                    transformOrigin:
+                      placement === "bottom" ? "center top" : "center bottom",
+                  }}
+                >
+                  <ClickAwayListener onClickAway={handleSearchClose}>
+                    <Paper className={classes.searchContainer}>
+                      {skateSpots.map((spot, i) => {
+                        return (
+                          <Box
+                            display="flex"
+                            key={i}
+                            justifyContent="space-between"
+                            className={
+                              i === skateSpots.length - 1
+                                ? classes.lastSearchResult
+                                : classes.searchResults
+                            }
+                            onClick={() =>
+                              history.push(`/skatespots/${spot.id}`)
+                            }
+                          >
+                            <Typography className={classes.name}>
+                              {spot.name} &nbsp;
+                            </Typography>
+                            <Typography className={classes.location}>
+                              {spot.city}, {spot.state}
+                            </Typography>
+                          </Box>
+                        );
+                      })}
+                    </Paper>
+                  </ClickAwayListener>
+                </Grow>
+              )}
+            </Popper>
+          </Box>
+        )}
         <Box display="flex" className={classes.iconsContainer}>
           <div onClick={handleHome} className={classes.navbarIcons}>
             <HomeIcon />
@@ -240,7 +276,7 @@ const Navbar = ({ history }) => {
             <img src={addSpotImg} alt="add-spot" height="24" width="24" />
           </div>
           <div className={classes.navbarIcons}>
-            <ButtonGroup ref={anchorRef} aria-label="drop-menu">
+            <ButtonGroup ref={menuRef} aria-label="drop-menu">
               <div
                 onClick={handleToggle}
                 aria-controls={open ? "split-button-menu" : undefined}
@@ -253,7 +289,7 @@ const Navbar = ({ history }) => {
             </ButtonGroup>
             <Popper
               open={open}
-              anchorEl={anchorRef.current}
+              anchorEl={menuRef.current}
               role={undefined}
               transition
               disablePortal
@@ -267,7 +303,7 @@ const Navbar = ({ history }) => {
                   }}
                 >
                   <Paper>
-                    <ClickAwayListener onClickAway={handleClose}>
+                    <ClickAwayListener onClickAway={handleMenuClose}>
                       <MenuList id="split-button-menu">
                         {options.map((option, index) => (
                           <MenuItem
