@@ -22,6 +22,8 @@ const useStyles = makeStyles({
     justifyContent: "center",
     display: "flex",
     maxWidth: "95%",
+    flexDirection: "column",
+    display: "flex",
   },
   addAPhoto: {
     cursor: "pointer",
@@ -31,7 +33,7 @@ const useStyles = makeStyles({
   },
   skateSpotMenuBarButton: {
     maxWidth: "80%",
-    margin: "5px auto",
+    margin: "10px auto",
   },
   root: {
     maxWidth: "75%",
@@ -82,11 +84,10 @@ const SkateSpot = ({ match, history }) => {
               />
             </Tooltip>
           </Box>
+          <Box>
+            <SkateSpotFeed id={id} className={classes.child} />
+          </Box>
         </div>
-        <br />
-        <Box>
-          <SkateSpotFeed id={id} className={classes.child} />
-        </Box>
       </Container>
     </div>
   );

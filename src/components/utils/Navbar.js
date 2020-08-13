@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { withRouter } from "react-router-dom";
 import {
   TextField,
@@ -9,6 +9,11 @@ import {
   Paper,
   Typography,
   useMediaQuery,
+  ButtonGroup,
+  Popper,
+  Grow,
+  MenuList,
+  ClickAwayListener,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
@@ -96,9 +101,15 @@ const useStyles = makeStyles({
   },
 });
 
+// options for drop menu
+const options = ["Profile", "Logout"];
+
 const Navbar = ({ history }) => {
   const dispatch = useDispatch();
   const [showSearch, setShowSearch] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(-1);
+  const anchorRef = useRef(null);
 
   useEffect(() => {
     dispatch(setSkateSpots());
@@ -107,13 +118,17 @@ const Navbar = ({ history }) => {
   const skateSpots = useSelector(
     ({ skateSpotFeed }) => skateSpotFeed.skateSpots
   );
+
   const addNewSpot = () => {
     history.push("/skatespots/create-spot");
   };
+
   const handleMessaging = () => {
     history.push("/messaging");
   };
+
   const handleHome = () => history.push("/skatespots");
+
   const handleLogout = () => {
     localStorage.clear();
     dispatch(removeToken());
@@ -130,6 +145,18 @@ const Navbar = ({ history }) => {
     } else {
       setShowSearch(false);
     }
+  };
+
+  const handleToggle = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+
+    setOpen(false);
   };
 
   const classes = useStyles();
@@ -193,12 +220,6 @@ const Navbar = ({ history }) => {
           <div onClick={handleHome} className={classes.navbarIcons}>
             <HomeIcon />
           </div>
-          <div
-            onClick={() => history.push("/profile")}
-            className={classes.navbarIcons}
-          >
-            <AccountCircleIcon />
-          </div>
           <div className={classes.navbarIcons}>
             <GroupIcon />
           </div>
@@ -208,15 +229,57 @@ const Navbar = ({ history }) => {
           <div onClick={addNewSpot} className={classes.navbarIcons}>
             <img src={addSpotImg} alt="add-spot" height="24" width="24" />
           </div>
-          <div className={classes.navbarIcons}>
-            <Button
-              color="primary"
-              size="small"
-              className={classes.logoutButton}
-              onClick={handleLogout}
+          <div
+            // onClick={() => history.push("/profile")}
+            className={classes.navbarIcons}
+          >
+            <ButtonGroup ref={anchorRef} aria-label="drop-menu">
+              <div
+                onClick={handleToggle}
+                aria-controls={open ? "split-button-menu" : undefined}
+                aria-expanded={open ? "true" : undefined}
+                aria-label="select merge strategy"
+                aria-haspopup="menu"
+              >
+                <AccountCircleIcon />
+              </div>
+            </ButtonGroup>
+            <Popper
+              open={open}
+              anchorEl={anchorRef.current}
+              role={undefined}
+              transition
+              disablePortal
             >
-              Log out
-            </Button>
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  style={{
+                    transformOrigin:
+                      placement === "bottom" ? "center top" : "center bottom",
+                  }}
+                >
+                  <Paper>
+                    <ClickAwayListener onClickAway={handleClose}>
+                      <MenuList id="split-button-menu">
+                        {/* {options.map((option, index) => (
+                          <MenuItem
+                            key={option}
+                            disabled={index === 2}
+                            selected={index === selectedIndex}
+                            onClick={(event) =>
+                              handleMenuItemClick(event, index)
+                            }
+                          >
+                            {option}
+                          </MenuItem>
+                        ))} */}
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
+              )}
+            </Popper>
           </div>
         </Box>
       </Box>

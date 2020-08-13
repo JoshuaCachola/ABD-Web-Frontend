@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Box, Avatar, makeStyles, Container, Button, Typography } from "@material-ui/core";
+import {
+  Box,
+  Avatar,
+  makeStyles,
+  Container,
+  Button,
+  Typography,
+} from "@material-ui/core";
 
 import api from "../../utils";
 const useStyles = makeStyles((theme) => ({
@@ -31,10 +38,13 @@ const useStyles = makeStyles((theme) => ({
   root: {
     margin: "20px 30px",
     display: "flex",
+    [theme.breakpoints.up("md")]: {
+      justifyContent: "center",
+    },
   },
   bold: {
     fontWeight: "bold",
-    fontSize: "20px"
+    fontSize: "20px",
   },
 }));
 
@@ -153,15 +163,15 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
                     Unfollow
                   </Button>
                 ) : (
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      size="small"
-                      onClick={() => followSkateSpot(skateSpot.id, "follow")}
-                    >
-                      Follow
-                    </Button>
-                  )}
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    size="small"
+                    onClick={() => followSkateSpot(skateSpot.id, "follow")}
+                  >
+                    Follow
+                  </Button>
+                )}
               </Box>
             </Box>
             <Box mb={2} display="flex">
@@ -171,12 +181,16 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
             </Box>
             <Box display="flex">
               <Box mr={4}>
-                <Typography><span className={classes.bold}>{followers}</span>
-                  &nbsp;{skateSpot.following === 1 ? "follower" : "follower"}</Typography>
+                <Typography>
+                  <span className={classes.bold}>{followers}</span>
+                  &nbsp;{skateSpot.following === 1 ? "follower" : "follower"}
+                </Typography>
               </Box>
               <Box>
-                <Typography><span className={classes.bold}>{numOfPosts}</span>
-                  &nbsp;{numOfPosts === 1 ? "post" : "posts"}</Typography>
+                <Typography>
+                  <span className={classes.bold}>{numOfPosts}</span>
+                  &nbsp;{numOfPosts === 1 ? "post" : "posts"}
+                </Typography>
               </Box>
             </Box>
           </Box>
