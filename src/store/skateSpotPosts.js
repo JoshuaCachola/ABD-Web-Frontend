@@ -1,7 +1,6 @@
 import api from "../utils";
 
 const SET_SPOT_POSTS = "abd/skateSpotPosts/SET_SPOT_DETAILS";
-const TOGGLE_POST = "abd/skateSpotPosts/TOGGLE_POST";
 const GET_FOLLOWED_SKATE_POSTS = "abd/skateSpotPosts/GET_FOLLOWED_SKATE_POSTS";
 const GET_NUMBER_OF_POSTS = "abd/skateSpotPosts/GET_NUMBER_OF_POSTS";
 
@@ -12,13 +11,6 @@ export const setSpotPosts = (posts) => {
   };
 };
 
-export const showPost = (isShowPost) => {
-  return {
-    type: TOGGLE_POST,
-    isShowPost,
-  };
-};
-
 export const followedSkatePosts = (skatePosts) => {
   return {
     type: GET_FOLLOWED_SKATE_POSTS,
@@ -26,10 +18,10 @@ export const followedSkatePosts = (skatePosts) => {
   };
 };
 
-export const getNumberOfPosts = num => {
+export const getNumberOfPosts = (num) => {
   return {
     type: GET_NUMBER_OF_POSTS,
-    num
+    num,
   };
 };
 
@@ -53,10 +45,6 @@ export const getSpotPosts = (id) => async (dispatch) => {
   } catch (err) {
     console.error(err);
   }
-};
-
-export const isShowPost = (toggle) => (dispatch) => {
-  dispatch(showPost(!toggle));
 };
 
 export const getFollowedSkatePosts = (followedSkateSpots) => async (
@@ -91,7 +79,7 @@ export const getFollowedSkatePosts = (followedSkateSpots) => async (
 };
 
 export default function reducer(
-  state = { posts: [], isShowingPost: false, postDetails: {}, num: 0 },
+  state = { posts: [], postDetails: {}, num: 0 },
   action
 ) {
   switch (action.type) {
@@ -99,12 +87,6 @@ export default function reducer(
       return {
         ...state,
         posts: action.posts,
-      };
-    }
-    case TOGGLE_POST: {
-      return {
-        ...state,
-        isShowingPost: action.isShowPost,
       };
     }
     case GET_FOLLOWED_SKATE_POSTS: {
@@ -116,8 +98,8 @@ export default function reducer(
     case GET_NUMBER_OF_POSTS: {
       return {
         ...state,
-        getNumberOfPosts: action.num
-      }
+        getNumberOfPosts: action.num,
+      };
     }
     default:
       return state;

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import VideoPlayer from "react-video-js-player";
-import { useSelector, useDispatch } from "react-redux";
 import {
   Box,
   Card,
@@ -10,10 +9,10 @@ import {
   TextField,
   Button,
   makeStyles,
+  Container,
 } from "@material-ui/core";
 
 import api from "../../utils";
-import { isShowPost } from "../../store/skateSpotPosts";
 
 const useStyles = makeStyles({
   comment: {
@@ -33,35 +32,23 @@ const useStyles = makeStyles({
     height: "auto",
     justifyContent: "center",
     alignItems: "center",
-    objectFit: "contain"
-  }
+    objectFit: "contain",
+  },
+  skateSpot: {
+    maxWidth: "50%",
+    maxHeight: "50%",
+  },
 });
 
-const SkateSpotPost = ({
-  showPost,
-  id,
-  post,
-  caption,
-  skater,
-  skateSpotId,
-}) => {
+const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
   const [comment, setComment] = useState("");
   const [postComments, setPostComments] = useState([]);
-  const isShowingPost = useSelector(
-    ({ skateSpotPosts }) => skateSpotPosts.isShowingPost
-  );
-  const dispatch = useDispatch();
-  const handleShowPost = (e) => {
-    if (e.target.tagName === "DIV") {
-      dispatch(isShowPost(isShowingPost));
-    }
-  };
 
   useEffect(() => {
     getComments();
   }, []);
 
-  // clean up function to prevent memory leaks
+  // clean up function
   useEffect(() => {
     return () => {
       setComment("");
@@ -120,7 +107,7 @@ const SkateSpotPost = ({
 
   const classes = useStyles();
   return (
-    <Box onClick={handleShowPost} className="skate-spot">
+    <Container>
       <Box
         className="skate-spot__post"
         display="flex"
@@ -137,14 +124,14 @@ const SkateSpotPost = ({
               type="video/mp4"
             />
           ) : (
-              <div className="skate-spot__post-image-container">
-                <img
-                  className={classes.skateSpotPostImg}
-                  src={post[0]}
-                  alt="skate-pic"
-                />
-              </div>
-            )}
+            <div className="skate-spot__post-image-container">
+              <img
+                className={classes.skateSpotPostImg}
+                src={post[0]}
+                alt="skate-pic"
+              />
+            </div>
+          )}
         </Box>
         <Box display="flex" flexDirection="column">
           <Card className="skate-spot__comment-container">
@@ -198,20 +185,8 @@ const SkateSpotPost = ({
           </Card>
         </Box>
       </Box>
-    </Box>
+    </Container>
   );
 };
-
-// const mapStateToProps = state => {
-//   return {
-//     isShowingPost: state.skateSpotPosts.isShowingPost
-//   };
-// };
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     showPost: toggle => dispatch(isShowPost(toggle))
-//   };
-// };
 
 export default SkateSpotPost;

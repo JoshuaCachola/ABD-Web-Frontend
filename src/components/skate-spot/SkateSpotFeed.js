@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import SkateSpotPost from "./SkateSpotPost";
-import { connect } from "react-redux";
 import {
   Box,
   makeStyles,
   Container,
   Grid,
   Typography,
+  Modal,
 } from "@material-ui/core";
 import ReactPlayer from "react-player";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import InsertCommentIcon from "@material-ui/icons/InsertComment";
 
-import { getSpotPosts, isShowPost } from "../../store/skateSpotPosts";
 import { theme } from "../../theme";
 
 const useStyles = makeStyles({
@@ -89,17 +89,24 @@ const useStyles = makeStyles({
   },
 });
 
-const SkateSpotFeed = ({ isShowingPost, showPost, id, posts }) => {
-  const [postIndex, setPostIndex] = useState(null);
-  const [postPopups, setPostpopups] = useState({});
-  const handleSkatePost = (e) => {
-    if (e.target.tagName === "IMG" || e.target.tagName === "VIDEO") {
-      setPostIndex(e.currentTarget.id);
-      showPost(isShowingPost);
-    }
+const SkateSpotFeed = ({ id }) => {
+  const [postIndex, setPostIndex] = useState(-1);
+  const posts = useSelector(({ skateSpotPosts }) => skateSpotPosts.posts);
+  const isShowingPost = useSelector(
+    ({ skateSpotPosts }) => skateSpotPosts.isShowingPost
+  );
+  const [openPopup, setOpenPopup] = useState(isShowingPost);
+
+  const handleSkatePostPopup = (id) => {
+    setPostIndex(id);
+    setOpenPopup(true);
   };
 
-  console.log(posts);
+  const handleClosePopup = () => {
+    setOpenPopup(false);
+    setPostIndex(-1);
+  };
+
   const createFeed = (pos) => {
     const tempBuffer = [];
     for (let i = pos; i < pos + 3 && i < posts.length; i++) {
@@ -107,7 +114,10 @@ const SkateSpotFeed = ({ isShowingPost, showPost, id, posts }) => {
       spotPost.post[0].endsWith("mp4")
         ? tempBuffer.push(
             <Grid item s={4} key={i}>
-              <div className={classes.postContainer}>
+              <div
+                className={classes.postContainer}
+                onClick={() => handleSkatePostPopup(pos)}
+              >
                 <ReactPlayer
                   url={spotPost.post[0]}
                   light={false}
@@ -137,7 +147,10 @@ const SkateSpotFeed = ({ isShowingPost, showPost, id, posts }) => {
           )
         : tempBuffer.push(
             <Grid item s={4} key={i}>
-              <div className={classes.postContainer}>
+              <div
+                className={classes.postContainer}
+                onClick={() => handleSkatePostPopup(pos)}
+              >
                 <img
                   className={classes.skateFeedImg}
                   src={spotPost.post[0]}
@@ -213,8 +226,13 @@ const SkateSpotFeed = ({ isShowingPost, showPost, id, posts }) => {
             );
           })}
       </Container> */}
-      <Box>
-        {isShowingPost && (
+      {openPopup && (
+        <Modal
+          open={openPopup}
+          onClose={handleClosePopup}
+          aria-labelledby="skater-post-popup"
+          aria-describedby="skater-post-popup"
+        >
           <SkateSpotPost
             skateSpotId={id}
             id={posts[postIndex].id}
@@ -222,24 +240,10 @@ const SkateSpotFeed = ({ isShowingPost, showPost, id, posts }) => {
             post={posts[postIndex].post}
             caption={posts[postIndex].caption}
           />
-        )}
-      </Box>
+        </Modal>
+      )}
     </div>
   );
 };
 
-// export default SkateSpotFeed;
-const mapStateToProps = (state) => {
-  return {
-    posts: state.skateSpotPosts.posts,
-    isShowingPost: state.skateSpotPosts.isShowingPost,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    showPost: (toggle) => dispatch(isShowPost(toggle)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SkateSpotFeed);
+export default SkateSpotFeed;

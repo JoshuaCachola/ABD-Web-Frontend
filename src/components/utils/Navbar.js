@@ -142,14 +142,6 @@ const Navbar = ({ history }) => {
     history.push("/skater-feed");
   };
 
-  const handleShowSearch = (e) => {
-    if (e.target.tagName === "INPUT") {
-      setShowSearch(true);
-    } else {
-      setShowSearch(false);
-    }
-  };
-
   const handleToggle = () => {
     setOpen(!open);
   };
@@ -170,7 +162,7 @@ const Navbar = ({ history }) => {
     setShowSearch(false);
   };
 
-  const handleMenuItemClick = (_, index) => {
+  const handleMenuItemClick = (index) => {
     setSelectedOption(index);
     if (index === 0) {
       handleProfile();
@@ -183,7 +175,7 @@ const Navbar = ({ history }) => {
   const classes = useStyles();
   const showSearchBar = useMediaQuery("(min-width:1080px");
   return (
-    <nav className={classes.navbar} onClick={(e) => handleShowSearch(e)}>
+    <nav className={classes.navbar}>
       <Box
         display="flex"
         justifyContent="space-around"
@@ -309,7 +301,7 @@ const Navbar = ({ history }) => {
                           <MenuItem
                             key={option}
                             selected={index === selectedOption}
-                            onClick={(_) => handleMenuItemClick(_, index)}
+                            onClick={() => handleMenuItemClick(index)}
                           >
                             {option}
                           </MenuItem>
