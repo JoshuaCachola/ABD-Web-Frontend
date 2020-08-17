@@ -14,6 +14,14 @@ const useStyles = makeStyles((theme) => ({
   large: {
     width: theme.spacing(20),
     height: theme.spacing(20),
+    [theme.breakpoints.down("md")]: {
+      width: theme.spacing(16),
+      height: theme.spacing(16),
+    },
+    [theme.breakpoints.down("sm")]: {
+      width: theme.spacing(12),
+      height: theme.spacing(12),
+    },
   },
   skateSpotDetailsImg: {
     backgroundColor: "#fff",
@@ -31,6 +39,13 @@ const useStyles = makeStyles((theme) => ({
   skateSpotName: {
     fontSize: "24px",
     fontWeight: "bold",
+    minWidth: "130px",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "18px",
+    },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "14px",
+    },
   },
   skateSpotDetails: {
     margin: "20px 90px 20px 20px",
@@ -38,13 +53,28 @@ const useStyles = makeStyles((theme) => ({
   root: {
     margin: "20px 30px",
     display: "flex",
-    [theme.breakpoints.up("md")]: {
-      justifyContent: "center",
-    },
+    // [theme.breakpoints.up("md")]: {
+    justifyContent: "center",
+    // },
   },
   bold: {
     fontWeight: "bold",
     fontSize: "18px",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "14px",
+    },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "12px",
+    },
+  },
+  followersAndPostsText: {
+    fontSize: "18px",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "14px",
+    },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "12px",
+    },
   },
 }));
 
@@ -135,12 +165,18 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
         <>
           {/* <Box className={classes.skateSpotDetails}> */}
           {/* <canvas class="skate-spot-details__canvas"></canvas> */}
-          <Box borderRadius="50%" border={6} borderColor="secondary.main">
-            <Avatar
-              src={skateSpot.imgs[0]}
-              alt="skate-spot-pic"
-              className={classes.large}
-            />
+          <Box borderRadius="50%" border={4} borderColor="secondary.main">
+            <Box
+              borderRadius="50%"
+              border={4}
+              borderColor="primary.contrastText"
+            >
+              <Avatar
+                src={skateSpot.imgs[0]}
+                alt="skate-spot-pic"
+                className={classes.large}
+              />
+            </Box>
           </Box>
           {/* </Box> */}
           <Box ml={7} display="flex" flexDirection="column">
@@ -181,13 +217,13 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
             </Box>
             <Box display="flex">
               <Box mr={4}>
-                <Typography>
+                <Typography className={classes.followersAndPostsText}>
                   <span className={classes.bold}>{followers}</span>
                   &nbsp;{skateSpot.following === 1 ? "follower" : "follower"}
                 </Typography>
               </Box>
               <Box>
-                <Typography>
+                <Typography className={classes.followersAndPostsText}>
                   <span className={classes.bold}>{numOfPosts}</span>
                   &nbsp;{numOfPosts === 1 ? "post" : "posts"}
                 </Typography>

@@ -21,12 +21,13 @@ const useStyles = makeStyles({
     margin: "auto auto",
     justifyContent: "center",
     display: "flex",
-    maxWidth: "95%",
+    maxWidth: "100",
     flexDirection: "column",
-    display: "flex",
   },
   addAPhoto: {
     cursor: "pointer",
+    color: "#8E8E8E",
+    fontSize: "18px",
     "&:hover": {
       color: `${theme.palette.secondary.main}`,
     },
@@ -36,7 +37,7 @@ const useStyles = makeStyles({
     margin: "10px auto",
   },
   root: {
-    maxWidth: "75%",
+    maxWidth: "935px",
   },
 });
 

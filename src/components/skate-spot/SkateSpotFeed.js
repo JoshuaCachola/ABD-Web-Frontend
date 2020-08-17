@@ -5,61 +5,45 @@ import {
   Box,
   makeStyles,
   Container,
-  Grid,
   Typography,
   Modal,
+  useMediaQuery,
 } from "@material-ui/core";
 import ReactPlayer from "react-player";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import InsertCommentIcon from "@material-ui/icons/InsertComment";
-
 import { theme } from "../../theme";
 
-const useStyles = makeStyles({
-  skateSpotFeed: {
-    maxWidth: "80%",
-    [theme.breakpoints.down("xs")]: {
-      display: "grid",
-      gridTemplateColumns: "repeat(393px 1fr)",
-      gridGap: "30px 0px",
-      margin: "auto auto",
-      justifyContent: "center",
-    },
-    [theme.breakpoints.up("sm")]: {
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fill, minmax(293px, 3fr))",
-      gridGap: "30px 0px",
-      margin: "auto auto",
-      justifyContent: "center",
-    },
-  },
+const useStyles = makeStyles((theme) => ({
   skateFeedChild: {
     backgroundColor: "#FFFFFF",
     backgroundSize: "cover",
-    height: "100%",
+    height: "auto",
     width: "100%",
     maxWidth: "293px",
     minHeight: "293px",
     cursor: "pointer",
   },
   skateFeedImg: {
-    // maxWidth: "100%",
-    maxWidth: "293px",
-    minHeight: "293px",
-    // height: "293px",
+    width: "100%",
+    height: "auto",
+    maxWidth: "100%",
+    maxHeight: "100%",
     objectFit: "contain",
-    display: "block",
+    position: "relative",
+    top: "50%",
+    transform: "translateY(-50%)",
+    // left: "50%",
+    // transform: "transformX(-50%)",
   },
   root: {
-    flexGrow: 1,
-  },
-  gridRow: {
-    margin: "0 12.5px",
+    display: "flex",
+    flexWrap: "wrap",
   },
   postOverlay: {
     backgroundColor: "rgba(0, 0, 0, 0.25)",
     width: "100%",
-    height: "100%",
+    height: "auto",
     position: "absolute",
     top: 0,
     bottom: 0,
@@ -72,22 +56,61 @@ const useStyles = makeStyles({
     },
   },
   postContainer: {
-    maxWidth: "293px",
+    width: "calc(33% - 4px)",
+    // height: "100%",
     position: "relative",
+    display: "inline-block",
+    marginBottom: "8px",
+    marginRight: "8px",
+    backgroundColor: "#000000",
+    // verticalAlign: "top",
+    "&:nth-of-type(3n)": {
+      marginRight: 0,
+    },
+  },
+  postContainerMedia: {
+    width: "calc(33% - 6px)",
+    // height: "100%",
+    position: "relative",
+    display: "inline-block",
+    // margin: "4px 4px 4px 4px",
+    marginBottom: "8px",
+    marginRight: "8px",
+    backgroundColor: "#000000",
+    // verticalAlign: "top",
+    "&:nth-of-type(3n)": {
+      marginRight: "3px",
+      // paddingLeft: "3px",
+    },
   },
   postOverlayTextContainer: {
     top: "50%",
     left: "50%",
-    margin: "-25px 0 0 -75px",
+    margin: "-10px 0 0 -75px",
     color: "white",
     position: "absolute",
     display: "flex",
+    [theme.breakpoints.down("md")]: {
+      margin: "-10px 0 0 -70px",
+    },
+    [theme.breakpoints.down("sm")]: {
+      margin: "-10px 0 0 -65px",
+    },
   },
   postOverlayText: {
     fontSize: "18px",
     fontWeight: "bold",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "16px",
+    },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "14px",
+    },
   },
-});
+  overlayIcons: {
+    fontSize: "10px",
+  },
+}));
 
 const SkateSpotFeed = ({ id }) => {
   const [postIndex, setPostIndex] = useState(-1);
@@ -107,125 +130,87 @@ const SkateSpotFeed = ({ id }) => {
     setPostIndex(-1);
   };
 
-  const createFeed = (pos) => {
-    const tempBuffer = [];
-    for (let i = pos; i < pos + 3 && i < posts.length; i++) {
-      const spotPost = posts[i];
-      spotPost.post[0].endsWith("mp4")
-        ? tempBuffer.push(
-            <Grid item s={4} key={i}>
-              <div
-                className={classes.postContainer}
-                onClick={() => handleSkatePostPopup(pos)}
-              >
-                <ReactPlayer
-                  url={spotPost.post[0]}
-                  light={false}
-                  height="293px"
-                  width="293px"
-                />
-                <div className={classes.postOverlay}>
-                  <Container className={classes.postOverlayTextContainer}>
-                    <Box display="flex" mr={3}>
-                      <FavoriteIcon />
-                      &nbsp;
-                      <Typography className={classes.postOverlayText}>
-                        0
-                      </Typography>
-                    </Box>
-                    <Box display="flex">
-                      <InsertCommentIcon />
-                      &nbsp;
-                      <Typography className={classes.postOverlayText}>
-                        0
-                      </Typography>
-                    </Box>
-                  </Container>
-                </div>
-              </div>
-            </Grid>
-          )
-        : tempBuffer.push(
-            <Grid item s={4} key={i}>
-              <div
-                className={classes.postContainer}
-                onClick={() => handleSkatePostPopup(pos)}
-              >
-                <img
-                  className={classes.skateFeedImg}
-                  src={spotPost.post[0]}
-                  alt="skate-pic"
-                />
-                <div className={classes.postOverlay}>
-                  <Container className={classes.postOverlayTextContainer}>
-                    <Box display="flex" mr={3}>
-                      <FavoriteIcon />
-                      &nbsp;
-                      <Typography className={classes.postOverlayText}>
-                        0
-                      </Typography>
-                    </Box>
-                    <Box display="flex">
-                      <InsertCommentIcon />
-                      &nbsp;
-                      <Typography className={classes.postOverlayText}>
-                        0
-                      </Typography>
-                    </Box>
-                  </Container>
-                </div>
-              </div>
-            </Grid>
-          );
-    }
-    return tempBuffer;
+  const createFeed = (post, i) => {
+    return post.post[0].endsWith("mp4") ? (
+      <div
+        className={
+          postMediaQuery ? classes.postContainerMedia : classes.postContainer
+        }
+        onClick={() => handleSkatePostPopup(i)}
+      >
+        {/* <div className={classes.skateFeedImg}> */}
+        <ReactPlayer
+          url={post.post[0]}
+          // light={false}
+          height="100%"
+          width="100%"
+        />
+        {/* </div> */}
+        <div className={classes.postOverlay}>
+          <Container className={classes.postOverlayTextContainer}>
+            <Box display="flex" mr={3}>
+              <FavoriteIcon />
+              &nbsp;
+              <Typography className={classes.postOverlayText}>0</Typography>
+            </Box>
+            <Box display="flex">
+              <InsertCommentIcon />
+              &nbsp;
+              <Typography className={classes.postOverlayText}>0</Typography>
+            </Box>
+          </Container>
+        </div>
+      </div>
+    ) : (
+      <div
+        className={
+          postMediaQuery ? classes.postContainerMedia : classes.postContainer
+        }
+        onClick={() => handleSkatePostPopup(i)}
+      >
+        {/* <Box className={classes.figure}> */}
+        <img
+          className={classes.skateFeedImg}
+          src={post.post[0]}
+          alt="skate-pic"
+        />
+        {/* </Box> */}
+        <div className={classes.postOverlay}>
+          <Container className={classes.postOverlayTextContainer}>
+            <Box display="flex" mr={3}>
+              <FavoriteIcon />
+              &nbsp;
+              <Typography className={classes.postOverlayText}>0</Typography>
+            </Box>
+            <Box display="flex">
+              <InsertCommentIcon />
+              &nbsp;
+              <Typography className={classes.postOverlayText}>0</Typography>
+            </Box>
+          </Container>
+        </div>
+      </div>
+    );
   };
 
+  const postMediaQuery = useMediaQuery("(min-width:50em)");
   const classes = useStyles();
   return (
     <div className={classes.root}>
       {posts &&
-        posts.map((_, i) => {
-          if (i % 3 === 0) {
-            return (
-              <Container className={classes.gridRow}>
-                <Grid container spacing={2} key={`start-${i}`}>
-                  {createFeed(i)}
-                </Grid>
-              </Container>
-            );
-          } else {
-            return <div key={`start-${i}`}> </div>;
-          }
+        posts.map((post, i) => {
+          // if (i % 3 === 0) {
+          return (
+            // <Container className={classes.gridRow}>
+            // <Grid container spacing={2} key={`start-${i}`}>
+            createFeed(post, i)
+            // </Grid>
+            // </Container>
+          );
+          // } else {
+          //   return <div key={`start-${i}`}> </div>;
+          // }
         })}
-      {/* <Container className={classes.skateSpotFeed}>
-        {posts &&
-          posts.map(({ post }, i) => {
-            return (
-              <div
-                key={i}
-                id={i}
-                onClick={handleSkatePost}
-                className={classes.skateFeedChild}
-              >
-                {post[0].endsWith("mp4") ? (
-                  <ReactPlayer
-                    url={post[0]}
-                    light={false}
-                    height="100%"
-                    width="293px"
-                  />
-                ) : (
-                    <img
-                      className={classes.skateFeedImg}
-                      src={post[0]}
-                      alt="skate-pic"
-                    />
-                  )}
-              </div>
-            );
-          })}
-      </Container> */}
       {openPopup && (
         <Modal
           open={openPopup}

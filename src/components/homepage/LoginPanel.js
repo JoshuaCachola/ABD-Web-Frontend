@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-// import { connect } from "react-redux";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { login } from "../../store/authentication";
+import { setToken } from "../../store/authentication";
 import {
   TextField,
   Button,
@@ -13,7 +12,7 @@ import {
   CardHeader,
 } from "@material-ui/core";
 import api from "../../utils";
-import { getFollowedSkatePosts } from "../../store/skateSpotPosts";
+
 const useStyles = makeStyles({
   input: {
     color: "white",
@@ -44,13 +43,33 @@ const LoginPanel = ({ history }) => {
 
   const handleSetUsername = (e) => setUsername(e.target.value);
   const handleSetPassword = (e) => setPassword(e.target.value);
-  const handleLogin = () => {
-    dispatch(login(username, password));
-    history.push("/skater-feed");
+
+  const handleLogin = async () => {
+    try {
+      const res = await fetch(`${api.url}/skaters/session`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (!res.ok) {
+        throw res;
+      }
+
+      const { token, id } = await res.json();
+
+      localStorage.setItem("TOKEN_KEY", token);
+      localStorage.setItem("ID", id);
+      dispatch(setToken(token));
+      history.push("/skater-feed");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleSignUp = () => history.push("/sign-up");
-
 
   return (
     <Box

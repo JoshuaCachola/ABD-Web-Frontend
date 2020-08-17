@@ -1,6 +1,3 @@
-import api from "../utils";
-import socket from "../socket";
-
 // Action - Login User
 const SET_TOKEN = "abd/authentication/SET_TOKEN";
 const REMOVE_TOKEN = "abd/authentication/REMOVE_TOKEN";
@@ -9,38 +6,12 @@ const REMOVE_TOKEN = "abd/authentication/REMOVE_TOKEN";
 export const setToken = (authToken) => {
   return {
     type: SET_TOKEN,
-    authToken
+    authToken,
   };
 };
 
-// Thunk - Login user
-export const login = (username, password) => async dispatch => {
-  try {
-    const res = await fetch(`${api.url}/skaters/session`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password })
-    });
-
-    if (!res.ok) {
-      throw res;
-    }
-
-    const { token, id } = await res.json();
-
-    localStorage.setItem("TOKEN_KEY", token);
-    localStorage.setItem("ID", id);
-    dispatch(setToken(token));
-    socket.emit("logged-in", id);
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-export const removeToken = () => dispatch => {
-  dispatch(setToken(''));
+export const removeToken = () => (dispatch) => {
+  dispatch(setToken(""));
 };
 
 // Reducer
@@ -50,9 +21,10 @@ export default function reducer(state = {}, action) {
     case SET_TOKEN: {
       return {
         ...state,
-        authToken: action.authToken
+        authToken: action.authToken,
       };
     }
-    default: return state;
+    default:
+      return state;
   }
-};
+}

@@ -34,10 +34,6 @@ const useStyles = makeStyles({
     alignItems: "center",
     objectFit: "contain",
   },
-  skateSpot: {
-    maxWidth: "50%",
-    maxHeight: "50%",
-  },
 });
 
 const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
