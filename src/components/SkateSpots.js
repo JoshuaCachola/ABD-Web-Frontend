@@ -210,6 +210,7 @@ const SkateSpots = ({ history }) => {
                       ) ? (
                         <Button
                           color="secondary"
+                          style={{ fontFamily: "Rock Salt", fontSize: "10px" }}
                           onClick={() =>
                             followSkateSpot(skateSpot.id, "unfollow")
                           }
@@ -220,6 +221,7 @@ const SkateSpots = ({ history }) => {
                         <Button
                           variant="contained"
                           color="secondary"
+                          style={{ fontFamily: "Rock Salt", fontSize: "10px" }}
                           onClick={() =>
                             followSkateSpot(skateSpot.id, "follow")
                           }

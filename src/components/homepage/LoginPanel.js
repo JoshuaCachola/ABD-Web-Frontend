@@ -154,23 +154,4 @@ const LoginPanel = ({ history }) => {
   );
 };
 
-// const mapStateToProps = state => {
-//   return {
-//     authToken: state.authentication.authToken
-//   };
-// };
-
-// const mapDispathToProps = dispatch => {
-//   return {
-//     login: (username, password) => dispatch(login(username, password))
-//   };
-// };
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispathToProps
-// )(
-//   LoginPanel
-// );
-
 export default withRouter(LoginPanel);
