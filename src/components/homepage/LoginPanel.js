@@ -12,8 +12,9 @@ import {
   CardHeader,
 } from "@material-ui/core";
 import api from "../../utils";
+import { theme } from "../../theme";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   input: {
     color: "white",
   },
@@ -33,7 +34,14 @@ const useStyles = makeStyles({
     color: "white",
     fontSize: 20,
   },
-});
+  loginButtons: {
+    color: "white",
+    "&:hover": {
+      color: theme.palette.secondary.main,
+      fontSize: "16px",
+    },
+  },
+}));
 
 const LoginPanel = ({ history }) => {
   const dispatch = useDispatch();
@@ -125,14 +133,16 @@ const LoginPanel = ({ history }) => {
               className={classes.loginButton}
             >
               <Button
-                style={{ color: "white", fontFamily: "Rock Salt" }}
+                style={{ fontFamily: "Rock Salt" }}
                 onClick={handleSignUp}
+                className={classes.loginButtons}
               >
                 Sign Up
               </Button>
               <Button
-                style={{ color: "white", fontFamily: "Rock Salt" }}
+                style={{ fontFamily: "Rock Salt" }}
                 onClick={handleLogin}
+                className={classes.loginButtons}
               >
                 Log In
               </Button>

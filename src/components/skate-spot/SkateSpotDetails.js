@@ -53,9 +53,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     margin: "20px 30px",
     display: "flex",
-    // [theme.breakpoints.up("md")]: {
     justifyContent: "center",
-    // },
   },
   bold: {
     fontWeight: "bold",

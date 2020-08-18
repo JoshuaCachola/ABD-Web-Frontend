@@ -9,7 +9,6 @@ import {
   Container,
   CardActions,
   IconButton,
-  CardContent,
   Typography,
   Box,
 } from "@material-ui/core";
@@ -19,22 +18,28 @@ import VideoPlayer from "react-video-js-player";
 import api from "../utils";
 import { getFollowedSkatePosts } from "../store/skateSpotPosts";
 import Navbar from "./utils/Navbar";
+import { theme } from "../theme";
 
-const useStyles = makeStyles({
-  root: {
-    maxWidth: 500,
+const useStyles = makeStyles((theme) => ({
+  post: {
+    maxWidth: "500px",
     margin: "50px auto",
+    height: "auto",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      margin: "0 auto",
+    },
   },
   media: {
-    height: "281.25px",
-    width: "500px",
+    height: "auto",
+    width: "100%",
     objectFit: "contain",
   },
   commentUsername: {
     paddingRight: "5px",
     fontWeight: "bold",
   },
-});
+}));
 
 const SkaterFeed = ({ history }) => {
   const dispatch = useDispatch();
@@ -100,7 +105,6 @@ const SkaterFeed = ({ history }) => {
         }
 
         res = await res.json();
-        // dispatch(setFollowedSkateSpots(res));
         if (!res.length) {
           history.push("/skatespots");
         } else {
@@ -158,7 +162,7 @@ const SkaterFeed = ({ history }) => {
         {skaterFeed &&
           skaterFeed.map((post, i) => {
             return (
-              <Card key={i} className={classes.root}>
+              <Card key={i} className={classes.post}>
                 <CardHeader
                   avatar={
                     <Avatar aria-label="skate-post" className={classes.avatar}>

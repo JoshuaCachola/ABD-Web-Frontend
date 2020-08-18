@@ -5,9 +5,13 @@ import { Box, TextField, Button, Card, makeStyles } from "@material-ui/core";
 import api from "../config";
 import abdLogo from "../images/abd-splash-logo.png";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 925,
+    minWidth: "925px",
+    [theme.breakpoints.down("xs")]: {
+      minWidth: "100%",
+    },
+    boxShadow: "0px 0px 5px 5px rgb(0, 0, 0, 0.2) inset",
   },
   logo: {
     margin: 20,
@@ -20,10 +24,11 @@ const useStyles = makeStyles({
   },
   label: {
     margin: 10,
+    minWidth: "120px",
     fontFamily: "Raleway",
     fontWeight: "bold",
   },
-});
+}));
 
 const SignUp = ({ history }) => {
   const [firstName, setFirstName] = useState(""),
@@ -79,122 +84,124 @@ const SignUp = ({ history }) => {
         </Box>
         <Box display="flex" justifyContent="center" alignContent="center">
           <Card className={classes.root}>
-            <form onSubmit={handleSignUp}>
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <Box flexBasis="15%" className={classes.label}>
-                  <label>Username</label>
+            <Box mt={2} mb={2}>
+              <form onSubmit={handleSignUp}>
+                <Box display="flex" justifyContent="center" alignItems="center">
+                  <Box flexBasis="15%" className={classes.label}>
+                    <label>Username</label>
+                  </Box>
+                  <Box width="220px">
+                    <TextField
+                      fullWidth
+                      margin="dense"
+                      variant="outlined"
+                      type="text"
+                      onChange={(e) => setUsername(e.target.value)}
+                      required={true}
+                    />
+                  </Box>
                 </Box>
-                <Box width="50%">
-                  <TextField
-                    fullWidth
-                    margin="dense"
-                    variant="outlined"
-                    type="text"
-                    onChange={(e) => setUsername(e.target.value)}
-                    required={true}
-                  />
+                <Box display="flex" justifyContent="center" alignItems="center">
+                  <Box flexBasis="15%" className={classes.label}>
+                    <label>First Name</label>
+                  </Box>
+                  <Box width="220px">
+                    <TextField
+                      fullWidth
+                      margin="dense"
+                      variant="outlined"
+                      type="text"
+                      onChange={(e) => setFirstName(e.target.value)}
+                      required={true}
+                    />
+                  </Box>
                 </Box>
-              </Box>
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <Box flexBasis="15%" className={classes.label}>
-                  <label>First Name</label>
+                <Box display="flex" justifyContent="center" alignItems="center">
+                  <Box flexBasis="15%" className={classes.label}>
+                    <label>Last Name</label>
+                  </Box>
+                  <Box width="220px">
+                    <TextField
+                      fullWidth
+                      margin="dense"
+                      variant="outlined"
+                      type="text"
+                      onChange={(e) => setLastName(e.target.value)}
+                      required={true}
+                    />
+                  </Box>
                 </Box>
-                <Box width="50%">
-                  <TextField
-                    fullWidth
-                    margin="dense"
-                    variant="outlined"
-                    type="text"
-                    onChange={(e) => setFirstName(e.target.value)}
-                    required={true}
-                  />
+                <Box display="flex" justifyContent="center" alignItems="center">
+                  <Box flexBasis="15%" className={classes.label}>
+                    <label>Email</label>
+                  </Box>
+                  <Box width="220px">
+                    <TextField
+                      fullWidth
+                      type="email"
+                      margin="dense"
+                      variant="outlined"
+                      onChange={(e) => setEmail(e.target.value)}
+                      required={true}
+                    />
+                  </Box>
                 </Box>
-              </Box>
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <Box flexBasis="15%" className={classes.label}>
-                  <label>Last Name</label>
+                <Box display="flex" justifyContent="center" alignItems="center">
+                  <Box flexBasis="15%" className={classes.label}>
+                    <label>Phone Number</label>
+                  </Box>
+                  <Box width="220px">
+                    <TextField
+                      fullWidth
+                      margin="dense"
+                      variant="outlined"
+                      type="text"
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      required={true}
+                    />
+                  </Box>
                 </Box>
-                <Box width="50%">
-                  <TextField
-                    fullWidth
-                    margin="dense"
-                    variant="outlined"
-                    type="text"
-                    onChange={(e) => setLastName(e.target.value)}
-                    required={true}
-                  />
+                <Box display="flex" justifyContent="center" alignItems="center">
+                  <Box flexBasis="15%" className={classes.label}>
+                    <label>Password</label>
+                  </Box>
+                  <Box width="220px">
+                    <TextField
+                      fullWidth
+                      type="password"
+                      margin="dense"
+                      variant="outlined"
+                      onChange={(e) => setPassword(e.target.value)}
+                      required={true}
+                    />
+                  </Box>
                 </Box>
-              </Box>
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <Box flexBasis="15%" className={classes.label}>
-                  <label>Email</label>
+                <Box display="flex" justifyContent="center" alignItems="center">
+                  <Box flexBasis="15%" className={classes.label}>
+                    <label>Confirm Password</label>
+                  </Box>
+                  <Box width="220px">
+                    <TextField
+                      fullWidth
+                      type="password"
+                      margin="dense"
+                      variant="outlined"
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required={true}
+                    />
+                  </Box>
                 </Box>
-                <Box width="50%">
-                  <TextField
-                    fullWidth
-                    type="email"
-                    margin="dense"
-                    variant="outlined"
-                    onChange={(e) => setEmail(e.target.value)}
-                    required={true}
-                  />
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  className={classes.label}
+                >
+                  <Button variant="contained" color="secondary" type="submit">
+                    Sign Up
+                  </Button>
                 </Box>
-              </Box>
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <Box flexBasis="15%" className={classes.label}>
-                  <label>Phone Number</label>
-                </Box>
-                <Box width="50%">
-                  <TextField
-                    fullWidth
-                    margin="dense"
-                    variant="outlined"
-                    type="text"
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    required={true}
-                  />
-                </Box>
-              </Box>
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <Box flexBasis="15%" className={classes.label}>
-                  <label>Password</label>
-                </Box>
-                <Box width="50%">
-                  <TextField
-                    fullWidth
-                    type="password"
-                    margin="dense"
-                    variant="outlined"
-                    onChange={(e) => setPassword(e.target.value)}
-                    required={true}
-                  />
-                </Box>
-              </Box>
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <Box flexBasis="15%" className={classes.label}>
-                  <label>Confirm Password</label>
-                </Box>
-                <Box width="50%">
-                  <TextField
-                    fullWidth
-                    type="password"
-                    margin="dense"
-                    variant="outlined"
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required={true}
-                  />
-                </Box>
-              </Box>
-              <Box
-                display="flex"
-                justifyContent="center"
-                className={classes.label}
-              >
-                <Button variant="contained" color="secondary" type="submit">
-                  Sign Up
-                </Button>
-              </Box>
-            </form>
+              </form>
+            </Box>
           </Card>
         </Box>
       </Box>

@@ -6,51 +6,58 @@ import {
   Card,
   CardContent,
   makeStyles,
-  Button
+  Button,
 } from "@material-ui/core";
-import { useDropzone } from "react-dropzone"; 
-import styled from 'styled-components';
+import { useDropzone } from "react-dropzone";
+import styled from "styled-components";
 
 import api from "../utils";
 import Navbar from "./utils/Navbar";
+import { theme } from "../theme";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 925,
+    minWidth: "925px",
+    [theme.breakpoints.down("xs")]: {
+      minWidth: "100%",
+    },
   },
   img: {
     maxWidth: 100,
     maxHeight: 100,
   },
   container: {
-    padding: 10
+    padding: 10,
   },
   header: {
-    minWidth: 925,
+    minWidth: "925px",
     margin: 10,
     fontFamily: "Raleway",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    [theme.breakpoints.down("sm")]: {
+      minWidth: "100%",
+    },
   },
   dropContainer: {
-    marginTop: 10
+    marginTop: 10,
   },
   button: {
-    marginTop: 10
-  }
-});
+    marginTop: 10,
+  },
+}));
 
 const getColor = (props) => {
   if (props.isDragAccept) {
     return "#F08080";
   }
   if (props.isDragReject) {
-    return '#ff1744';
+    return "#ff1744";
   }
   if (props.isDragActive) {
-    return '#F08080';
+    return "#F08080";
   }
-  return '#eeeeee';
-}
+  return "#eeeeee";
+};
 
 const Container = styled.div`
   flex: 1;
@@ -63,7 +70,7 @@ const Container = styled.div`
   border-color: ${(props) => getColor(props)};
   border-style: dashed;
   background-color: #fafafa;
-  color: #F08080;
+  color: #f08080;
   outline: none;
   transition: border 0.24s ease-in-out;
   height: 300px;
@@ -76,16 +83,16 @@ const CreateSkateSpot = ({ history }) => {
   const [state, setStateName] = useState("");
   const [imgPath, setImgPath] = useState("");
 
-  const handleSpotName = e => setSpotName(e.target.value);
-  const handleCityName = e => setCityName(e.target.value);
-  const handleStateName = e => setStateName(e.target.value);
-  const handleAddress = e => setAddress(e.target.value);
+  const handleSpotName = (e) => setSpotName(e.target.value);
+  const handleCityName = (e) => setCityName(e.target.value);
+  const handleStateName = (e) => setStateName(e.target.value);
+  const handleAddress = (e) => setAddress(e.target.value);
   // const handleSetImgPath = file => {
   //   // console.log(file)
   //   setImgPath(file);
   // }
 
-  const createSpot = async e => {
+  const createSpot = async (e) => {
     e.preventDefault();
     try {
       const body = new FormData();
@@ -93,9 +100,9 @@ const CreateSkateSpot = ({ history }) => {
       let res = await fetch(`${api.url}/skatespots/upload-image`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
+          Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
         },
-        body
+        body,
       });
 
       if (!res.ok) throw res;
@@ -113,32 +120,33 @@ const CreateSkateSpot = ({ history }) => {
           city,
           state,
           address,
-          imgs: [postUrl]
+          imgs: [postUrl],
         }),
       });
 
       if (!res.ok) throw res;
 
-      history.push("/skatespots")
+      history.push("/skatespots");
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
-  const onDrop = useCallback((acceptedFiles) => {
-    setImgPath(acceptedFiles);
-    // console.log(acceptedFiles);
-    
-  }, [setImgPath]);
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      setImgPath(acceptedFiles);
+    },
+    [setImgPath]
+  );
 
   const {
     getRootProps,
     getInputProps,
     isDragActive,
     isDragAccept,
-    isDragReject
-  } = useDropzone({ accept: 'image/*', onDrop });
-  // console.log(imgPath[0].name);
+    isDragReject,
+  } = useDropzone({ accept: "image/*", onDrop });
+
   const classes = useStyles();
   return (
     <div className="skate-spots__create-form">
@@ -157,11 +165,7 @@ const CreateSkateSpot = ({ history }) => {
       >
         <Card className={classes.root}>
           <CardContent>
-            <Box
-              display="flex"
-              justifyContent="center"
-              // className={classes.root}
-            >
+            <Box display="flex" justifyContent="center">
               <Box display="flex" justifyContent="center">
                 <form onSubmit={createSpot}>
                   <Box flexDirection="column">

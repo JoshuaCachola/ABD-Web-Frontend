@@ -10,7 +10,7 @@ import SkateSpotDetails from "./SkateSpotDetails";
 import { theme } from "../../theme";
 import { getSpotPosts } from "../../store/skateSpotPosts";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   spotContainer: {
     maxWidth: "95%",
     display: "flex",
@@ -39,7 +39,7 @@ const useStyles = makeStyles({
   root: {
     maxWidth: "935px",
   },
-});
+}));
 
 const SkateSpot = ({ match, history }) => {
   const skateSpot = useSelector(

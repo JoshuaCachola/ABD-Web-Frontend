@@ -33,8 +33,6 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     top: "50%",
     transform: "translateY(-50%)",
-    // left: "50%",
-    // transform: "transformX(-50%)",
   },
   root: {
     display: "flex",
@@ -80,7 +78,6 @@ const useStyles = makeStyles((theme) => ({
     // verticalAlign: "top",
     "&:nth-of-type(3n)": {
       marginRight: "3px",
-      // paddingLeft: "3px",
     },
   },
   postOverlayTextContainer: {

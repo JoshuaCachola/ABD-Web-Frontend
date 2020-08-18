@@ -13,15 +13,18 @@ import { setCurrentSkateSpot } from "../store/skateSpots";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 600,
+    minWidth: "600px",
     fontFamily: "Raleway",
     fontWeight: "bold",
     fontSize: "14px",
     margin: "10px 0",
+    [theme.breakpoints.down("xs")]: {
+      minWidth: "100%",
+    },
   },
   img: {
-    width: theme.spacing(10),
-    height: theme.spacing(10),
+    width: theme.spacing(12),
+    height: theme.spacing(12),
   },
   skateSpotsContainer: {
     boxShadow: "0 0 12px rgba(0,0,0,0.2)",
@@ -49,12 +52,22 @@ const useStyles = makeStyles((theme) => ({
   skateSpotsName: {
     fontSize: "24px",
     lineHeight: "32px",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "20px",
+      lineHeight: "28px",
+    },
   },
   skateSpotsCity: {
     fontSize: "16px",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "14px",
+    },
   },
   skateSpotsState: {
     fontSize: "14px",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "12px",
+    },
   },
   skateSpot: {
     cursor: "pointer",
@@ -70,7 +83,6 @@ const SkateSpots = ({ history }) => {
   const skateSpots = useSelector(
     ({ skateSpotFeed }) => skateSpotFeed.skateSpots
   );
-
 
   // followed spots queried from db
   const [followedSpots, setFollowedSpots] = useState([]);
@@ -164,15 +176,6 @@ const SkateSpots = ({ history }) => {
             <Card className={classes.root}>
               {skateSpots.map((skateSpot) => (
                 <CardContent key={skateSpot.id} id={skateSpot.id}>
-                  {/* <Link
-                    to={{
-                      pathname: `/skatespots/${skateSpot.id}`,
-                      state: {
-                        skateSpot,
-                      },
-                    }}
-                    style={{ textDecoration: "none" }}
-                  > */}
                   <Box className={classes.spotListingsContainer}>
                     <Box
                       className={classes.skateSpot}
@@ -205,25 +208,25 @@ const SkateSpots = ({ history }) => {
                       {followedSpots.find(
                         (spot) => spot.skateSpotId === skateSpot.id
                       ) ? (
-                          <Button
-                            color="secondary"
-                            onClick={() =>
-                              followSkateSpot(skateSpot.id, "unfollow")
-                            }
-                          >
-                            Unfollow
-                          </Button>
-                        ) : (
-                          <Button
-                            variant="contained"
-                            color="secondary"
-                            onClick={() =>
-                              followSkateSpot(skateSpot.id, "follow")
-                            }
-                          >
-                            Follow
-                          </Button>
-                        )}
+                        <Button
+                          color="secondary"
+                          onClick={() =>
+                            followSkateSpot(skateSpot.id, "unfollow")
+                          }
+                        >
+                          Unfollow
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={() =>
+                            followSkateSpot(skateSpot.id, "follow")
+                          }
+                        >
+                          Follow
+                        </Button>
+                      )}
                     </Box>
                   </Box>
                   {/* </Link> */}
