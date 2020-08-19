@@ -20,6 +20,12 @@ ABD is a web application for users to share skate spots that they come upon in t
 
 ![ABD-create comment](https://media.giphy.com/media/ZY399zr6rjcsx6Kjlx/giphy.gif)
 
+## In progress
+- implementing ElasticSearch
+- add skate crews component and front end functionality
+- finsh messaging using socket.io
+- seed more data and incorporate lazy loading
+
 ## Technology List
 
 - Javascript
