@@ -2,48 +2,79 @@ import api from "../utils";
 import socket from "../socket";
 
 // Actions
-const PRIVATE_MESSAGE = "abd/skaterMessages/PRIVATE_MESSAGE";
+const GET_CHAT_ROOM_MESSAGES = "abd/skaterMessages/GET_CHAT_ROOM_MESSAGES";
+const JOIN_ROOM = "abd/skaterMessages/JOIN_ROOM";
 
 // Action Creators
-export const sendPrivateMessage = privateMsg => {
+export const getChatRoomMessages = (messages) => {
   return {
-    type: PRIVATE_MESSAGE,
-    privateMsg
+    type: GET_CHAT_ROOM_MESSAGES,
+    messages,
+  };
+};
+
+export const joinRoom = (room) => {
+  return {
+    type: JOIN_ROOM,
+    room,
   };
 };
 
 // Thunks
-export const updatePrivateChat = message => async dispatch => {
-  const userId = localStorage.getItem("TOKEN_KEY");
+export const handleGetChatRoomMessages = (chatRoomName) => async (dispatch) => {
   try {
-    const res = await fetch(`${api}`, {
-      method: "POST",
-      body: { message },
-      header: {
-        "Authorization": `Bearer ${userId}`,
-        "Content-Type": "application/json"
+    let res = await fetch(
+      `${api.url}/api/v1/chatroom/messages/${chatRoomName}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+        },
       }
-    });
-    const { data } = await res.json();
+    );
 
-    socket.emit("direct-msg", {
-      text: data.text,
-      userId,
-      senderId: data.senderId
-    })
+    if (!res.ok) {
+      throw res;
+    }
+
+    res = await res.json();
+
+    dispatch(getChatRoomMessages(res));
   } catch (err) {
     console.error(err);
   }
 };
 
-export default function reducer(state = {}, action) {
-  switch (action.type) {
-    case PRIVATE_MESSAGE: {
-      return {
-        ...state,
-        privateMsg: action.privateMsg
-      }
+export const handleJoinRoom = (room) => async (dispatch) => {
+  try {
+    let res = await fetch(`${api.url}/api/v1/chatroom`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+      },
+      body: { room },
+    });
+
+    if (!res.ok) {
+      throw res;
     }
-    default: return state;
+
+    dispatch(joinRoom({ message: `You have joined ${room}.` }));
+  } catch (err) {
+    dispatch(joinRoom({ message: `Error joining ${room}.` }));
   }
 };
+
+export default function reducer(state = { messages: [] }, action) {
+  switch (action.type) {
+    case GET_CHAT_ROOM_MESSAGES: {
+      return {
+        ...state,
+        messages: action.messages,
+      };
+    }
+    default:
+      return state;
+  }
+}

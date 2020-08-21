@@ -23,8 +23,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 40,
   },
   loginButton: {
-    marginRight: 10,
-    marginTop: 30,
+    margin: "30px 10px 0 0",
   },
   focused: {
     color: "#326C73",
@@ -54,7 +53,7 @@ const LoginPanel = ({ history }) => {
 
   const handleLogin = async () => {
     try {
-      const res = await fetch(`${api.url}/skaters/session`, {
+      const res = await fetch(`${api.url}/api/v1/skaters/session`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -18,6 +18,7 @@ import { theme } from "../theme";
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: "925px",
+    boxShadow: "0px 0px 7px 7px rgba(0, 0, 0, .15)",
     [theme.breakpoints.down("xs")]: {
       minWidth: "100%",
     },
@@ -97,7 +98,7 @@ const CreateSkateSpot = ({ history }) => {
     try {
       const body = new FormData();
       body.append("image", imgPath[0]);
-      let res = await fetch(`${api.url}/skatespots/upload-image`, {
+      let res = await fetch(`${api.url}/api/v1/skatespots/upload-image`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
@@ -109,7 +110,7 @@ const CreateSkateSpot = ({ history }) => {
 
       const { postUrl } = await res.json();
 
-      res = await fetch(`${api.url}/skatespots`, {
+      res = await fetch(`${api.url}/api/v1/skatespots`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -89,7 +89,7 @@ const CreateSkatePost = ({ match: { url }, history }) => {
       let res;
       if (type === "video/mp4") {
         body.append("video", file[0]);
-        res = await fetch(`${api.url}/skatespots/upload-video`, {
+        res = await fetch(`${api.url}/api/v1/skatespots/upload-video`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
@@ -98,7 +98,7 @@ const CreateSkatePost = ({ match: { url }, history }) => {
         });
       } else {
         body.append("image", file[0]);
-        res = await fetch(`${api.url}/skatespots/upload-image`, {
+        res = await fetch(`${api.url}/api/v1/skatespots/upload-image`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
@@ -111,7 +111,7 @@ const CreateSkatePost = ({ match: { url }, history }) => {
 
       const { postUrl } = await res.json();
 
-      res = await fetch(`${api.url}/skatespots/${skateSpotId}/posts`, {
+      res = await fetch(`${api.url}/api/v1/skatespots/${skateSpotId}/posts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

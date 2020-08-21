@@ -5,7 +5,7 @@ import {
   Box,
   Avatar,
   Typography,
-  Button
+  Button,
 } from "@material-ui/core";
 import ReactPlayer from "react-player";
 
@@ -64,19 +64,19 @@ const useStyles = makeStyles((theme) => ({
   },
   large: {
     width: theme.spacing(20),
-    height: theme.spacing(20)
+    height: theme.spacing(20),
   },
   root: {
-    maxWidth: "70%"
+    maxWidth: "70%",
   },
   username: {
     fontSize: "24px",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   bold: {
     fontWeight: "bold",
-    fontSize: "20px"
-  }
+    fontSize: "20px",
+  },
 }));
 
 const Profile = () => {
@@ -86,11 +86,11 @@ const Profile = () => {
   useEffect(() => {
     (async () => {
       try {
-        let res = await fetch(`${api.url}/skateposts`, {
+        let res = await fetch(`${api.url}/api/v1/skateposts`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+          },
         });
 
         if (!res.ok) {
@@ -108,12 +108,15 @@ const Profile = () => {
   useEffect(() => {
     (async () => {
       try {
-        let res = await fetch(`${api.url}/skaters/${localStorage.getItem("ID")}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`
+        let res = await fetch(
+          `${api.url}/api/v1/skaters/${localStorage.getItem("ID")}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+            },
           }
-        });
+        );
 
         if (!res.ok) {
           throw res;
@@ -136,40 +139,42 @@ const Profile = () => {
         <Container className={classes.profile}>
           <Container className={classes.profileDetails}>
             <Box mr={3}>
-              <Avatar
-                className={classes.large}
-              >
-                J
-            </Avatar>
+              <Avatar className={classes.large}>J</Avatar>
             </Box>
             <Box ml={5} display="flex" flexDirection="column">
               <Box display="flex">
                 <Box mr={2} mb={2}>
-                  <Typography className={classes.username}>{profileDetails.username}</Typography>
+                  <Typography className={classes.username}>
+                    {profileDetails.username}
+                  </Typography>
                 </Box>
                 <Box>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    size="small"
-                  >
+                  <Button variant="contained" color="secondary" size="small">
                     Edit Profile
                   </Button>
                 </Box>
               </Box>
               <Box display="flex" mb={2}>
                 <Box mr={2}>
-                  <Typography><span className={classes.bold}>{posts.length}</span> posts</Typography>
+                  <Typography>
+                    <span className={classes.bold}>{posts.length}</span> posts
+                  </Typography>
                 </Box>
                 <Box mr={2}>
-                  <Typography><span className={classes.bold}>0</span> skate crews</Typography>
+                  <Typography>
+                    <span className={classes.bold}>0</span> skate crews
+                  </Typography>
                 </Box>
                 <Box>
-                  <Typography><span className={classes.bold}>0</span> skate spots followed</Typography>
+                  <Typography>
+                    <span className={classes.bold}>0</span> skate spots followed
+                  </Typography>
                 </Box>
               </Box>
               <Box mb={2}>
-                <Typography className={classes.bold}>{profileDetails.firstName} {profileDetails.lastName}</Typography>
+                <Typography className={classes.bold}>
+                  {profileDetails.firstName} {profileDetails.lastName}
+                </Typography>
               </Box>
             </Box>
           </Container>
@@ -195,12 +200,12 @@ const Profile = () => {
                           width="293px"
                         />
                       ) : (
-                          <img
-                            className={classes.skateFeedImg}
-                            src={post[0]}
-                            alt="skate-pic"
-                          />
-                        )}
+                        <img
+                          className={classes.skateFeedImg}
+                          src={post[0]}
+                          alt="skate-pic"
+                        />
+                      )}
                     </div>
                   );
                 })}

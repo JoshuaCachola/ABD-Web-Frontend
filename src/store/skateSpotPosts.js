@@ -3,6 +3,8 @@ import api from "../utils";
 const SET_SPOT_POSTS = "abd/skateSpotPosts/SET_SPOT_DETAILS";
 const GET_FOLLOWED_SKATE_POSTS = "abd/skateSpotPosts/GET_FOLLOWED_SKATE_POSTS";
 const GET_NUMBER_OF_POSTS = "abd/skateSpotPosts/GET_NUMBER_OF_POSTS";
+const SET_BOARD_TAPS = "abd/skateSpotPosts/SET_BOARD_TAPS";
+const GET_BOARD_TAP = "abd/skateSpotPosts/GET_BOARD_TAP";
 
 export const setSpotPosts = (posts) => {
   return {
@@ -25,9 +27,23 @@ export const getNumberOfPosts = (num) => {
   };
 };
 
+export const setBoardTaps = (boardTaps) => {
+  return {
+    type: SET_BOARD_TAPS,
+    boardTaps,
+  };
+};
+
+export const getBoardTap = (boardTap) => {
+  return {
+    type: GET_BOARD_TAP,
+    boardTap,
+  };
+};
+
 export const getSpotPosts = (id) => async (dispatch) => {
   try {
-    const res = await fetch(`${api.url}/skatespots/${id}/posts`, {
+    const res = await fetch(`${api.url}/api/v1/skatespots/${id}/posts`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
@@ -54,7 +70,7 @@ export const getFollowedSkatePosts = (followedSkateSpots) => async (
   try {
     followedSkateSpots.forEach(async (skateSpot, i) => {
       let res = await fetch(
-        `${api.url}/skatespots/following/${skateSpot.skateSpotId}`,
+        `${api.url}/api/v1/skatespots/following/${skateSpot.skateSpotId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -78,8 +94,22 @@ export const getFollowedSkatePosts = (followedSkateSpots) => async (
   }
 };
 
+export const handleSetBoardTaps = (boardTaps) => (dispatch) => {
+  dispatch(setBoardTaps(boardTaps));
+};
+
+export const handleGetBoardTap = (boardTap) => (dispatch) => {
+  dispatch(getBoardTap(boardTap));
+};
+
 export default function reducer(
-  state = { posts: [], postDetails: {}, num: 0 },
+  state = {
+    posts: [],
+    postDetails: {},
+    num: 0,
+    boardTaps: {},
+    boardTap: false,
+  },
   action
 ) {
   switch (action.type) {
@@ -99,6 +129,18 @@ export default function reducer(
       return {
         ...state,
         getNumberOfPosts: action.num,
+      };
+    }
+    case SET_BOARD_TAPS: {
+      return {
+        ...state,
+        setBoardTaps: action.boardTaps,
+      };
+    }
+    case GET_BOARD_TAP: {
+      return {
+        ...state,
+        getBoardTap: action.boardTap,
       };
     }
     default:

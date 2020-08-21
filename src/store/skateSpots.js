@@ -34,7 +34,7 @@ export const currentSkateSpot = (currentSkateSpot) => {
 };
 export const setSkateSpots = () => async (dispatch) => {
   try {
-    const res = await fetch(`${api.url}/skatespots`, {
+    const res = await fetch(`${api.url}/api/v1/skatespots`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,

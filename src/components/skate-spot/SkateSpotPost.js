@@ -10,7 +10,9 @@ import {
   Button,
   makeStyles,
   Container,
+  IconButton,
 } from "@material-ui/core";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 
 import api from "../../utils";
 
@@ -34,11 +36,19 @@ const useStyles = makeStyles({
     alignItems: "center",
     objectFit: "contain",
   },
+  boardTapPost: {
+    height: "100%",
+    top: 0,
+  },
+  username: {
+    fontWeight: "bold",
+  },
 });
 
 const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
   const [comment, setComment] = useState("");
   const [postComments, setPostComments] = useState([]);
+  // const [boardTap, setBoardTap] = useState(false);
 
   useEffect(() => {
     getComments();
@@ -55,7 +65,7 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
   const getComments = async () => {
     try {
       const res = await fetch(
-        `${api.url}/skatespots/${skateSpotId}/posts/${id}/comments`,
+        `${api.url}/api/v1/skatespots/${skateSpotId}/posts/${id}/comments`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -77,7 +87,7 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
     e.preventDefault();
     try {
       const res = await fetch(
-        `${api.url}/skatespots/${skateSpotId}/posts/${id}/comments`,
+        `${api.url}/api/v1/skatespots/${skateSpotId}/posts/${id}/comments`,
         {
           method: "POST",
           headers: {
@@ -133,7 +143,21 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
           <Card className="skate-spot__comment-container">
             <CardHeader
               avatar={<Avatar></Avatar>}
-              title={skater.username}
+              title={
+                <Box display="flex">
+                  <div className={classes.username}>
+                    {skater.username} &nbsp;•
+                    <Button
+                      style={{
+                        fontFamily: "Rock Salt",
+                        fontSize: "9px",
+                      }}
+                    >
+                      Follow
+                    </Button>
+                  </div>
+                </Box>
+              }
               subheader={caption}
               className="skate-spot__comment-header"
             />
@@ -148,7 +172,9 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
                             {postComment.skaterCommenter.username[0]}
                           </Avatar>
                           <div className={classes.comment}>
-                            {postComment.skaterCommenter.username}
+                            <span className={classes.username}>
+                              {postComment.skaterCommenter.username}
+                            </span>
                             &nbsp;
                             {postComment.comment}
                           </div>
@@ -157,6 +183,23 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
                     </li>
                   ))}
               </ul>
+              {/* {postBoardTappedState[post.id] ? ( */}
+              <div className={classes.boardTapPost}>
+                <IconButton
+                  aria-label="add to favorites"
+                  // onClick={() => handleTapPost(post.id, "untap")}
+                >
+                  <FavoriteIcon color="secondary" />
+                </IconButton>
+                {/* ) : (
+                <IconButton
+                  aria-label="remove from favorites"
+                  // onClick={() => handleTapPost(post.id, "tap")}
+                >
+                  <FavoriteIcon />
+                </IconButton>
+              )} */}
+              </div>
             </CardContent>
             <form onSubmit={submitComment}>
               <Box
@@ -164,7 +207,7 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
                 justifyContent="space-between"
                 className="skate-spot__comment-input"
               >
-                <Box width="100%">
+                <Box width="85%" ml={1}>
                   <TextField
                     fullWidth={true}
                     value={comment}
@@ -174,7 +217,15 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
                   ></TextField>
                 </Box>
                 <Box>
-                  <Button type="submit">Post</Button>
+                  <Button
+                    type="submit"
+                    style={{
+                      fontFamily: "Rock Salt",
+                      fontSize: "9px",
+                    }}
+                  >
+                    Post
+                  </Button>
                 </Box>
               </Box>
             </form>

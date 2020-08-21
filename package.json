@@ -8,6 +8,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "formik": "^2.1.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.0.1",
@@ -21,7 +22,8 @@
     "redux-thunk": "^2.3.0",
     "socket.io-client": "^2.3.0",
     "styled-components": "^5.1.0",
-    "video.js": "^7.7.6"
+    "video.js": "^7.7.6",
+    "yup": "^0.29.3"
   },
   "scripts": {
     "start": "react-scripts start",

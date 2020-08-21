@@ -18,9 +18,17 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     fontSize: "14px",
     margin: "10px 0",
+    boxShadow: "0px 0px 7px 7px rgba(0, 0, 0, .15)",
     [theme.breakpoints.down("xs")]: {
       minWidth: "100%",
     },
+  },
+  header: {
+    minWidth: "600px",
+    fontFamily: "Raleway",
+    fontWeight: "bold",
+    fontSize: "14px",
+    margin: "10px 0",
   },
   img: {
     width: theme.spacing(12),
@@ -90,7 +98,7 @@ const SkateSpots = ({ history }) => {
   // gets followed skate spots and updates followedSpots state
   const getFollowedSpots = async () => {
     try {
-      let res = await fetch(`${api.url}/skatespots/following`, {
+      let res = await fetch(`${api.url}/api/v1/skatespots/following`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
@@ -126,21 +134,27 @@ const SkateSpots = ({ history }) => {
     try {
       let res;
       if (type === "follow") {
-        res = await fetch(`${api.url}/skatespots/${skateSpotId}/follow`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
-          },
-        });
+        res = await fetch(
+          `${api.url}/api/v1/skatespots/${skateSpotId}/follow`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+            },
+          }
+        );
       } else {
-        res = await fetch(`${api.url}/skatespots/${skateSpotId}/unfollow`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
-          },
-        });
+        res = await fetch(
+          `${api.url}/api/v1/skatespots/${skateSpotId}/unfollow`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+            },
+          }
+        );
       }
 
       if (!res.ok) {
@@ -164,7 +178,7 @@ const SkateSpots = ({ history }) => {
       <div className="skate-spots">
         <Box display="flex" flexDirection="column" p={1}>
           <Box display="flex" justifyContent="center">
-            <Box className={classes.root}>
+            <Box className={classes.header}>
               <h2>Suggested Skate Spots</h2>
             </Box>
           </Box>

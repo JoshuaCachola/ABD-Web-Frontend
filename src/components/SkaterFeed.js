@@ -16,7 +16,10 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import VideoPlayer from "react-video-js-player";
 
 import api from "../utils";
-import { getFollowedSkatePosts } from "../store/skateSpotPosts";
+import {
+  getFollowedSkatePosts,
+  handleSetBoardTaps,
+} from "../store/skateSpotPosts";
 import Navbar from "./utils/Navbar";
 import { theme } from "../theme";
 
@@ -25,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "500px",
     margin: "50px auto",
     height: "auto",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       width: "100%",
       margin: "0 auto",
     },
@@ -37,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
   },
   commentUsername: {
     paddingRight: "5px",
+    fontWeight: "bold",
+  },
+  username: {
     fontWeight: "bold",
   },
 }));
@@ -54,7 +60,7 @@ const SkaterFeed = ({ history }) => {
   useEffect(() => {
     (async () => {
       try {
-        let res = await fetch(`${api.url}/skateposts/boardtaps`, {
+        let res = await fetch(`${api.url}/api/v1/skateposts/boardtaps`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
@@ -73,6 +79,7 @@ const SkaterFeed = ({ history }) => {
     })();
   }, []);
 
+  // sets board tap state for all posts
   useEffect(() => {
     if (skaterFeed) {
       const postState = {};
@@ -87,13 +94,14 @@ const SkaterFeed = ({ history }) => {
         }
       });
       setPostBoardTappedState(postState);
+      dispatch(handleSetBoardTaps(postState));
     }
   }, [skaterFeed]);
 
   useEffect(() => {
     (async () => {
       try {
-        let res = await fetch(`${api.url}/skatespots/following`, {
+        let res = await fetch(`${api.url}/api/v1/skatespots/following`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
@@ -120,7 +128,7 @@ const SkaterFeed = ({ history }) => {
     try {
       let res;
       if (type === "tap") {
-        res = await fetch(`${api.url}/skateposts/${postId}/boardtap`, {
+        res = await fetch(`${api.url}/ap1/v1/skateposts/${postId}/boardtap`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -128,7 +136,7 @@ const SkaterFeed = ({ history }) => {
           },
         });
       } else {
-        res = await fetch(`${api.url}/skateposts/${postId}/boardtap`, {
+        res = await fetch(`${api.url}/api/v1/skateposts/${postId}/boardtap`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -169,7 +177,11 @@ const SkaterFeed = ({ history }) => {
                       R
                     </Avatar>
                   }
-                  title={post.skater.username}
+                  title={
+                    <div className={classes.username}>
+                      {post.skater.username}
+                    </div>
+                  }
                   subheader={post.caption}
                 />
                 {post.post[0].endsWith(".mp4") ? (

@@ -18,6 +18,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import GroupIcon from "@material-ui/icons/Group";
+import AddLocationIcon from "@material-ui/icons/AddLocation";
 import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import MessageIcon from "@material-ui/icons/Message";
@@ -75,7 +76,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     width: "250px",
-    zIndex: 99,
+    zIndex: 10000,
     marginLeft: "-125px",
   },
   searchResults: {
@@ -258,15 +259,16 @@ const Navbar = ({ history }) => {
           <div onClick={handleHome} className={classes.navbarIcons}>
             <HomeIcon />
           </div>
-          <div className={classes.navbarIcons}>
-            <GroupIcon />
-          </div>
           <div onClick={handleMessaging} className={classes.navbarIcons}>
             <MessageIcon />
           </div>
           <div onClick={addNewSpot} className={classes.navbarIcons}>
-            <img src={addSpotImg} alt="add-spot" height="24" width="24" />
+            {/* <img src={addSpotImg} alt="add-spot" height="24" width="24" /> */}
+            <AddLocationIcon />
           </div>
+          {/* <div className={classes.navbarIcons}>
+            <GroupIcon />
+          </div> */}
           <div className={classes.navbarIcons}>
             <ButtonGroup ref={menuRef} aria-label="drop-menu">
               <div

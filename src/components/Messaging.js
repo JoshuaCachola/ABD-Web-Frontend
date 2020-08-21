@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
 import socket from "../socket";
-
-import Navbar from "./utils/Navbar";
+import * as yup from "yup";
+import { Formik } from "formik";
 import {
   Container,
   makeStyles,
   Box,
   TextField,
   Button,
+  Typography,
 } from "@material-ui/core";
 
-const useStyles = makeStyles({
+import Navbar from "./utils/Navbar";
+
+const useStyles = makeStyles((theme) => ({
   chatContainer: {
+    maxWidth: 600,
     width: "60%",
     border: "1px solid #F8F8F8",
     height: "500px",
@@ -19,12 +23,12 @@ const useStyles = makeStyles({
     borderRadius: "5px",
     boxShadow: "0 0 12px rgba(0,0,0,0.2)",
     display: "flex",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+    },
   },
   openChats: {
     borderRight: "2px solid #ECECEC",
-  },
-  sendButton: {
-    fontWeight: "bold",
   },
   // directMessages: {
   //   borderBottom: "1px solid #F8F8F8"
@@ -33,34 +37,68 @@ const useStyles = makeStyles({
   //   position: "absolute",
   //   bottom: 0
   //
+}));
+
+const schema = yup.object({
+  message: yup.string().required("Message is required"),
 });
 
 const Messaging = () => {
-  const [messages, setMessages] = useState(["Hello"]),
-    [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [initialized, setInitialized] = useState(false);
+  const [rooms, setRooms] = useState([]);
 
-  useEffect(
-    () => {
-      getMessages();
-    },
-    // eslint-disable-next-line
-    [messages.length]
-  );
+  // useEffect(
+  //   () => {
+  //     getMessages();
+  //   },
+  //   // eslint-disable-next-line
+  //   [messages.length]
+  // );
 
-  const getMessages = () => {
-    socket.on("message", (msg) => {
-      setMessages([...messages, msg]);
+  const getMessages = async () => {
+    // const res = await getChatRoomMessages(getChatData().chatRoomName);
+    // setMessages(res.data);
+    // setInitialized(true);
+  };
+
+  const getRooms = async () => {
+    // const res = await getChatRooms();
+    // setRooms(res.data);
+    // setInitialized(true);
+  };
+
+  const connectToRoom = () => {
+    socket.on("connect", (data) => {
+      socket.emit("join", getChatData().chatRoomName);
     });
+
+    socket.on("newMessage", (data) => {
+      getMessages();
+    });
+
+    setInitialized(true);
   };
 
-  const handlePostMessage = () => {
-    if (message !== "") {
-      socket.emit("message", message);
-      setMessage("");
-    } else {
-      alert("Please add a message to send...");
+  const handleSubmit = async (e) => {
+    const isValid = await schema.validate(e);
+    if (!isValid) {
+      return;
     }
+    const data = { ...e };
+    // data.chatRoomName = getChatData().chatRoomName;
+    // data.author = getChatData().handle;
+    data.message = e.message;
+    socket.emit("message", data);
   };
+
+  // useEffect(() => {
+  //   if (!initialized) {
+  //     getMessages();
+  //     connectToRoom();
+  //     getRooms();
+  //   }
+  // });
 
   const classes = useStyles();
   return (
@@ -73,11 +111,15 @@ const Messaging = () => {
           flexBasis="40%"
           className={classes.openChats}
         >
-          <Box display="flex" height="50%" flexDirection="column">
-            <h1>Direct messages</h1>
+          <Box display="flex" height="50%" mt={1} flexDirection="column">
+            <Typography style={{ fontWeight: "bold" }}>
+              Direct messages
+            </Typography>
           </Box>
           <Box display="flex" height="50%" flexDirection="column">
-            <h1>Group messages</h1>
+            <Typography style={{ fontWeight: "bold" }}>
+              Group messages
+            </Typography>
           </Box>
         </Box>
         <Box display="flex" flexBasis="60%">
@@ -88,41 +130,47 @@ const Messaging = () => {
             width="100%"
             justifyContent="space-between"
           >
-            <Box width="85%" ml={1}>
-              <TextField
-                type="text"
-                fullWidth
-                multiline
-                value={message}
-                placeholder=" Add message..."
-                onChange={(e) => setMessage(e.target.value)}
-              />
-            </Box>
-            <Button
-              onClick={handlePostMessage}
-              color="secondary"
-              size="medium"
-              className={classes.sendButton}
+            <Formik
+              validationSchema={schema}
+              onSubmit={handleSubmit}
+              initialValues={{ message: "" }}
             >
-              Send
-            </Button>
+              {({
+                handleSubmit,
+                handleChange,
+                handleBlur,
+                values,
+                touched,
+                isValid,
+                errors,
+              }) => (
+                <form onSubmit={handleSubmit}>
+                  <Box width="85%" ml={1} display="flex">
+                    <TextField
+                      type="text"
+                      fullWidth
+                      multiline
+                      name="message"
+                      value={values.message || ""}
+                      placeholder=" Add message..."
+                      onChange={handleChange}
+                      isValid={touched.handle && errors.handle}
+                    />
+                    <Button
+                      type="submit"
+                      color="secondary"
+                      size="medium"
+                      style={{ fontWeight: "bold" }}
+                    >
+                      Send
+                    </Button>
+                  </Box>
+                </form>
+              )}
+            </Formik>
           </Box>
         </Box>
       </Container>
-      {/* <div>
-        {messages.length > 0 &&
-          messages.map((msg, i) => (
-            <div key={i}>
-              <p>{msg}</p>
-            </div>
-          ))}
-        <input
-          value={message}
-          name="message"
-          onChange={(e) => setMessage(e.target.value)}
-        />
-        <button onClick={handlePostMessage}>Send Message</button>
-      </div> */}
     </>
   );
 };

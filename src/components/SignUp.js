@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       minWidth: "100%",
     },
-    boxShadow: "0px 0px 5px 5px rgb(0, 0, 0, 0.2) inset",
+    boxShadow: "0px 0px 7px 7px rgb(0, 0, 0, 0.15)",
   },
   logo: {
     margin: 20,
@@ -48,7 +48,7 @@ const SignUp = ({ history }) => {
     }
 
     try {
-      const res = await fetch(`${api.url}/skaters/signup`, {
+      const res = await fetch(`${api.url}/api/v1/skaters/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

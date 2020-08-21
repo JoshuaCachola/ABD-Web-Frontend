@@ -55,27 +55,22 @@ const useStyles = makeStyles((theme) => ({
   },
   postContainer: {
     width: "calc(33% - 4px)",
-    // height: "100%",
     position: "relative",
     display: "inline-block",
     marginBottom: "8px",
     marginRight: "8px",
     backgroundColor: "#000000",
-    // verticalAlign: "top",
     "&:nth-of-type(3n)": {
       marginRight: 0,
     },
   },
   postContainerMedia: {
     width: "calc(33% - 6px)",
-    // height: "100%",
     position: "relative",
     display: "inline-block",
-    // margin: "4px 4px 4px 4px",
     marginBottom: "8px",
     marginRight: "8px",
     backgroundColor: "#000000",
-    // verticalAlign: "top",
     "&:nth-of-type(3n)": {
       marginRight: "3px",
     },
@@ -135,14 +130,7 @@ const SkateSpotFeed = ({ id }) => {
         }
         onClick={() => handleSkatePostPopup(i)}
       >
-        {/* <div className={classes.skateFeedImg}> */}
-        <ReactPlayer
-          url={post.post[0]}
-          // light={false}
-          height="100%"
-          width="100%"
-        />
-        {/* </div> */}
+        <ReactPlayer url={post.post[0]} height="100%" width="100%" />
         <div className={classes.postOverlay}>
           <Container className={classes.postOverlayTextContainer}>
             <Box display="flex" mr={3}>
@@ -165,13 +153,11 @@ const SkateSpotFeed = ({ id }) => {
         }
         onClick={() => handleSkatePostPopup(i)}
       >
-        {/* <Box className={classes.figure}> */}
         <img
           className={classes.skateFeedImg}
           src={post.post[0]}
           alt="skate-pic"
         />
-        {/* </Box> */}
         <div className={classes.postOverlay}>
           <Container className={classes.postOverlayTextContainer}>
             <Box display="flex" mr={3}>
@@ -196,17 +182,7 @@ const SkateSpotFeed = ({ id }) => {
     <div className={classes.root}>
       {posts &&
         posts.map((post, i) => {
-          // if (i % 3 === 0) {
-          return (
-            // <Container className={classes.gridRow}>
-            // <Grid container spacing={2} key={`start-${i}`}>
-            createFeed(post, i)
-            // </Grid>
-            // </Container>
-          );
-          // } else {
-          //   return <div key={`start-${i}`}> </div>;
-          // }
+          return createFeed(post, i);
         })}
       {openPopup && (
         <Modal
