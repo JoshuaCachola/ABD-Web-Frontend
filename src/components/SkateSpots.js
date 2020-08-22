@@ -10,6 +10,7 @@ import { makeStyles, Box, Button, Avatar } from "@material-ui/core";
 import Navbar from "./utils/Navbar";
 import api from "../utils";
 import { setCurrentSkateSpot } from "../store/skateSpots";
+import { handleFollowSkateSpot } from "../requests";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -131,39 +132,9 @@ const SkateSpots = ({ history }) => {
   );
 
   const followSkateSpot = async (skateSpotId, type) => {
-    try {
-      let res;
-      if (type === "follow") {
-        res = await fetch(
-          `${api.url}/api/v1/skatespots/${skateSpotId}/follow`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
-            },
-          }
-        );
-      } else {
-        res = await fetch(
-          `${api.url}/api/v1/skatespots/${skateSpotId}/unfollow`,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
-            },
-          }
-        );
-      }
-
-      if (!res.ok) {
-        throw res;
-      }
-
+    const success = await handleFollowSkateSpot(skateSpotId, type);
+    if (success) {
       getFollowedSpots();
-    } catch (err) {
-      console.error(err);
     }
   };
 

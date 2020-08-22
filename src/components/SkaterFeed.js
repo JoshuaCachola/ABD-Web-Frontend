@@ -21,6 +21,8 @@ import {
   handleSetBoardTaps,
 } from "../store/skateSpotPosts";
 import Navbar from "./utils/Navbar";
+import { handleTapPost } from "../requests";
+
 import { theme } from "../theme";
 
 const useStyles = makeStyles((theme) => ({
@@ -55,6 +57,21 @@ const SkaterFeed = ({ history }) => {
   const [boardTappedPosts, setBoardTappedPosts] = useState([]);
   const [postBoardTappedState, setPostBoardTappedState] = useState({});
   // const [expanded, setExpanded] = useState({});
+
+  /**
+   *
+   * @param {Number} postId
+   * @param {String} type
+   */
+  const boardTapPost = (postId, type) => {
+    const success = handleTapPost(postId, type);
+    if (success) {
+      // change state of post to board tapped (liked)
+      const newTappedState = { ...postBoardTappedState };
+      newTappedState[postId] = !newTappedState[postId];
+      setPostBoardTappedState(newTappedState);
+    }
+  };
 
   // get all liked posts for user
   useEffect(() => {
@@ -124,40 +141,6 @@ const SkaterFeed = ({ history }) => {
     })();
   }, []);
 
-  const handleTapPost = async (postId, type) => {
-    try {
-      let res;
-      if (type === "tap") {
-        res = await fetch(`${api.url}/ap1/v1/skateposts/${postId}/boardtap`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
-          },
-        });
-      } else {
-        res = await fetch(`${api.url}/api/v1/skateposts/${postId}/boardtap`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
-          },
-        });
-      }
-
-      if (!res.ok) {
-        throw res;
-      }
-
-      // change state of post to board tapped (liked)
-      const newTappedState = { ...postBoardTappedState };
-      newTappedState[postId] = !newTappedState[postId];
-      setPostBoardTappedState(newTappedState);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   const classes = useStyles();
 
   // if (!skaterFeed) {
@@ -203,14 +186,14 @@ const SkaterFeed = ({ history }) => {
                   {postBoardTappedState[post.id] ? (
                     <IconButton
                       aria-label="add to favorites"
-                      onClick={() => handleTapPost(post.id, "untap")}
+                      onClick={() => boardTapPost(post.id, "untap")}
                     >
                       <FavoriteIcon color="secondary" />
                     </IconButton>
                   ) : (
                     <IconButton
                       aria-label="remove from favorites"
-                      onClick={() => handleTapPost(post.id, "tap")}
+                      onClick={() => boardTapPost(post.id, "tap")}
                     >
                       <FavoriteIcon />
                     </IconButton>

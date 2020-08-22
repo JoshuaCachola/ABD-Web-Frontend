@@ -70,7 +70,7 @@ export const getFollowedSkatePosts = (followedSkateSpots) => async (
   try {
     followedSkateSpots.forEach(async (skateSpot, i) => {
       let res = await fetch(
-        `${api.url}/api/v1/skatespots/following/${skateSpot.skateSpotId}`,
+        `${api.url}/api/v1/skatespots/${skateSpot.skateSpotId}/following`,
         {
           headers: {
             "Content-Type": "application/json",

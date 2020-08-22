@@ -10,6 +10,8 @@ import {
 } from "@material-ui/core";
 
 import api from "../../utils";
+import { handleFollowSkateSpot } from "../../requests";
+
 const useStyles = makeStyles((theme) => ({
   large: {
     width: theme.spacing(20),
@@ -90,6 +92,7 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
       setFollowers(skateSpot.following);
     }
   }, [skateSpot]);
+
   useEffect(() => {
     if (Object.keys(skateSpotDetails).length === 0) {
       setSkateSpot(JSON.parse(localStorage.getItem("CURRENT_SKATE_SPOT")));
@@ -123,43 +126,13 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
   });
 
   const followSkateSpot = async (skateSpotId, type) => {
-    try {
-      let res;
-      if (type === "follow") {
-        res = await fetch(
-          `${api.url}/api/v1/skatespots/${skateSpotId}/follow`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
-            },
-          }
-        );
-
-        setFollowing(true);
-        setFollowers(followers + 1);
-      } else {
-        res = await fetch(
-          `${api.url}/api/v1/skatespots/${skateSpotId}/unfollow`,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
-            },
-          }
-        );
-
-        setFollowing(false);
-        setFollowers(followers - 1);
-      }
-
-      if (!res.ok) {
-        throw res;
-      }
-    } catch (err) {
-      console.error(err);
+    const success = handleFollowSkateSpot(skateSpotId, type);
+    if (success && type === "follow") {
+      setFollowing(true);
+      setFollowers(followers + 1);
+    } else if (success && type === "unfollow") {
+      setFollowing(false);
+      setFollowers(followers - 1);
     }
   };
 

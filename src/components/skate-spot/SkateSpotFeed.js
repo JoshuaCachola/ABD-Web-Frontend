@@ -129,6 +129,7 @@ const SkateSpotFeed = ({ id }) => {
           postMediaQuery ? classes.postContainerMedia : classes.postContainer
         }
         onClick={() => handleSkatePostPopup(i)}
+        key={i}
       >
         <ReactPlayer url={post.post[0]} height="100%" width="100%" />
         <div className={classes.postOverlay}>
@@ -152,6 +153,7 @@ const SkateSpotFeed = ({ id }) => {
           postMediaQuery ? classes.postContainerMedia : classes.postContainer
         }
         onClick={() => handleSkatePostPopup(i)}
+        key={i}
       >
         <img
           className={classes.skateFeedImg}

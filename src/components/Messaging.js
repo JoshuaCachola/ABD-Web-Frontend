@@ -68,17 +68,17 @@ const Messaging = () => {
     // setInitialized(true);
   };
 
-  const connectToRoom = () => {
-    socket.on("connect", (data) => {
-      socket.emit("join", getChatData().chatRoomName);
-    });
+  // const connectToRoom = () => {
+  //   socket.on("connect", (data) => {
+  //     socket.emit("join", getChatData().chatRoomName);
+  //   });
 
-    socket.on("newMessage", (data) => {
-      getMessages();
-    });
+  //   socket.on("newMessage", (data) => {
+  //     getMessages();
+  //   });
 
-    setInitialized(true);
-  };
+  //   setInitialized(true);
+  // };
 
   const handleSubmit = async (e) => {
     const isValid = await schema.validate(e);

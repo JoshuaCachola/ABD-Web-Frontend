@@ -6,6 +6,7 @@ import {
   Avatar,
   CardHeader,
   CardContent,
+  CardActions,
   TextField,
   Button,
   makeStyles,
@@ -15,6 +16,7 @@ import {
 import FavoriteIcon from "@material-ui/icons/Favorite";
 
 import api from "../../utils";
+import { handleTapPost, handleFollowSkateSpot } from "../../requests";
 
 const useStyles = makeStyles({
   comment: {
@@ -37,30 +39,29 @@ const useStyles = makeStyles({
     objectFit: "contain",
   },
   boardTapPost: {
-    height: "100%",
-    top: 0,
+    width: "44.6%",
+    position: "absolute",
+    bottom: 40,
+    right: 0,
+    borderTop: "1px solid #c5c5c5",
   },
   username: {
     fontWeight: "bold",
+  },
+  postComments: {
+    height: "80%",
+    overflowY: "scroll",
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
   },
 });
 
 const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
   const [comment, setComment] = useState("");
   const [postComments, setPostComments] = useState([]);
-  // const [boardTap, setBoardTap] = useState(false);
-
-  useEffect(() => {
-    getComments();
-  }, []);
-
-  // clean up function
-  useEffect(() => {
-    return () => {
-      setComment("");
-      setPostComments([]);
-    };
-  }, []);
+  const [boardTappedPost, setBoardTappedPost] = useState(false);
+  const [following, setFollowing] = useState(false);
 
   const getComments = async () => {
     try {
@@ -111,6 +112,81 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
     }
   };
 
+  const boardTapPost = (postId, type) => {
+    const success = handleTapPost(postId, type);
+    if (success) {
+      type === "tap" ? setBoardTappedPost(true) : setBoardTappedPost(false);
+    }
+  };
+
+  const toggleFollowSpot = async (id, type) => {
+    const success = await handleFollowSkateSpot(id, type);
+    if (success && type === "follow") {
+      setFollowing(true);
+    } else if (success && type === "unfollow") {
+      setFollowing(false);
+    }
+  };
+
+  useEffect(() => {
+    getComments();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        let res = await fetch(
+          `${api.url}/api/v1/skatespots/${id}/followingspot`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+            },
+          }
+        );
+
+        if (!res.ok) {
+          throw res;
+        }
+
+        const { success } = await res.json();
+        setFollowing(success);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch(`${api.url}/api/v1/skateposts/${id}/boardtap`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw res;
+        }
+
+        const { success } = await res.json();
+        setBoardTappedPost(success);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, [id]);
+
+  // clean up function
+  useEffect(() => {
+    return () => {
+      setComment("");
+      setPostComments([]);
+    };
+  }, []);
+
   const classes = useStyles();
   return (
     <Container>
@@ -147,14 +223,27 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
                 <Box display="flex">
                   <div className={classes.username}>
                     {skater.username} &nbsp;•
-                    <Button
-                      style={{
-                        fontFamily: "Rock Salt",
-                        fontSize: "9px",
-                      }}
-                    >
-                      Follow
-                    </Button>
+                    {following ? (
+                      <Button
+                        style={{
+                          fontFamily: "Rock salt",
+                          fontSize: "9px",
+                        }}
+                        onClick={() => toggleFollowSpot(id, "unfollow")}
+                      >
+                        Unfollow
+                      </Button>
+                    ) : (
+                      <Button
+                        style={{
+                          fontFamily: "Rock Salt",
+                          fontSize: "9px",
+                        }}
+                        onClick={() => toggleFollowSpot(id, "follow")}
+                      >
+                        Follow
+                      </Button>
+                    )}
                   </div>
                 </Box>
               }
@@ -162,43 +251,48 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
               className="skate-spot__comment-header"
             />
             <CardContent className="skate-spot__comment-content">
-              <ul>
-                {postComments &&
-                  postComments.map((postComment, i) => (
-                    <li key={i}>
-                      <Box className={classes.commentsContainer}>
-                        <Box display="flex" className={classes.commentsBody}>
-                          <Avatar>
-                            {postComment.skaterCommenter.username[0]}
-                          </Avatar>
-                          <div className={classes.comment}>
-                            <span className={classes.username}>
-                              {postComment.skaterCommenter.username}
-                            </span>
-                            &nbsp;
-                            {postComment.comment}
-                          </div>
+              <div className={classes.postComments}>
+                <ul>
+                  {postComments &&
+                    postComments.map((postComment, i) => (
+                      <li key={i}>
+                        <Box className={classes.commentsContainer}>
+                          <Box display="flex" className={classes.commentsBody}>
+                            <Avatar>
+                              {postComment.skaterCommenter.username[0]}
+                            </Avatar>
+                            <div className={classes.comment}>
+                              <span className={classes.username}>
+                                {postComment.skaterCommenter.username}
+                              </span>
+                              &nbsp;
+                              {postComment.comment}
+                            </div>
+                          </Box>
                         </Box>
-                      </Box>
-                    </li>
-                  ))}
-              </ul>
+                      </li>
+                    ))}
+                </ul>
+              </div>
               {/* {postBoardTappedState[post.id] ? ( */}
               <div className={classes.boardTapPost}>
-                <IconButton
-                  aria-label="add to favorites"
-                  // onClick={() => handleTapPost(post.id, "untap")}
-                >
-                  <FavoriteIcon color="secondary" />
-                </IconButton>
-                {/* ) : (
-                <IconButton
-                  aria-label="remove from favorites"
-                  // onClick={() => handleTapPost(post.id, "tap")}
-                >
-                  <FavoriteIcon />
-                </IconButton>
-              )} */}
+                <CardActions disableSpacing>
+                  {boardTappedPost ? (
+                    <IconButton
+                      aria-label="add to favorites"
+                      onClick={() => boardTapPost(id, "untap")}
+                    >
+                      <FavoriteIcon color="secondary" />
+                    </IconButton>
+                  ) : (
+                    <IconButton
+                      aria-label="remove from favorites"
+                      onClick={() => boardTapPost(id, "tap")}
+                    >
+                      <FavoriteIcon />
+                    </IconButton>
+                  )}
+                </CardActions>
               </div>
             </CardContent>
             <form onSubmit={submitComment}>
@@ -207,13 +301,12 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
                 justifyContent="space-between"
                 className="skate-spot__comment-input"
               >
-                <Box width="85%" ml={1}>
+                <Box width="85%" ml={1} className={classes.comment}>
                   <TextField
                     fullWidth={true}
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
                     placeholder="  Add a comment..."
-                    multiline
                   ></TextField>
                 </Box>
                 <Box>
