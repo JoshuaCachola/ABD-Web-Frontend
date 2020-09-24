@@ -105,7 +105,7 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
     } else {
       setSkateSpot(skateSpotDetails);
     }
-  }, [Object.keys(skateSpotDetails).length, skateSpotDetails]);
+  }, [skateSpotDetails]);
 
   useEffect(() => {
     /**

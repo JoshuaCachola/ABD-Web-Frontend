@@ -41,7 +41,6 @@ export const handleTapPost = async (postId, type) => {
 };
 
 /**
- *
  * @param {Number} skateSpotId
  * @param {String} type
  * @return {Boolean} Returns true if res.ok and false if not
@@ -78,5 +77,30 @@ export const handleFollowSkateSpot = async (skateSpotId, type) => {
   } catch (err) {
     console.error(err);
     return false;
+  }
+};
+
+/**
+ * @return {Array} - Returns skaters followed skatespots
+ */
+export const getFollowedSpots = async () => {
+  try {
+    let res = await fetch(`${api.url}/api/v1/skatespots/following`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+      },
+    });
+
+    if (!res.ok) {
+      throw res;
+    }
+
+    res = await res.json();
+
+    return res;
+  } catch (err) {
+    console.error(err);
+    return [];
   }
 };

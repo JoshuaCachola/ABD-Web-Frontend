@@ -8,9 +8,10 @@ import { makeStyles, Box, Button, Avatar } from "@material-ui/core";
 
 // Components
 import Navbar from "./utils/Navbar";
-import api from "../utils";
 import { setCurrentSkateSpot } from "../store/skateSpots";
-import { handleFollowSkateSpot } from "../requests";
+
+import { handleFollowSkateSpot, getFollowedSpots } from "../requests";
+import { UNFOLLOW, FOLLOW } from "../constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -88,37 +89,16 @@ const useStyles = makeStyles((theme) => ({
 
 const SkateSpots = ({ history }) => {
   const dispatch = useDispatch();
-
   const skateSpots = useSelector(
     ({ skateSpotFeed }) => skateSpotFeed.skateSpots
   );
-
-  // followed spots queried from db
   const [followedSpots, setFollowedSpots] = useState([]);
 
-  // gets followed skate spots and updates followedSpots state
-  const getFollowedSpots = async () => {
-    try {
-      let res = await fetch(`${api.url}/api/v1/skatespots/following`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
-        },
-      });
-
-      if (!res.ok) {
-        throw res;
-      }
-
-      res = await res.json();
-      setFollowedSpots(res);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   useEffect(() => {
-    getFollowedSpots();
+    (async () => {
+      const spots = await getFollowedSpots();
+      setFollowedSpots(spots);
+    })();
   }, [followedSpots.length]);
 
   useEffect(
@@ -134,7 +114,8 @@ const SkateSpots = ({ history }) => {
   const followSkateSpot = async (skateSpotId, type) => {
     const success = await handleFollowSkateSpot(skateSpotId, type);
     if (success) {
-      getFollowedSpots();
+      const spots = await getFollowedSpots();
+      setFollowedSpots(spots);
     }
   };
 
@@ -142,6 +123,8 @@ const SkateSpots = ({ history }) => {
     dispatch(setCurrentSkateSpot(skateSpot));
     history.push(`/skatespots/${skateSpotId}`);
   };
+
+  console.log(followedSpots);
   const classes = useStyles();
   return (
     <>
@@ -197,7 +180,7 @@ const SkateSpots = ({ history }) => {
                           color="secondary"
                           style={{ fontFamily: "Rock Salt", fontSize: "10px" }}
                           onClick={() =>
-                            followSkateSpot(skateSpot.id, "unfollow")
+                            followSkateSpot(skateSpot.id, UNFOLLOW)
                           }
                         >
                           Unfollow
@@ -207,9 +190,7 @@ const SkateSpots = ({ history }) => {
                           variant="contained"
                           color="secondary"
                           style={{ fontFamily: "Rock Salt", fontSize: "10px" }}
-                          onClick={() =>
-                            followSkateSpot(skateSpot.id, "follow")
-                          }
+                          onClick={() => followSkateSpot(skateSpot.id, FOLLOW)}
                         >
                           Follow
                         </Button>
