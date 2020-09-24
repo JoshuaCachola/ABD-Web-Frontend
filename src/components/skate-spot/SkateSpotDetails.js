@@ -11,7 +11,12 @@ import {
 
 import api from "../../utils";
 import { handleFollowSkateSpot } from "../../requests";
-import { CURRENT_SKATE_SPOT, TOKEN_KEY } from "../../constants";
+import {
+  CURRENT_SKATE_SPOT,
+  FOLLOW,
+  TOKEN_KEY,
+  UNFOLLOW,
+} from "../../constants";
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -95,7 +100,7 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
   }, [skateSpot]);
 
   useEffect(() => {
-    if (Object.keys(skateSpotDetails).length === 0) {
+    if (!Object.keys(skateSpotDetails).length) {
       setSkateSpot(JSON.parse(localStorage.getItem(CURRENT_SKATE_SPOT)));
     } else {
       setSkateSpot(skateSpotDetails);
@@ -103,21 +108,27 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
   }, [Object.keys(skateSpotDetails).length, skateSpotDetails]);
 
   useEffect(() => {
+    /**
+     * IFFE - checks to see if skater is following skatespot
+     */
     (async () => {
       try {
-        let res = await fetch(`${api.url}/api/v1/skatespots/${id}/following`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
-          },
-        });
+        let res = await fetch(
+          `${api.url}/api/v1/skatespots/${id}/followingspot`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+            },
+          }
+        );
 
         if (!res.ok) {
           throw res;
         }
 
         res = await res.json();
-        if (res) {
+        if (res.success) {
           setFollowing(true);
         }
       } catch (err) {
@@ -128,10 +139,10 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
 
   const followSkateSpot = async (skateSpotId, type) => {
     const success = handleFollowSkateSpot(skateSpotId, type);
-    if (success && type === "follow") {
+    if (success && type === FOLLOW) {
       setFollowing(true);
       setFollowers(followers + 1);
-    } else if (success && type === "unfollow") {
+    } else if (success && type === UNFOLLOW) {
       setFollowing(false);
       if (followers > 0) {
         setFollowers(followers - 1);
@@ -141,6 +152,7 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
     }
   };
 
+  // console.log(following);
   const classes = useStyles();
   return (
     <Container className={classes.root}>
@@ -159,7 +171,6 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
               />
             </Box>
           </Box>
-          {/* </Box> */}
           <Box ml={7} display="flex" flexDirection="column">
             <Box mb={2} display="flex">
               <Typography className={classes.skateSpotName}>
@@ -170,7 +181,7 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
                   <Button
                     color="secondary"
                     size="small"
-                    onClick={() => followSkateSpot(skateSpot.id, "unfollow")}
+                    onClick={() => followSkateSpot(skateSpot.id, UNFOLLOW)}
                     style={{ fontFamily: "Rock Salt", fontSize: 10 }}
                   >
                     Unfollow
@@ -180,7 +191,7 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
                     variant="contained"
                     color="secondary"
                     size="small"
-                    onClick={() => followSkateSpot(skateSpot.id, "follow")}
+                    onClick={() => followSkateSpot(skateSpot.id, FOLLOW)}
                     style={{ fontFamily: "Rock Salt", fontSize: 10 }}
                   >
                     Follow
