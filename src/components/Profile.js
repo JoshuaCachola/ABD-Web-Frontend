@@ -9,9 +9,9 @@ import {
 } from "@material-ui/core";
 import ReactPlayer from "react-player";
 
-import { theme } from "../theme";
 import Navbar from "./utils/Navbar";
 import api from "../utils";
+import { USER_ID, TOKEN_KEY } from "../constants";
 
 const useStyles = makeStyles((theme) => ({
   menuBar: {
@@ -62,9 +62,24 @@ const useStyles = makeStyles((theme) => ({
     margin: "20px 30px",
     display: "flex",
   },
-  large: {
+  avatar: {
     width: theme.spacing(20),
     height: theme.spacing(20),
+  },
+  avatarOverlay: {
+    width: theme.spacing(20),
+    height: theme.spacing(20),
+    backgroundColor: "rgba(0, 0, 0, 0.25)",
+    position: "absolute",
+    opacity: 0,
+    transition: ".5 ease",
+    top: 70,
+    "&:hover": {
+      opacity: 1,
+    },
+    [theme.breakpoints.down("sm")]: {
+      top: 50,
+    },
   },
   root: {
     maxWidth: "70%",
@@ -77,19 +92,39 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     fontSize: "20px",
   },
+  changeAvatar: {
+    textAlign: "center",
+  },
+  fileInput: {
+    opacity: 0,
+    cursor: "pointer",
+  },
+  uploadPictureButton: {
+    marginTop: "5px",
+  },
 }));
 
 const Profile = () => {
   const [posts, setPosts] = useState([]);
   const [profileDetails, setProfileDetails] = useState({});
+  const [imgPath, setImgPath] = useState("");
+
+  const handleSetImgPath = (e) => {
+    setImgPath(e.target.files[0]);
+  };
+
+  const handleChangePicture = () => {};
 
   useEffect(() => {
+    /**
+     * IIFE - fetches posts created by the skater
+     */
     (async () => {
       try {
         let res = await fetch(`${api.url}/api/v1/skateposts`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+            Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
           },
         });
 
@@ -106,14 +141,17 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
+    /**
+     * IFFE - fetches skater's profile details
+     */
     (async () => {
       try {
         let res = await fetch(
-          `${api.url}/api/v1/skaters/${localStorage.getItem("ID")}`,
+          `${api.url}/api/v1/skaters/${localStorage.getItem(USER_ID)}`,
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+              Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
             },
           }
         );
@@ -138,8 +176,33 @@ const Profile = () => {
       <Container className={classes.root}>
         <Container className={classes.profile}>
           <Container className={classes.profileDetails}>
-            <Box mr={3}>
-              <Avatar className={classes.large}>J</Avatar>
+            <Box mr={3} width="50%">
+              <Avatar className={classes.avatar}>J</Avatar>
+              <Avatar className={classes.avatarOverlay}>
+                <div className={classes.changeAvatar}>
+                  <Typography style={{ fontSize: "14px", marginTop: "30px" }}>
+                    Change profile picture
+                  </Typography>
+                  <input
+                    type="file"
+                    className={classes.fileInput}
+                    onChange={handleSetImgPath}
+                  />
+                </div>
+              </Avatar>
+              <Box mt={2} mr={9}>
+                {imgPath && (
+                  <Button
+                    variant="contained"
+                    size="small"
+                    color="secondary"
+                    style={{ fontFamily: "Rock Salt", fontSize: "10px" }}
+                    onClick={handleChangePicture}
+                  >
+                    Update profile picture
+                  </Button>
+                )}
+              </Box>
             </Box>
             <Box ml={5} display="flex" flexDirection="column">
               <Box display="flex">
@@ -148,11 +211,15 @@ const Profile = () => {
                     {profileDetails.username}
                   </Typography>
                 </Box>
-                <Box>
-                  <Button variant="contained" color="secondary" size="small">
-                    Edit Profile
+                {/* <Box>
+                  <Button
+                    color="secondary"
+                    size="small"
+                    style={{ fontFamily: "Rock Salt" }}
+                  >
+                    Change profile picture
                   </Button>
-                </Box>
+                </Box> */}
               </Box>
               <Box display="flex" mb={2}>
                 <Box mr={2}>
@@ -160,11 +227,11 @@ const Profile = () => {
                     <span className={classes.bold}>{posts.length}</span> posts
                   </Typography>
                 </Box>
-                <Box mr={2}>
+                {/* <Box mr={2}>
                   <Typography>
                     <span className={classes.bold}>0</span> skate crews
                   </Typography>
-                </Box>
+                </Box> */}
                 <Box>
                   <Typography>
                     <span className={classes.bold}>0</span> skate spots followed

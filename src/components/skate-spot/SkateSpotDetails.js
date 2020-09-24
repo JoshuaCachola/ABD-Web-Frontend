@@ -11,6 +11,7 @@ import {
 
 import api from "../../utils";
 import { handleFollowSkateSpot } from "../../requests";
+import { CURRENT_SKATE_SPOT, TOKEN_KEY } from "../../constants";
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -95,7 +96,7 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
 
   useEffect(() => {
     if (Object.keys(skateSpotDetails).length === 0) {
-      setSkateSpot(JSON.parse(localStorage.getItem("CURRENT_SKATE_SPOT")));
+      setSkateSpot(JSON.parse(localStorage.getItem(CURRENT_SKATE_SPOT)));
     } else {
       setSkateSpot(skateSpotDetails);
     }
@@ -107,7 +108,7 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
         let res = await fetch(`${api.url}/api/v1/skatespots/${id}/following`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+            Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
           },
         });
 
@@ -132,7 +133,11 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
       setFollowers(followers + 1);
     } else if (success && type === "unfollow") {
       setFollowing(false);
-      setFollowers(followers - 1);
+      if (followers > 0) {
+        setFollowers(followers - 1);
+      } else {
+        setFollowers(0);
+      }
     }
   };
 

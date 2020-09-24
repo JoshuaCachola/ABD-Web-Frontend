@@ -13,7 +13,6 @@ import styled from "styled-components";
 
 import api from "../utils";
 import Navbar from "./utils/Navbar";
-import { theme } from "../theme";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -88,10 +87,6 @@ const CreateSkateSpot = ({ history }) => {
   const handleCityName = (e) => setCityName(e.target.value);
   const handleStateName = (e) => setStateName(e.target.value);
   const handleAddress = (e) => setAddress(e.target.value);
-  // const handleSetImgPath = file => {
-  //   // console.log(file)
-  //   setImgPath(file);
-  // }
 
   const createSpot = async (e) => {
     e.preventDefault();
@@ -269,8 +264,6 @@ const CreateSkateSpot = ({ history }) => {
                           </div>
                         </>
                       )}
-                      {/* </Box>
-                </Box> */}
                     </Container>
                   </div>
                   <Box display="flex" justifyContent="center">

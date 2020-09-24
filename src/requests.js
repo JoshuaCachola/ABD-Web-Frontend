@@ -1,3 +1,4 @@
+import { FOLLOW, TOKEN_KEY, UNFOLLOW } from "./constants";
 import api from "./utils";
 
 /**
@@ -48,22 +49,22 @@ export const handleTapPost = async (postId, type) => {
 export const handleFollowSkateSpot = async (skateSpotId, type) => {
   try {
     let res;
-    if (type === "follow") {
+    if (type === FOLLOW) {
       res = await fetch(`${api.url}/api/v1/skatespots/${skateSpotId}/follow`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+          Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
         },
       });
-    } else {
+    } else if (type === UNFOLLOW) {
       res = await fetch(
         `${api.url}/api/v1/skatespots/${skateSpotId}/unfollow`,
         {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+            Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
           },
         }
       );

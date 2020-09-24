@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     opacity: 0,
     transition: ".5s ease",
+    cursor: "pointer",
     "&:hover": {
       opacity: 1,
     },
