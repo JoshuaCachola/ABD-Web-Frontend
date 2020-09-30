@@ -88,9 +88,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "24px",
     fontWeight: "bold",
   },
-  bold: {
-    fontWeight: "bold",
-    fontSize: "20px",
+  staticText: {
+    fontSize: "14px",
   },
   changeAvatar: {
     textAlign: "center",
@@ -101,6 +100,20 @@ const useStyles = makeStyles((theme) => ({
   },
   uploadPictureButton: {
     marginTop: "5px",
+  },
+  skaterName: {
+    fontWeight: "bold",
+    fontSize: "20px",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "16px",
+    },
+  },
+  postsAndFollows: {
+    fontWeight: "bold",
+    fontSize: "18px",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "14px",
+    },
   },
 }));
 
@@ -222,9 +235,12 @@ const Profile = () => {
                 </Box> */}
               </Box>
               <Box display="flex" mb={2}>
-                <Box mr={2}>
+                <Box mr={2} width={75}>
                   <Typography>
-                    <span className={classes.bold}>{posts.length}</span> posts
+                    <span className={classes.postsAndFollows}>
+                      {posts.length}
+                    </span>{" "}
+                    <span className={classes.staticText}>posts</span>
                   </Typography>
                 </Box>
                 {/* <Box mr={2}>
@@ -232,14 +248,15 @@ const Profile = () => {
                     <span className={classes.bold}>0</span> skate crews
                   </Typography>
                 </Box> */}
-                <Box>
+                <Box width={200}>
                   <Typography>
-                    <span className={classes.bold}>0</span> skate spots followed
+                    <span className={classes.postsAndFollows}>0</span>
+                    <span className={classes.staticText}> followed spots</span>
                   </Typography>
                 </Box>
               </Box>
               <Box mb={2}>
-                <Typography className={classes.bold}>
+                <Typography className={classes.skaterName}>
                   {profileDetails.firstName} {profileDetails.lastName}
                 </Typography>
               </Box>

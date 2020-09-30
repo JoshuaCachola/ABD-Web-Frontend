@@ -1,3 +1,4 @@
+import { TOKEN_KEY } from "../constants";
 import api from "../utils";
 
 const SET_SPOT_POSTS = "abd/skateSpotPosts/SET_SPOT_DETAILS";
@@ -46,7 +47,7 @@ export const getSpotPosts = (id) => async (dispatch) => {
     const res = await fetch(`${api.url}/api/v1/skatespots/${id}/posts`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
       },
     });
 
@@ -74,7 +75,7 @@ export const getFollowedSkatePosts = (followedSkateSpots) => async (
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+            Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
           },
         }
       );

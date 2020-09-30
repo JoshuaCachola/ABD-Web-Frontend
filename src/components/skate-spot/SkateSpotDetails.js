@@ -152,7 +152,29 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
     }
   };
 
-  // console.log(following);
+  const createFollowButton = (following) => {
+    return following ? (
+      <Button
+        color="secondary"
+        size="small"
+        onClick={() => followSkateSpot(skateSpot.id, UNFOLLOW)}
+        style={{ fontFamily: "Rock Salt", fontSize: 10 }}
+      >
+        Unfollow
+      </Button>
+    ) : (
+      <Button
+        variant="contained"
+        color="secondary"
+        size="small"
+        onClick={() => followSkateSpot(skateSpot.id, FOLLOW)}
+        style={{ fontFamily: "Rock Salt", fontSize: 10 }}
+      >
+        Follow
+      </Button>
+    );
+  };
+
   const classes = useStyles();
   return (
     <Container className={classes.root}>
@@ -176,28 +198,7 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
               <Typography className={classes.skateSpotName}>
                 {skateSpot.name} &nbsp;
               </Typography>
-              <Box pl={2}>
-                {following ? (
-                  <Button
-                    color="secondary"
-                    size="small"
-                    onClick={() => followSkateSpot(skateSpot.id, UNFOLLOW)}
-                    style={{ fontFamily: "Rock Salt", fontSize: 10 }}
-                  >
-                    Unfollow
-                  </Button>
-                ) : (
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    size="small"
-                    onClick={() => followSkateSpot(skateSpot.id, FOLLOW)}
-                    style={{ fontFamily: "Rock Salt", fontSize: 10 }}
-                  >
-                    Follow
-                  </Button>
-                )}
-              </Box>
+              <Box pl={2}>{following && createFollowButton(following)}</Box>
             </Box>
             <Box mb={2} display="flex">
               <Typography className={classes.bold}>

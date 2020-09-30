@@ -12,7 +12,6 @@ import {
 import ReactPlayer from "react-player";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import InsertCommentIcon from "@material-ui/icons/InsertComment";
-import { theme } from "../../theme";
 
 const useStyles = makeStyles((theme) => ({
   skateFeedChild: {
@@ -123,14 +122,19 @@ const SkateSpotFeed = ({ id }) => {
     setPostIndex(-1);
   };
 
-  const createFeed = (post, i) => {
+  /**
+   * Renders either a ReactPlayer component or img depending on the ending of the post  # noqa
+   * @param {String} post
+   * @param {Number} id
+   */
+  const createFeed = (post, id) => {
     return post.post[0].endsWith("mp4") ? (
       <div
         className={
           postMediaQuery ? classes.postContainerMedia : classes.postContainer
         }
-        onClick={() => handleSkatePostPopup(i)}
-        key={i}
+        onClick={() => handleSkatePostPopup(id)}
+        key={id}
       >
         <ReactPlayer url={post.post[0]} height="100%" width="100%" />
         <div className={classes.postOverlay}>
@@ -153,8 +157,8 @@ const SkateSpotFeed = ({ id }) => {
         className={
           postMediaQuery ? classes.postContainerMedia : classes.postContainer
         }
-        onClick={() => handleSkatePostPopup(i)}
-        key={i}
+        onClick={() => handleSkatePostPopup(id)}
+        key={id}
       >
         <img
           className={classes.skateFeedImg}

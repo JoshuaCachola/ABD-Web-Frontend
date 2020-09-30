@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from "react-redux";
 import Navbar from "../utils/Navbar";
 import SkateSpotFeed from "./SkateSpotFeed";
 import SkateSpotDetails from "./SkateSpotDetails";
-import { theme } from "../../theme";
 import { getSpotPosts } from "../../store/skateSpotPosts";
 
 const useStyles = makeStyles((theme) => ({

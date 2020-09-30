@@ -10,6 +10,7 @@ import { makeStyles, Box, Button, Avatar } from "@material-ui/core";
 import Navbar from "./utils/Navbar";
 import { setCurrentSkateSpot } from "../store/skateSpots";
 
+// Utils
 import { handleFollowSkateSpot, getFollowedSpots } from "../requests";
 import { UNFOLLOW, FOLLOW } from "../constants";
 
@@ -124,8 +125,8 @@ const SkateSpots = ({ history }) => {
     history.push(`/skatespots/${skateSpotId}`);
   };
 
-  console.log(followedSpots);
   const classes = useStyles();
+
   return (
     <>
       <Navbar />
