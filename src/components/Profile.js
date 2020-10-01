@@ -182,6 +182,70 @@ const Profile = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    if (imgPath) {
+      (async () => {
+        await updateProfilePicture();
+      })();
+      setImgPath("");
+    }
+  }, [imgPath]);
+
+  const updateProfilePicture = async () => {
+    try {
+      const body = new FormData();
+      body.append("image", imgPath);
+      let res = await fetch(`${api.url}/api/v1/skatespots/upload-image`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+        },
+        body,
+      });
+
+      if (!res.ok) {
+        throw res;
+      }
+
+      const { postUrl } = await res.json();
+
+      res = await fetch(
+        `${api.url}/api/v1/skaters/${localStorage.getItem(
+          USER_ID
+        )}/change-profile-picture`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+          },
+          body: JSON.stringify({ profileImg: postUrl }),
+        }
+      );
+
+      if (!res.ok) {
+        throw res;
+      }
+
+      // update profile picture in profileDetails state
+      const { success } = await res.json();
+      if (success) {
+        const newProfileDetails = { ...profileDetails };
+        newProfileDetails.accountPhoto = postUrl;
+        setProfileDetails(newProfileDetails);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // cleanup function
+  useEffect(() => {
+    return () => {
+      setImgPath("");
+    };
+  }, []);
+
   const classes = useStyles();
   return (
     <>
@@ -190,7 +254,15 @@ const Profile = () => {
         <Container className={classes.profile}>
           <Container className={classes.profileDetails}>
             <Box mr={3} width="50%">
-              <Avatar className={classes.avatar}>J</Avatar>
+              {profileDetails.accountPhoto ? (
+                <Avatar
+                  src={profileDetails.accountPhoto}
+                  alt="profile-picture"
+                  className={classes.avatar}
+                />
+              ) : (
+                <Avatar className={classes.avatar}>J</Avatar>
+              )}
               <Avatar className={classes.avatarOverlay}>
                 <div className={classes.changeAvatar}>
                   <Typography style={{ fontSize: "14px", marginTop: "30px" }}>

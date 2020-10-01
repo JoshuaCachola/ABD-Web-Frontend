@@ -13,6 +13,7 @@ import styled from "styled-components";
 
 import api from "../utils";
 import Navbar from "./utils/Navbar";
+import { TOKEN_KEY } from "../constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -96,12 +97,14 @@ const CreateSkateSpot = ({ history }) => {
       let res = await fetch(`${api.url}/api/v1/skatespots/upload-image`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+          Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
         },
         body,
       });
 
-      if (!res.ok) throw res;
+      if (!res.ok) {
+        throw res;
+      }
 
       const { postUrl } = await res.json();
 
@@ -109,7 +112,7 @@ const CreateSkateSpot = ({ history }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+          Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
         },
         body: JSON.stringify({
           name,
@@ -120,7 +123,9 @@ const CreateSkateSpot = ({ history }) => {
         }),
       });
 
-      if (!res.ok) throw res;
+      if (!res.ok) {
+        throw res;
+      }
 
       history.push("/skatespots");
     } catch (err) {
