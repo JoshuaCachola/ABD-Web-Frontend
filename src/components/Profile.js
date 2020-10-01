@@ -82,6 +82,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       top: 50,
     },
+    [theme.breakpoints.down("md")]: {
+      top: 52,
+    },
   },
   root: {
     maxWidth: "70%",
