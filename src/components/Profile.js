@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Container,
   makeStyles,
   Box,
   Avatar,
   Typography,
-  Button,
+  Snackbar,
+  Slide,
 } from "@material-ui/core";
 import ReactPlayer from "react-player";
 
@@ -74,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
     opacity: 0,
     transition: ".5 ease",
     top: 70,
+    cursor: "pointer",
     "&:hover": {
       opacity: 1,
     },
@@ -96,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
   },
   fileInput: {
     opacity: 0,
-    cursor: "pointer",
+    display: "none",
   },
   uploadPictureButton: {
     marginTop: "5px",
@@ -121,12 +123,11 @@ const Profile = () => {
   const [posts, setPosts] = useState([]);
   const [profileDetails, setProfileDetails] = useState({});
   const [imgPath, setImgPath] = useState("");
-
-  const handleSetImgPath = (e) => {
-    setImgPath(e.target.files[0]);
-  };
-
-  const handleChangePicture = () => {};
+  const [showNotification, setShowNotification] = useState({
+    open: false,
+    Transition: Slide,
+  });
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     /**
@@ -191,6 +192,12 @@ const Profile = () => {
     }
   }, [imgPath]);
 
+  const handleSetImgPath = () => {
+    if (fileInputRef.current.files.length) {
+      setImgPath(fileInputRef.current.files[0]);
+    }
+  };
+
   const updateProfilePicture = async () => {
     try {
       const body = new FormData();
@@ -234,9 +241,20 @@ const Profile = () => {
         newProfileDetails.accountPhoto = postUrl;
         setProfileDetails(newProfileDetails);
       }
+
+      // show notification that profile picture has changed
+      const newNotification = { ...showNotification };
+      newNotification.open = true;
+      setShowNotification(newNotification);
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const handleCloseNotification = () => {
+    const newNotification = { ...showNotification };
+    newNotification.open = false;
+    setShowNotification(newNotification);
   };
 
   // cleanup function
@@ -263,7 +281,10 @@ const Profile = () => {
               ) : (
                 <Avatar className={classes.avatar}>J</Avatar>
               )}
-              <Avatar className={classes.avatarOverlay}>
+              <Avatar
+                className={classes.avatarOverlay}
+                onClick={() => fileInputRef.current.click()}
+              >
                 <div className={classes.changeAvatar}>
                   <Typography style={{ fontSize: "14px", marginTop: "30px" }}>
                     Change profile picture
@@ -271,11 +292,12 @@ const Profile = () => {
                   <input
                     type="file"
                     className={classes.fileInput}
+                    ref={fileInputRef}
                     onChange={handleSetImgPath}
                   />
                 </div>
               </Avatar>
-              <Box mt={2} mr={9}>
+              {/* <Box mt={2} mr={9}>
                 {imgPath && (
                   <Button
                     variant="contained"
@@ -287,7 +309,7 @@ const Profile = () => {
                     Update profile picture
                   </Button>
                 )}
-              </Box>
+              </Box> */}
             </Box>
             <Box ml={5} display="flex" flexDirection="column">
               <Box display="flex">
@@ -377,6 +399,13 @@ const Profile = () => {
               />
             )}
           </Box> */}
+            <Snackbar
+              open={showNotification.open}
+              onClose={handleCloseNotification}
+              TransitionComponent={showNotification.Transition}
+              message="Profile picture changed..."
+              key={showNotification.Transition}
+            />
           </Box>
         </div>
       </Container>
