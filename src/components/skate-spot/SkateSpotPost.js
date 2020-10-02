@@ -17,6 +17,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 
 import api from "../../utils";
 import { handleTapPost, handleFollowSkateSpot } from "../../requests";
+import { TOKEN_KEY } from "../../constants";
 
 const useStyles = makeStyles({
   comment: {
@@ -70,7 +71,7 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+            Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
           },
         }
       );
@@ -93,7 +94,7 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+            Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
           },
           body: JSON.stringify({
             comment,
@@ -140,7 +141,7 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+              Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
             },
           }
         );
@@ -163,7 +164,7 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
         const res = await fetch(`${api.url}/api/v1/skateposts/${id}/boardtap`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+            Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
           },
         });
 
@@ -171,8 +172,8 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
           throw res;
         }
 
-        const { success } = await res.json();
-        setBoardTappedPost(success);
+        const { tapped } = await res.json();
+        setBoardTappedPost(tapped);
       } catch (err) {
         console.error(err);
       }
@@ -184,10 +185,12 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
     return () => {
       setComment("");
       setPostComments([]);
+      setBoardTappedPost(false);
     };
   }, []);
-  console.log(skater.accountPhoto);
+
   const classes = useStyles();
+
   return (
     <Container>
       <Box
@@ -283,19 +286,18 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
                     ))}
                 </ul>
               </div>
-              {/* {postBoardTappedState[post.id] ? ( */}
               <div className={classes.boardTapPost}>
                 <CardActions disableSpacing>
                   {boardTappedPost ? (
                     <IconButton
-                      aria-label="add to favorites"
+                      aria-label="remove from favorites"
                       onClick={() => boardTapPost(id, "untap")}
                     >
                       <FavoriteIcon color="secondary" />
                     </IconButton>
                   ) : (
                     <IconButton
-                      aria-label="remove from favorites"
+                      aria-label="add to favorites"
                       onClick={() => boardTapPost(id, "tap")}
                     >
                       <FavoriteIcon />

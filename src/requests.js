@@ -9,7 +9,7 @@ import api from "./utils";
  */
 export const handleTapPost = async (postId, type) => {
   try {
-    const authToken = localStorage.getItem("TOKEN_KEY");
+    const authToken = localStorage.getItem(TOKEN_KEY);
     let res;
     if (type === "tap") {
       res = await fetch(`${api.url}/api/v1/skateposts/${postId}/boardtap`, {
@@ -19,7 +19,7 @@ export const handleTapPost = async (postId, type) => {
           Authorization: `Bearer ${authToken}`,
         },
       });
-    } else {
+    } else if (type === "untap") {
       res = await fetch(`${api.url}/api/v1/skateposts/${postId}/boardtap`, {
         method: "DELETE",
         headers: {

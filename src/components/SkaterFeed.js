@@ -23,7 +23,7 @@ import {
 import Navbar from "./utils/Navbar";
 import { handleTapPost } from "../requests";
 
-import { theme } from "../theme";
+import { TOKEN_KEY } from "../constants";
 
 const useStyles = makeStyles((theme) => ({
   post: {
@@ -80,7 +80,7 @@ const SkaterFeed = ({ history }) => {
         let res = await fetch(`${api.url}/api/v1/skateposts/boardtaps`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+            Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
           },
         });
 
@@ -156,9 +156,10 @@ const SkaterFeed = ({ history }) => {
               <Card key={i} className={classes.post}>
                 <CardHeader
                   avatar={
-                    <Avatar aria-label="skate-post" className={classes.avatar}>
-                      R
-                    </Avatar>
+                    <Avatar
+                      src={post.skater.accountPhoto}
+                      alt="profile-picture"
+                    />
                   }
                   title={
                     <div className={classes.username}>
