@@ -114,7 +114,7 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
     (async () => {
       try {
         let res = await fetch(
-          `${api.url}/api/v1/skatespots/${id}/followingspot`,
+          `${api.url}/api/v1/skatespots/${id}/following-spot`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -198,7 +198,7 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
               <Typography className={classes.skateSpotName}>
                 {skateSpot.name} &nbsp;
               </Typography>
-              <Box pl={2}>{following && createFollowButton(following)}</Box>
+              <Box pl={2}>{createFollowButton(following)}</Box>
             </Box>
             <Box mb={2} display="flex">
               <Typography className={classes.bold}>

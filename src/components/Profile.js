@@ -12,7 +12,7 @@ import ReactPlayer from "react-player";
 
 import Navbar from "./utils/Navbar";
 import api from "../utils";
-import { USER_ID, TOKEN_KEY } from "../constants";
+import { TOKEN_KEY } from "../constants";
 
 const useStyles = makeStyles((theme) => ({
   menuBar: {
@@ -124,6 +124,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Profile = () => {
   const [posts, setPosts] = useState([]);
+  const [numFollowedSpots, setNumFollowedSpots] = useState(0);
   const [profileDetails, setProfileDetails] = useState({});
   const [imgPath, setImgPath] = useState("");
   const [showNotification, setShowNotification] = useState({
@@ -163,15 +164,12 @@ const Profile = () => {
      */
     (async () => {
       try {
-        let res = await fetch(
-          `${api.url}/api/v1/skaters/${localStorage.getItem(USER_ID)}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
-            },
-          }
-        );
+        let res = await fetch(`${api.url}/api/v1/skaters`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+          },
+        });
 
         if (!res.ok) {
           throw res;
@@ -187,6 +185,29 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
+    (async () => {
+      try {
+        let res = await fetch(`${api.url}/api/v1/skatespots/following`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw res;
+        }
+
+        res = await res.json();
+
+        setNumFollowedSpots(res.length);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
     if (imgPath) {
       (async () => {
         await updateProfilePicture();
@@ -195,6 +216,7 @@ const Profile = () => {
     }
   }, [imgPath]);
 
+  // Sets imgPath state if there is something in fileInputRef
   const handleSetImgPath = () => {
     if (fileInputRef.current.files.length) {
       setImgPath(fileInputRef.current.files[0]);
@@ -219,19 +241,14 @@ const Profile = () => {
 
       const { postUrl } = await res.json();
 
-      res = await fetch(
-        `${api.url}/api/v1/skaters/${localStorage.getItem(
-          USER_ID
-        )}/change-profile-picture`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
-          },
-          body: JSON.stringify({ profileImg: postUrl }),
-        }
-      );
+      res = await fetch(`${api.url}/api/v1/skaters/change-profile-picture`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+        },
+        body: JSON.stringify({ profileImg: postUrl }),
+      });
 
       if (!res.ok) {
         throw res;
@@ -254,6 +271,7 @@ const Profile = () => {
     }
   };
 
+  // closes the notification
   const handleCloseNotification = () => {
     const newNotification = { ...showNotification };
     newNotification.open = false;
@@ -289,7 +307,7 @@ const Profile = () => {
                 onClick={() => fileInputRef.current.click()}
               >
                 <div className={classes.changeAvatar}>
-                  <Typography style={{ fontSize: "14px", marginTop: "30px" }}>
+                  <Typography style={{ fontSize: "14px", fontWeight: "bold" }}>
                     Change profile picture
                   </Typography>
                   <input
@@ -300,19 +318,6 @@ const Profile = () => {
                   />
                 </div>
               </Avatar>
-              {/* <Box mt={2} mr={9}>
-                {imgPath && (
-                  <Button
-                    variant="contained"
-                    size="small"
-                    color="secondary"
-                    style={{ fontFamily: "Rock Salt", fontSize: "10px" }}
-                    onClick={handleChangePicture}
-                  >
-                    Update profile picture
-                  </Button>
-                )}
-              </Box> */}
             </Box>
             <Box ml={5} display="flex" flexDirection="column">
               <Box display="flex">
@@ -321,15 +326,6 @@ const Profile = () => {
                     {profileDetails.username}
                   </Typography>
                 </Box>
-                {/* <Box>
-                  <Button
-                    color="secondary"
-                    size="small"
-                    style={{ fontFamily: "Rock Salt" }}
-                  >
-                    Change profile picture
-                  </Button>
-                </Box> */}
               </Box>
               <Box display="flex" mb={2}>
                 <Box mr={2} width={75}>
@@ -340,14 +336,11 @@ const Profile = () => {
                     <span className={classes.staticText}>posts</span>
                   </Typography>
                 </Box>
-                {/* <Box mr={2}>
-                  <Typography>
-                    <span className={classes.bold}>0</span> skate crews
-                  </Typography>
-                </Box> */}
                 <Box width={200}>
                   <Typography>
-                    <span className={classes.postsAndFollows}>0</span>
+                    <span className={classes.postsAndFollows}>
+                      {numFollowedSpots}
+                    </span>
                     <span className={classes.staticText}> followed spots</span>
                   </Typography>
                 </Box>

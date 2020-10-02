@@ -136,7 +136,7 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
     (async () => {
       try {
         let res = await fetch(
-          `${api.url}/api/v1/skatespots/${id}/followingspot`,
+          `${api.url}/api/v1/skatespots/${id}/following-spot`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -186,7 +186,7 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
       setPostComments([]);
     };
   }, []);
-
+  console.log(skater.accountPhoto);
   const classes = useStyles();
   return (
     <Container>
@@ -218,7 +218,9 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
         <Box display="flex" flexDirection="column">
           <Card className="skate-spot__comment-container">
             <CardHeader
-              avatar={<Avatar></Avatar>}
+              avatar={
+                <Avatar src={skater.accountPhoto} alt="profile-picture" />
+              }
               title={
                 <Box display="flex">
                   <div className={classes.username}>
@@ -258,9 +260,16 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
                       <li key={i}>
                         <Box className={classes.commentsContainer}>
                           <Box display="flex" className={classes.commentsBody}>
-                            <Avatar>
-                              {postComment.skaterCommenter.username[0]}
-                            </Avatar>
+                            {postComment.skaterCommenter.accountPhoto ? (
+                              <Avatar
+                                src={postComment.skaterCommenter.accountPhoto}
+                                alt="profile-picture"
+                              />
+                            ) : (
+                              <Avatar>
+                                {postComment.skaterCommenter.username[0]}
+                              </Avatar>
+                            )}
                             <div className={classes.comment}>
                               <span className={classes.username}>
                                 {postComment.skaterCommenter.username}
