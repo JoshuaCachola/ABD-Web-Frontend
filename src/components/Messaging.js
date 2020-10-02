@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import socket from "../socket";
 import * as yup from "yup";
-import { Formik } from "formik";
+import { Form, Formik, Field } from "formik";
+import { TextField } from "formik-material-ui";
 import {
   Container,
   makeStyles,
   Box,
-  TextField,
   Button,
   Typography,
 } from "@material-ui/core";
@@ -44,6 +44,7 @@ const schema = yup.object({
 });
 
 const Messaging = () => {
+  const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [initialized, setInitialized] = useState(false);
   const [rooms, setRooms] = useState([]);
@@ -80,7 +81,7 @@ const Messaging = () => {
   //   setInitialized(true);
   // };
 
-  const handleSubmit = async (e) => {
+  const handleSubmitMessage = async (e) => {
     const isValid = await schema.validate(e);
     if (!isValid) {
       return;
@@ -89,7 +90,31 @@ const Messaging = () => {
     // data.chatRoomName = getChatData().chatRoomName;
     // data.author = getChatData().handle;
     data.message = e.message;
+    data.chatRoomName = "firstChat";
+    data.author = "David";
     socket.emit("message", data);
+  };
+
+  const createChatForm = () => {
+    return (
+      <Formik initialValues={{ message: "" }} onSubmit={handleSubmitMessage}>
+        {({ submitForm, isSubmitting, handleChange, values }) => (
+          <Form>
+            <Field
+              component={TextField}
+              name="message"
+              type="text"
+              label="message"
+              onChangeText={handleChange("message")}
+              value={values.message}
+            />
+            <Button color="primary" diabled={isSubmitting} onClick={submitForm}>
+              Send
+            </Button>
+          </Form>
+        )}
+      </Formik>
+    );
   };
 
   // useEffect(() => {
@@ -130,7 +155,8 @@ const Messaging = () => {
             width="100%"
             justifyContent="space-between"
           >
-            <Formik
+            {createChatForm()}
+            {/* <Formik
               validationSchema={schema}
               onSubmit={handleSubmit}
               initialValues={{ message: "" }}
@@ -145,10 +171,9 @@ const Messaging = () => {
                 errors,
               }) => (
                 <form onSubmit={handleSubmit}>
-                  <Box width="85%" ml={1} display="flex">
+                  <Box width="100%" ml={1} display="flex">
                     <TextField
                       type="text"
-                      fullWidth
                       multiline
                       name="message"
                       value={values.message || ""}
@@ -167,7 +192,7 @@ const Messaging = () => {
                   </Box>
                 </form>
               )}
-            </Formik>
+            </Formik> */}
           </Box>
         </Box>
       </Container>
