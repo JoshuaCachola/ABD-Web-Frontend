@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 
 import Navbar from "./utils/Navbar";
+import { getChatRoomMessages } from "../requests";
 
 const useStyles = makeStyles((theme) => ({
   chatContainer: {
@@ -58,9 +59,10 @@ const Messaging = () => {
   // );
 
   const getMessages = async () => {
-    // const res = await getChatRoomMessages(getChatData().chatRoomName);
-    // setMessages(res.data);
-    // setInitialized(true);
+    const res = await getChatRoomMessages("firstChat");
+    setMessages(res);
+    console.log(res);
+    setInitialized(true);
   };
 
   const getRooms = async () => {
@@ -69,17 +71,17 @@ const Messaging = () => {
     // setInitialized(true);
   };
 
-  // const connectToRoom = () => {
-  //   socket.on("connect", (data) => {
-  //     socket.emit("join", getChatData().chatRoomName);
-  //   });
+  const connectToRoom = () => {
+    // socket.on("connect", (data) => {
+    //   socket.emit("join", getChatData().chatRoomName);
+    // });
 
-  //   socket.on("newMessage", (data) => {
-  //     getMessages();
-  //   });
+    socket.on("newMessage", (data) => {
+      getMessages();
+    });
 
-  //   setInitialized(true);
-  // };
+    setInitialized(true);
+  };
 
   const handleSubmitMessage = async (e) => {
     const isValid = await schema.validate(e);
@@ -92,6 +94,7 @@ const Messaging = () => {
     data.message = e.message;
     data.chatRoomName = "firstChat";
     data.author = "David";
+    console.log(data);
     socket.emit("message", data);
   };
 
@@ -108,7 +111,11 @@ const Messaging = () => {
               onChangeText={handleChange("message")}
               value={values.message}
             />
-            <Button color="primary" diabled={isSubmitting} onClick={submitForm}>
+            <Button
+              color="primary"
+              disabled={isSubmitting}
+              onClick={submitForm}
+            >
               Send
             </Button>
           </Form>
@@ -117,13 +124,13 @@ const Messaging = () => {
     );
   };
 
-  // useEffect(() => {
-  //   if (!initialized) {
-  //     getMessages();
-  //     connectToRoom();
-  //     getRooms();
-  //   }
-  // });
+  useEffect(() => {
+    if (!initialized) {
+      getMessages();
+      connectToRoom();
+      // getRooms();
+    }
+  });
 
   const classes = useStyles();
   return (
@@ -148,7 +155,16 @@ const Messaging = () => {
           </Box>
         </Box>
         <Box display="flex" flexBasis="60%">
-          <Box></Box>
+          <Box>
+            {messages &&
+              messages.map((m, i) => {
+                return (
+                  <div key={i}>
+                    <p>{m.message}</p>
+                  </div>
+                );
+              })}
+          </Box>
           <Box
             display="flex"
             alignSelf="flex-end"

@@ -96,11 +96,24 @@ export const getFollowedSpots = async () => {
       throw res;
     }
 
-    res = await res.json();
-
-    return res;
+    return await res.json();
   } catch (err) {
     console.error(err);
     return [];
   }
+};
+
+/**
+ * @param {String} chatRoomName
+ * @return {Array} - Return an array of message objects
+ */
+export const getChatRoomMessages = async (chatRoomName) => {
+  let res = await fetch(`${api.url}/api/v1/chat/messages/${chatRoomName}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+    },
+  });
+
+  return await res.json();
 };
