@@ -13,6 +13,7 @@ import ReactPlayer from "react-player";
 import Navbar from "./utils/Navbar";
 import api from "../utils";
 import { TOKEN_KEY } from "../constants";
+import { getFollowedSpotsCount } from "../requests";
 
 const useStyles = makeStyles((theme) => ({
   menuBar: {
@@ -164,7 +165,7 @@ const Profile = () => {
      */
     (async () => {
       try {
-        let res = await fetch(`${api.url}/api/v1/skaters`, {
+        let res = await fetch(`${api.url}/api/v1/skaters/skater-profile`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
@@ -186,24 +187,8 @@ const Profile = () => {
 
   useEffect(() => {
     (async () => {
-      try {
-        let res = await fetch(`${api.url}/api/v1/skatespots/following`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
-          },
-        });
-
-        if (!res.ok) {
-          throw res;
-        }
-
-        res = await res.json();
-
-        setNumFollowedSpots(res.length);
-      } catch (err) {
-        console.error(err);
-      }
+      const count = await getFollowedSpotsCount();
+      setNumFollowedSpots(count);
     })();
   }, []);
 
@@ -300,7 +285,9 @@ const Profile = () => {
                   className={classes.avatar}
                 />
               ) : (
-                <Avatar className={classes.avatar}>J</Avatar>
+                <Avatar className={classes.avatar}>
+                  {profileDetails.username}
+                </Avatar>
               )}
               <Avatar
                 className={classes.avatarOverlay}

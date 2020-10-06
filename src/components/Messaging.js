@@ -137,6 +137,7 @@ const Messaging = () => {
     <>
       <Navbar />
       <Container className={classes.chatContainer}>
+        {/* List of direct and skate crew messages */}
         <Box
           display="flex"
           flexDirection="column"
@@ -154,6 +155,7 @@ const Messaging = () => {
             </Typography>
           </Box>
         </Box>
+        {/* Chat messages from current selected chat room */}
         <Box display="flex" flexBasis="60%">
           <Box>
             {messages &&
@@ -165,6 +167,7 @@ const Messaging = () => {
                 );
               })}
           </Box>
+          {/* Chat from */}
           <Box
             display="flex"
             alignSelf="flex-end"
@@ -172,43 +175,6 @@ const Messaging = () => {
             justifyContent="space-between"
           >
             {createChatForm()}
-            {/* <Formik
-              validationSchema={schema}
-              onSubmit={handleSubmit}
-              initialValues={{ message: "" }}
-            >
-              {({
-                handleSubmit,
-                handleChange,
-                handleBlur,
-                values,
-                touched,
-                isValid,
-                errors,
-              }) => (
-                <form onSubmit={handleSubmit}>
-                  <Box width="100%" ml={1} display="flex">
-                    <TextField
-                      type="text"
-                      multiline
-                      name="message"
-                      value={values.message || ""}
-                      placeholder=" Add message..."
-                      onChange={handleChange}
-                      isValid={touched.handle && errors.handle}
-                    />
-                    <Button
-                      type="submit"
-                      color="secondary"
-                      size="medium"
-                      style={{ fontWeight: "bold" }}
-                    >
-                      Send
-                    </Button>
-                  </Box>
-                </form>
-              )}
-            </Formik> */}
           </Box>
         </Box>
       </Container>

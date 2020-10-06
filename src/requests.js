@@ -85,7 +85,7 @@ export const handleFollowSkateSpot = async (skateSpotId, type) => {
  */
 export const getFollowedSpots = async () => {
   try {
-    let res = await fetch(`${api.url}/api/v1/skatespots/following`, {
+    const res = await fetch(`${api.url}/api/v1/skatespots/following`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
@@ -108,7 +108,7 @@ export const getFollowedSpots = async () => {
  * @return {Array} - Return an array of message objects
  */
 export const getChatRoomMessages = async (chatRoomName) => {
-  let res = await fetch(`${api.url}/api/v1/chat/messages/${chatRoomName}`, {
+  const res = await fetch(`${api.url}/api/v1/chat/messages/${chatRoomName}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
@@ -116,4 +116,19 @@ export const getChatRoomMessages = async (chatRoomName) => {
   });
 
   return await res.json();
+};
+
+/**
+ * @return {Number} - Number of followed skate spots
+ */
+export const getFollowedSpotsCount = async () => {
+  const res = await fetch(`${api.url}/api/v1/skatespots/followed-spots-count`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+    },
+  });
+
+  const { count } = await res.json();
+  return count;
 };
