@@ -48,9 +48,13 @@ const SkateSpot = ({ match, history }) => {
   const skateSpotDetails = useRef(skateSpot);
   const id = match.url.split("/")[2];
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getSpotPosts(id));
-  }, []);
+  useEffect(
+    () => {
+      dispatch(getSpotPosts(id));
+    },
+    // eslint-disable-next-line
+    []
+  );
   const handleAddPost = (e) => {
     history.push(`/skatespots/${id}/post`);
   };

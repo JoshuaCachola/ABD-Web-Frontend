@@ -192,14 +192,18 @@ const Profile = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    if (imgPath) {
-      (async () => {
-        await updateProfilePicture();
-      })();
-      setImgPath("");
-    }
-  }, [imgPath]);
+  useEffect(
+    () => {
+      if (imgPath) {
+        (async () => {
+          await updateProfilePicture();
+        })();
+        setImgPath("");
+      }
+    },
+    // eslint-disable-next-line
+    [imgPath]
+  );
 
   // Sets imgPath state if there is something in fileInputRef
   const handleSetImgPath = () => {

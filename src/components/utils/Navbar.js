@@ -14,16 +14,17 @@ import {
   MenuList,
   MenuItem,
   ClickAwayListener,
+  Tooltip,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import GroupIcon from "@material-ui/icons/Group";
+// import GroupIcon from "@material-ui/icons/Group";
 import AddLocationIcon from "@material-ui/icons/AddLocation";
 import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import MessageIcon from "@material-ui/icons/Message";
 
-import addSpotImg from "../../images/add-spot.svg";
+// import addSpotImg from "../../images/add-spot.svg";
 import { theme } from "../../theme";
 import { removeToken } from "../../store/authentication";
 import { setSkateSpots } from "../../store/skateSpots";
@@ -115,9 +116,13 @@ const Navbar = ({ history }) => {
   const menuRef = useRef(null);
   const searchRef = useRef(null);
 
-  useEffect(() => {
-    dispatch(setSkateSpots());
-  }, []);
+  useEffect(
+    () => {
+      dispatch(setSkateSpots());
+    },
+    // eslint-disable-next-line
+    []
+  );
 
   const skateSpots = useSelector(
     ({ skateSpotFeed }) => skateSpotFeed.skateSpots
@@ -127,7 +132,7 @@ const Navbar = ({ history }) => {
     history.push("/skatespots/create-spot");
   };
 
-  const handleMessaging = () => history.push("/messaging");
+  // const handleMessaging = () => history.push("/messaging");
 
   const handleHome = () => history.push("/skatespots");
 
@@ -259,8 +264,10 @@ const Navbar = ({ history }) => {
           <div onClick={handleHome} className={classes.navbarIcons}>
             <HomeIcon />
           </div>
-          <div onClick={handleMessaging} className={classes.navbarIcons}>
-            <MessageIcon />
+          <div /*onClick={handleMessaging}*/ className={classes.navbarIcons}>
+            <Tooltip title="Messaging coming soon..." aria-label="messaging">
+              <MessageIcon />
+            </Tooltip>
           </div>
           <div onClick={addNewSpot} className={classes.navbarIcons}>
             {/* <img src={addSpotImg} alt="add-spot" height="24" width="24" /> */}

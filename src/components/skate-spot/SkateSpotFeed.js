@@ -142,12 +142,18 @@ const SkateSpotFeed = ({ id }) => {
             <Box display="flex" mr={3}>
               <FavoriteIcon />
               &nbsp;
-              <Typography className={classes.postOverlayText}>0</Typography>
+              <Typography className={classes.postOverlayText}>
+                {post.LikedPosts[0] ? post.LikedPosts[0].likeCount : 0}
+              </Typography>
             </Box>
             <Box display="flex">
               <InsertCommentIcon />
               &nbsp;
-              <Typography className={classes.postOverlayText}>0</Typography>
+              <Typography className={classes.postOverlayText}>
+                {post.SkatePostComments[0]
+                  ? post.SkatePostComments[0].commentCount
+                  : 0}
+              </Typography>
             </Box>
           </Container>
         </div>
@@ -170,12 +176,18 @@ const SkateSpotFeed = ({ id }) => {
             <Box display="flex" mr={3}>
               <FavoriteIcon />
               &nbsp;
-              <Typography className={classes.postOverlayText}>0</Typography>
+              <Typography className={classes.postOverlayText}>
+                {post.LikedPosts[0] ? post.LikedPosts[0].likeCount : 0}
+              </Typography>
             </Box>
             <Box display="flex">
               <InsertCommentIcon />
               &nbsp;
-              <Typography className={classes.postOverlayText}>0</Typography>
+              <Typography className={classes.postOverlayText}>
+                {post.SkatePostComments[0]
+                  ? post.SkatePostComments[0].commentCount
+                  : 0}
+              </Typography>
             </Box>
           </Container>
         </div>

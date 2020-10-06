@@ -12,7 +12,6 @@ import {
   CardHeader,
 } from "@material-ui/core";
 import api from "../../utils";
-import { theme } from "../../theme";
 
 const useStyles = makeStyles((theme) => ({
   input: {

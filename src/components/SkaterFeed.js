@@ -97,49 +97,57 @@ const SkaterFeed = ({ history }) => {
   }, []);
 
   // sets board tap state for all posts
-  useEffect(() => {
-    if (skaterFeed) {
-      const postState = {};
-      skaterFeed.forEach((post) => {
-        const foundBoardTapped = boardTappedPosts.find(
-          (tappedPost) => tappedPost.postId === post.id
-        );
-        if (foundBoardTapped) {
-          postState[post.id] = true;
-        } else {
-          postState[post.id] = false;
-        }
-      });
-      setPostBoardTappedState(postState);
-      dispatch(handleSetBoardTaps(postState));
-    }
-  }, [skaterFeed]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        let res = await fetch(`${api.url}/api/v1/skatespots/following`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
-          },
+  useEffect(
+    () => {
+      if (skaterFeed) {
+        const postState = {};
+        skaterFeed.forEach((post) => {
+          const foundBoardTapped = boardTappedPosts.find(
+            (tappedPost) => tappedPost.postId === post.id
+          );
+          if (foundBoardTapped) {
+            postState[post.id] = true;
+          } else {
+            postState[post.id] = false;
+          }
         });
-
-        if (!res.ok) {
-          throw res;
-        }
-
-        res = await res.json();
-        if (!res.length) {
-          history.push("/skatespots");
-        } else {
-          dispatch(getFollowedSkatePosts(res));
-        }
-      } catch (err) {
-        console.error(err);
+        setPostBoardTappedState(postState);
+        dispatch(handleSetBoardTaps(postState));
       }
-    })();
-  }, []);
+    },
+    // eslint-disable-next-line
+    [skaterFeed]
+  );
+
+  useEffect(
+    () => {
+      (async () => {
+        try {
+          let res = await fetch(`${api.url}/api/v1/skatespots/following`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("TOKEN_KEY")}`,
+            },
+          });
+
+          if (!res.ok) {
+            throw res;
+          }
+
+          res = await res.json();
+          if (!res.length) {
+            history.push("/skatespots");
+          } else {
+            dispatch(getFollowedSkatePosts(res));
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      })();
+    },
+    // eslint-disable-next-line
+    []
+  );
 
   const classes = useStyles();
 

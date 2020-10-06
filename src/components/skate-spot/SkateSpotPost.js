@@ -16,7 +16,7 @@ import {
 import FavoriteIcon from "@material-ui/icons/Favorite";
 
 import api from "../../utils";
-import { handleTapPost, handleFollowSkateSpot } from "../../requests";
+import { handleTapPost } from "../../requests";
 import { TOKEN_KEY } from "../../constants";
 
 const useStyles = makeStyles({
@@ -62,7 +62,7 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
   const [comment, setComment] = useState("");
   const [postComments, setPostComments] = useState([]);
   const [boardTappedPost, setBoardTappedPost] = useState(false);
-  const [following, setFollowing] = useState(false);
+  // const [following, setFollowing] = useState(false);
 
   const getComments = async () => {
     try {
@@ -120,43 +120,47 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
     }
   };
 
-  const toggleFollowSpot = async (id, type) => {
-    const success = await handleFollowSkateSpot(id, type);
-    if (success && type === "follow") {
-      setFollowing(true);
-    } else if (success && type === "unfollow") {
-      setFollowing(false);
-    }
-  };
+  // const toggleFollowSpot = async (id, type) => {
+  //   const success = await handleFollowSkateSpot(id, type);
+  //   if (success && type === "follow") {
+  //     setFollowing(true);
+  //   } else if (success && type === "unfollow") {
+  //     setFollowing(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    getComments();
-  }, []);
+  useEffect(
+    () => {
+      getComments();
+    },
+    // eslint-disable-next-line
+    []
+  );
 
-  useEffect(() => {
-    (async () => {
-      try {
-        let res = await fetch(
-          `${api.url}/api/v1/skatespots/${id}/following-spot`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
-            },
-          }
-        );
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       let res = await fetch(
+  //         `${api.url}/api/v1/skatespots/${id}/following-spot`,
+  //         {
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+  //           },
+  //         }
+  //       );
 
-        if (!res.ok) {
-          throw res;
-        }
+  //       if (!res.ok) {
+  //         throw res;
+  //       }
 
-        const { success } = await res.json();
-        setFollowing(success);
-      } catch (err) {
-        console.error(err);
-      }
-    })();
-  }, []);
+  //       const { success } = await res.json();
+  //       setFollowing(success);
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   })();
+  // }, []);
 
   useEffect(() => {
     (async () => {
@@ -227,7 +231,8 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
               title={
                 <Box display="flex">
                   <div className={classes.username}>
-                    {skater.username} &nbsp;•
+                    {skater.username}
+                    {/* &nbsp;•
                     {following ? (
                       <Button
                         style={{
@@ -248,7 +253,7 @@ const SkateSpotPost = ({ id, post, caption, skater, skateSpotId }) => {
                       >
                         Follow
                       </Button>
-                    )}
+                    )} */}
                   </div>
                 </Box>
               }
