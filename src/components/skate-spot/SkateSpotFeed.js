@@ -128,7 +128,7 @@ const SkateSpotFeed = ({ id }) => {
    * @param {Number} id
    */
   const createFeed = (post, id) => {
-    return post.post[0].endsWith("mp4") ? (
+    return (
       <div
         className={
           postMediaQuery ? classes.postContainerMedia : classes.postContainer
@@ -136,41 +136,15 @@ const SkateSpotFeed = ({ id }) => {
         onClick={() => handleSkatePostPopup(id)}
         key={id}
       >
-        <ReactPlayer url={post.post[0]} height="100%" width="100%" />
-        <div className={classes.postOverlay}>
-          <Container className={classes.postOverlayTextContainer}>
-            <Box display="flex" mr={3}>
-              <FavoriteIcon />
-              &nbsp;
-              <Typography className={classes.postOverlayText}>
-                {post.LikedPosts[0] ? post.LikedPosts[0].likeCount : 0}
-              </Typography>
-            </Box>
-            <Box display="flex">
-              <InsertCommentIcon />
-              &nbsp;
-              <Typography className={classes.postOverlayText}>
-                {post.SkatePostComments[0]
-                  ? post.SkatePostComments[0].commentCount
-                  : 0}
-              </Typography>
-            </Box>
-          </Container>
-        </div>
-      </div>
-    ) : (
-      <div
-        className={
-          postMediaQuery ? classes.postContainerMedia : classes.postContainer
-        }
-        onClick={() => handleSkatePostPopup(id)}
-        key={id}
-      >
-        <img
-          className={classes.skateFeedImg}
-          src={post.post[0]}
-          alt="skate-pic"
-        />
+        {post.post[0].endsWith("mp4") ? (
+          <ReactPlayer url={post.post[0]} height="100%" width="100%" />
+        ) : (
+          <img
+            className={classes.skateFeedImg}
+            src={post.post[0]}
+            alt="skate-pic"
+          />
+        )}
         <div className={classes.postOverlay}>
           <Container className={classes.postOverlayTextContainer}>
             <Box display="flex" mr={3}>
