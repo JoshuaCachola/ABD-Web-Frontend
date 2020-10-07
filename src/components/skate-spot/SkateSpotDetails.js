@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 
 import api from "../../utils";
-import { handleFollowSkateSpot } from "../../requests";
+import { handleToggleFollow } from "../../requests";
 import {
   CURRENT_SKATE_SPOT,
   FOLLOW,
@@ -55,9 +55,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       fontSize: "14px",
     },
-  },
-  skateSpotDetails: {
-    margin: "20px 90px 20px 20px",
   },
   root: {
     margin: "20px 30px",
@@ -138,7 +135,7 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
   });
 
   const followSkateSpot = async (skateSpotId, type) => {
-    const success = handleFollowSkateSpot(skateSpotId, type);
+    const success = handleToggleFollow(skateSpotId, type);
     if (success && type === FOLLOW) {
       setFollowing(true);
       setFollowers(followers + 1);
@@ -153,24 +150,16 @@ const SkateSpotDetails = ({ skateSpotDetails, id }) => {
   };
 
   const createFollowButton = (following) => {
-    return following ? (
+    return (
       <Button
         color="secondary"
         size="small"
-        onClick={() => followSkateSpot(skateSpot.id, UNFOLLOW)}
+        onClick={() =>
+          followSkateSpot(skateSpot.id, following ? UNFOLLOW : FOLLOW)
+        }
         style={{ fontFamily: "Rock Salt", fontSize: 10 }}
       >
-        Unfollow
-      </Button>
-    ) : (
-      <Button
-        variant="contained"
-        color="secondary"
-        size="small"
-        onClick={() => followSkateSpot(skateSpot.id, FOLLOW)}
-        style={{ fontFamily: "Rock Salt", fontSize: 10 }}
-      >
-        Follow
+        {following ? "Unfollow" : "Follow"}
       </Button>
     );
   };

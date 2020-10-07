@@ -89,7 +89,7 @@ const SkateSpot = ({ match, history }) => {
             </Tooltip>
           </Box>
           <Box>
-            <SkateSpotFeed id={id} className={classes.child} />
+            <SkateSpotFeed className={classes.child} type="SPOT" />
           </Box>
         </div>
       </Container>

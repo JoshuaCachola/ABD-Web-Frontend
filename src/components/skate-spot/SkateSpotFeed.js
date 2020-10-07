@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import SkateSpotPost from "./SkateSpotPost";
 import {
@@ -12,6 +12,7 @@ import {
 import ReactPlayer from "react-player";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import InsertCommentIcon from "@material-ui/icons/InsertComment";
+import { getSkaterPosts } from "../../requests";
 
 const useStyles = makeStyles((theme) => ({
   skateFeedChild: {
@@ -104,9 +105,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SkateSpotFeed = ({ id }) => {
+const SkateSpotFeed = ({ type }) => {
   const [postIndex, setPostIndex] = useState(-1);
-  const posts = useSelector(({ skateSpotPosts }) => skateSpotPosts.posts);
+  const [likesAndCommentsCount, setLikesandCommentsCount] = useState({});
+  const [posts, setPosts] = useState([]);
+  const spotPosts = useSelector(({ skateSpotPosts }) => skateSpotPosts.posts);
   const isShowingPost = useSelector(
     ({ skateSpotPosts }) => skateSpotPosts.isShowingPost
   );
@@ -121,6 +124,38 @@ const SkateSpotFeed = ({ id }) => {
     setOpenPopup(false);
     setPostIndex(-1);
   };
+
+  useEffect(() => {
+    if (spotPosts) {
+      if (type === "PROFILE") {
+        (async () => {
+          const sPosts = await getSkaterPosts();
+          console.log(sPosts);
+          setPosts(sPosts);
+        })();
+      } else if (type === "SPOT") {
+        setPosts(spotPosts);
+      }
+    }
+  }, [type, spotPosts]);
+
+  // Creates state for like and comment count for each post in feed
+  useEffect(() => {
+    if (posts) {
+      const counts = {};
+      posts.forEach((post) => {
+        const count = {};
+        count.likesCount = post.LikedPosts[0]
+          ? post.LikedPosts[0].likeCount
+          : 0;
+        count.commentsCount = post.SkatePostComments[0]
+          ? post.SkatePostComments[0].commentCount
+          : 0;
+        counts[post.id] = count;
+      });
+      setLikesandCommentsCount(counts);
+    }
+  }, [posts]);
 
   /**
    * Renders either a ReactPlayer component or img depending on the ending of the post  # noqa
@@ -151,15 +186,17 @@ const SkateSpotFeed = ({ id }) => {
               <FavoriteIcon />
               &nbsp;
               <Typography className={classes.postOverlayText}>
-                {post.LikedPosts[0] ? post.LikedPosts[0].likeCount : 0}
+                {likesAndCommentsCount[post.id]
+                  ? likesAndCommentsCount[post.id].likesCount
+                  : 0}
               </Typography>
             </Box>
             <Box display="flex">
               <InsertCommentIcon />
               &nbsp;
               <Typography className={classes.postOverlayText}>
-                {post.SkatePostComments[0]
-                  ? post.SkatePostComments[0].commentCount
+                {likesAndCommentsCount[post.id]
+                  ? likesAndCommentsCount[post.id].commentsCount
                   : 0}
               </Typography>
             </Box>
@@ -185,7 +222,7 @@ const SkateSpotFeed = ({ id }) => {
           aria-describedby="skater-post-popup"
         >
           <SkateSpotPost
-            skateSpotId={id}
+            skateSpotId={posts[postIndex].skateSpotId}
             id={posts[postIndex].id}
             skater={posts[postIndex].skater}
             post={posts[postIndex].post}

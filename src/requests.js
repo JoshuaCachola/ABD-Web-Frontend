@@ -1,4 +1,4 @@
-import { FOLLOW, TOKEN_KEY, UNFOLLOW } from "./constants";
+import { TOKEN_KEY, FOLLOW } from "./constants";
 import api from "./utils";
 
 /**
@@ -45,29 +45,20 @@ export const handleTapPost = async (postId, type) => {
  * @param {String} type
  * @return {Boolean} Returns true if res.ok and false if not
  */
-export const handleFollowSkateSpot = async (skateSpotId, type) => {
+export const handleToggleFollow = async (skateSpotId, type) => {
   try {
-    let res;
-    if (type === FOLLOW) {
-      res = await fetch(`${api.url}/api/v1/skatespots/${skateSpotId}/follow`, {
-        method: "POST",
+    const res = await fetch(
+      `${api.url}/api/v1/skatespots/${skateSpotId}/${
+        type === FOLLOW ? "follow" : "unfollow"
+      }`,
+      {
+        method: type,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
         },
-      });
-    } else if (type === UNFOLLOW) {
-      res = await fetch(
-        `${api.url}/api/v1/skatespots/${skateSpotId}/unfollow`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
-          },
-        }
-      );
-    }
+      }
+    );
 
     if (!res.ok) {
       throw res;
@@ -131,4 +122,26 @@ export const getFollowedSpotsCount = async () => {
 
   const { count } = await res.json();
   return count;
+};
+
+/**
+ * @return {Array} - Array of the users posts
+ */
+export const getSkaterPosts = async () => {
+  try {
+    const res = await fetch(`${api.url}/api/v1/skateposts/my-posts`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+      },
+    });
+
+    if (!res.ok) {
+      throw res;
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error(err);
+  }
 };

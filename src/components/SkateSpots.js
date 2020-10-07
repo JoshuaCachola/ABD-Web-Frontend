@@ -11,7 +11,7 @@ import Navbar from "./utils/Navbar";
 import { setCurrentSkateSpot } from "../store/skateSpots";
 
 // Utils
-import { handleFollowSkateSpot, getFollowedSpots } from "../requests";
+import { handleToggleFollow, getFollowedSpots } from "../requests";
 import { UNFOLLOW, FOLLOW } from "../constants";
 
 const useStyles = makeStyles((theme) => ({
@@ -113,7 +113,7 @@ const SkateSpots = ({ history }) => {
   );
 
   const followSkateSpot = async (skateSpotId, type) => {
-    const success = await handleFollowSkateSpot(skateSpotId, type);
+    const success = await handleToggleFollow(skateSpotId, type);
     if (success) {
       const spots = await getFollowedSpots();
       setFollowedSpots(spots);

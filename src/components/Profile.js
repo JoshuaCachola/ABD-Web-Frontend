@@ -8,12 +8,12 @@ import {
   Snackbar,
   Slide,
 } from "@material-ui/core";
-import ReactPlayer from "react-player";
 
 import Navbar from "./utils/Navbar";
 import api from "../utils";
 import { TOKEN_KEY } from "../constants";
 import { getFollowedSpotsCount } from "../requests";
+import SkateSpotFeed from "./skate-spot/SkateSpotFeed";
 
 const useStyles = makeStyles((theme) => ({
   menuBar: {
@@ -63,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
   profileDetails: {
     margin: "20px 30px",
     display: "flex",
+    justifyContent: "center",
   },
   avatar: {
     width: theme.spacing(20),
@@ -88,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   root: {
-    maxWidth: "70%",
+    maxWidth: "935px",
   },
   username: {
     fontSize: "24px",
@@ -276,47 +277,46 @@ const Profile = () => {
 
   const classes = useStyles();
   return (
-    <>
-      <Navbar />
+    <div>
+      <nav>
+        <Navbar />
+      </nav>
       <Container className={classes.root}>
         <Container className={classes.profile}>
           <Container className={classes.profileDetails}>
-            <Box mr={3} width="50%">
-              {profileDetails.accountPhoto ? (
-                <Avatar
-                  src={profileDetails.accountPhoto}
-                  alt="profile-picture"
-                  className={classes.avatar}
-                />
-              ) : (
-                <Avatar className={classes.avatar}>
-                  {profileDetails.username}
-                </Avatar>
-              )}
+            {/* Account photo display and click event listener */}
+            {profileDetails.accountPhoto ? (
               <Avatar
-                className={classes.avatarOverlay}
-                onClick={() => fileInputRef.current.click()}
-              >
-                <div className={classes.changeAvatar}>
-                  <Typography style={{ fontSize: "14px", fontWeight: "bold" }}>
-                    Change profile picture
-                  </Typography>
-                  <input
-                    type="file"
-                    className={classes.fileInput}
-                    ref={fileInputRef}
-                    onChange={handleSetImgPath}
-                  />
-                </div>
+                src={profileDetails.accountPhoto}
+                alt="profile-picture"
+                className={classes.avatar}
+              />
+            ) : (
+              <Avatar className={classes.avatar}>
+                {profileDetails.username}
               </Avatar>
-            </Box>
-            <Box ml={5} display="flex" flexDirection="column">
-              <Box display="flex">
-                <Box mr={2} mb={2}>
-                  <Typography className={classes.username}>
-                    {profileDetails.username}
-                  </Typography>
-                </Box>
+            )}
+            <Avatar
+              className={classes.avatarOverlay}
+              onClick={() => fileInputRef.current.click()}
+            >
+              <div className={classes.changeAvatar}>
+                <Typography style={{ fontSize: "14px", fontWeight: "bold" }}>
+                  Change profile picture
+                </Typography>
+                <input
+                  type="file"
+                  className={classes.fileInput}
+                  ref={fileInputRef}
+                  onChange={handleSetImgPath}
+                />
+              </div>
+            </Avatar>
+            <Box ml={7} display="flex" flexDirection="column">
+              <Box mb={2} display="flex">
+                <Typography className={classes.username}>
+                  {profileDetails.username}
+                </Typography>
               </Box>
               <Box display="flex" mb={2}>
                 <Box mr={2} width={75}>
@@ -344,48 +344,11 @@ const Profile = () => {
             </Box>
           </Container>
         </Container>
-        <br />
         <div className={classes.menuBar}>
           <Box mt={5}>
-            <Container className={classes.skateSpotFeed}>
-              {posts &&
-                posts.map(({ post }, i) => {
-                  return (
-                    <div
-                      key={i}
-                      id={i}
-                      // onClick={handleSkatePost}
-                      className={classes.skateFeedChild}
-                    >
-                      {post[0].endsWith("mp4") ? (
-                        <ReactPlayer
-                          url={post[0]}
-                          light={false}
-                          height="100%"
-                          width="293px"
-                        />
-                      ) : (
-                        <img
-                          className={classes.skateFeedImg}
-                          src={post[0]}
-                          alt="skate-pic"
-                        />
-                      )}
-                    </div>
-                  );
-                })}
-            </Container>
-            {/* <Box>
-            {isShowingPost && (
-              <SkateSpotPost
-                skateSpotId={id}
-                id={posts[postIndex].id}
-                skater={posts[postIndex].skater}
-                post={posts[postIndex].post}
-                caption={posts[postIndex].caption}
-              />
-            )}
-          </Box> */}
+            <Box>
+              <SkateSpotFeed type="PROFILE" />
+            </Box>
             <Snackbar
               open={showNotification.open}
               onClose={handleCloseNotification}
@@ -396,7 +359,7 @@ const Profile = () => {
           </Box>
         </div>
       </Container>
-    </>
+    </div>
   );
 };
 
